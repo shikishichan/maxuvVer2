@@ -23,6 +23,7 @@ BookLog
 ## タスク管理(Trello)
 
 [タスク管理](https://trello.com/b/VAOitPS1/%E3%82%BF%E3%82%B9%E3%82%AF)
+
 [KPT分析](https://trello.com/b/ex4xKJVB/kpt)
 
 
