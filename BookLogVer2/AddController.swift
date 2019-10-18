@@ -7,30 +7,105 @@
 //
 
 import UIKit
-var TodoKobetsunonakami = [String]()
-var Sectionkobetunonakami = [String]()
+var TodoKobetsunonakami1 = [String]()
+var TodoKobetsunonakami2 = [String]()
+var TodoKobetsunonakami3 = [String]()
+var Sectionkobetsunonakami = [String]()
 
-class AddController: UIViewController {
+var selectedSection = ""
+
+class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+        
     @IBOutlet weak var SectionTextField: UITextField!
     @IBAction func SectionAddButton(_ sender: Any) {
-        Sectionkobetunonakami.append(SectionTextField.text!)
+        Sectionkobetsunonakami.append(selectedSection)
         SectionTextField.text = ""
-        UserDefaults.standard.set(Sectionkobetunonakami, forKey: "SectionList")
+        UserDefaults.standard.set( Sectionkobetsunonakami, forKey: "SectionList" )
+//        if selectedSection == "section1" {
+//
+//            Sectionkobetunonakami1.append(SectionTextField.text!)
+//            UserDefaults.standard.set(Sectionkobetunonakami1, forKey: "SectionList1")
+//
+//        }else if selectedSection == "section2" {
+//
+//            Sectionkobetunonakami2.append(SectionTextField.text!)
+//            UserDefaults.standard.set(Sectionkobetunonakami2, forKey: "SectionList2")
+//
+//        }else if selectedSection == "section3" {
+//
+//            Sectionkobetunonakami3.append(SectionTextField.text!)
+//            UserDefaults.standard.set(Sectionkobetunonakami3, forKey: "SectionList3")
+//
+//        }
+        
+        SectionTextField.text = ""
     }
     
     @IBOutlet weak var TodoTextField: UITextField!
     @IBAction func TodoAddButton(_ sender: Any) {
-        TodoKobetsunonakami.append(TodoTextField.text!)
-        TodoTextField.text = ""
-        UserDefaults.standard.set( TodoKobetsunonakami, forKey: "TodoList" )
+        if selectedSection == "section1" {
+            
+            TodoKobetsunonakami1.append(TodoTextField.text!)
+            UserDefaults.standard.set(TodoKobetsunonakami1, forKey: "TodoList1")
+            
+        }else if selectedSection == "section2" {
+            
+            TodoKobetsunonakami2.append(TodoTextField.text!)
+            UserDefaults.standard.set(TodoKobetsunonakami2, forKey: "TodoList2")
+            
+        }else if selectedSection == "section3" {
+            
+            TodoKobetsunonakami3.append(TodoTextField.text!)
+            UserDefaults.standard.set(TodoKobetsunonakami3, forKey: "TodoList3")
+            
+        }
+//        TodoKobetsunonakami.append(TodoTextField.text!)
+//        TodoTextField.text = ""
+//        UserDefaults.standard.set( TodoKobetsunonakami, forKey: "TodoList" )
     }
     
+    @IBOutlet weak var sectionLabel: UILabel!
     
+    @IBOutlet weak var sectionSelect: UIPickerView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sectionSelect.delegate = self
+        sectionSelect.dataSource = self
 
         // Do any additional setup after loading the view.
+        
+        if UserDefaults.standard.object(forKey: "SectionList") != nil{
+            Sectionkobetsunonakami = UserDefaults.standard.object(forKey: "SectionList") as! [String]
+        }
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return Sectionkobetsunonakami.count
+    }
+    
+    // UIPickerViewの最初の表示
+    func pickerView(_ pickerView: UIPickerView,
+                    titleForRow row: Int,
+                    forComponent component: Int) -> String? {
+        return Sectionkobetsunonakami[row]
+    }
+    
+    // UIPickerViewのRowが選択された時の挙動
+    func pickerView(_ pickerView: UIPickerView,
+                    didSelectRow row: Int,
+                    inComponent component: Int) {
+        
+//        label.text = dataList[row]
+        selectedSection = Sectionkobetsunonakami[row]
+        
     }
     
 
