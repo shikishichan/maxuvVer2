@@ -8,14 +8,23 @@
 
 import UIKit
 var TodoKobetsunonakami = [String]()
+var Sectionkobetunonakami = [String]()
 
 class AddController: UIViewController {
+    @IBOutlet weak var SectionTextField: UITextField!
+    @IBAction func SectionAddButton(_ sender: Any) {
+        Sectionkobetunonakami.append(SectionTextField.text!)
+        SectionTextField.text = ""
+        UserDefaults.standard.set(Sectionkobetunonakami, forKey: "SectionList")
+    }
+    
     @IBOutlet weak var TodoTextField: UITextField!
     @IBAction func TodoAddButton(_ sender: Any) {
         TodoKobetsunonakami.append(TodoTextField.text!)
         TodoTextField.text = ""
         UserDefaults.standard.set( TodoKobetsunonakami, forKey: "TodoList" )
     }
+    
     
     
     override func viewDidLoad() {

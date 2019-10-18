@@ -19,20 +19,23 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         if UserDefaults.standard.object(forKey: "TodoList") != nil {
             TodoKobetsunonakami = UserDefaults.standard.object(forKey: "TodoList") as! [String]
         }
+        
+        if UserDefaults.standard.object(forKey: "SectionList") != nil{
+            Sectionkobetunonakami = UserDefaults.standard.object(forKey: "SectionList") as! [String]
+        }
         // Do any additional setup after loading the view.
-        mySections = ["3年A組","3年B組","3年C組"]
         
         for _ in 0 ... 2{
             twoDimArray.append([])
         }
 
-        twoDimArray[0] = ["井上","加藤","田中"]
+        twoDimArray[0] = TodoKobetsunonakami
         twoDimArray[1] = ["鈴木","吉田"]
         twoDimArray[2] = ["遠藤","佐藤","村田","山田"]
     }
     
      func numberOfSections(in tableView: UITableView) -> Int {
-        return mySections.count
+        return Sectionkobetunonakami.count
     }
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -40,7 +43,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
        }
     
      func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return mySections[section]
+        return Sectionkobetunonakami[section]
     }
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -50,7 +53,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedClass = mySections[indexPath.section]
+        selectedClass = Sectionkobetunonakami[indexPath.section]
         selectedPerson = twoDimArray[indexPath.section][indexPath.row]
     }
     
