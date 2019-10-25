@@ -17,6 +17,7 @@
 		2B38E8D3234B406B00B82C38 /* BookLogVer2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8D2234B406B00B82C38 /* BookLogVer2Tests.swift */; };
 		2B38E8DE234B406C00B82C38 /* BookLogVer2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */; };
 		2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8EB234B57C900B82C38 /* AddController.swift */; };
+		61FC800A2362CF480067913A /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FC80092362CF480067913A /* Book.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLogVer2UITests.swift; sourceTree = "<group>"; };
 		2B38E8DF234B406C00B82C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B38E8EB234B57C900B82C38 /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
+		61FC80092362CF480067913A /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 				2B38E8BD234B406A00B82C38 /* FirstViewController.swift */,
 				2B38E8BF234B406A00B82C38 /* SecondViewController.swift */,
 				2B38E8C1234B406A00B82C38 /* Main.storyboard */,
+				61FC80092362CF480067913A /* Book.swift */,
 				2B38E8EB234B57C900B82C38 /* AddController.swift */,
 				2B38E8C4234B406B00B82C38 /* Assets.xcassets */,
 				2B38E8C6234B406B00B82C38 /* LaunchScreen.storyboard */,
@@ -267,6 +270,7 @@
 			files = (
 				2B38E8C0234B406A00B82C38 /* SecondViewController.swift in Sources */,
 				2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */,
+				61FC800A2362CF480067913A /* Book.swift in Sources */,
 				2B38E8BE234B406A00B82C38 /* FirstViewController.swift in Sources */,
 				2B38E8BA234B406A00B82C38 /* AppDelegate.swift in Sources */,
 				2B38E8BC234B406A00B82C38 /* SceneDelegate.swift in Sources */,

@@ -12,48 +12,31 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var mySections = [String]()
     var twoDimArray = [[String]]()
     var selectedClass = ""
-    var selectedPerson = ""
+    var selectedBook = ""
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
-        
-        
-        if UserDefaults.standard.object(forKey: "TodoList1") != nil {
-            TodoKobetsunonakami1 = UserDefaults.standard.object(forKey: "TodoList1") as! [String]
-        }else if UserDefaults.standard.object(forKey: "TodoList2") != nil {
-            TodoKobetsunonakami2 = UserDefaults.standard.object(forKey: "TodoList2") as! [String]
-        }else if UserDefaults.standard.object(forKey: "TodoList3") != nil {
-            TodoKobetsunonakami3 = UserDefaults.standard.object(forKey: "TodoList3") as! [String]
-        }
         
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
-            Sectionkobetsunonakami = UserDefaults.standard.object(forKey: "SectionList") as! [String]
-            
+            mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
         }
-//        if UserDefaults.standard.object(forKey: "SectionList2") != nil{
-//            Sectionkobetunonakami2 = UserDefaults.standard.object(forKey: "SectionList2") as! [String]
-//
-//        }
-//        if UserDefaults.standard.object(forKey: "SectionList3") != nil{
-//            Sectionkobetunonakami3 = UserDefaults.standard.object(forKey: "SectionList3") as! [String]
-            
-//        }
-
-        // Do any additional setup after loading the view.
         
-        for _ in 0 ... 2{
-            twoDimArray.append([])
+        for i in mySections{
+            if UserDefaults.standard.object(forKey: i) != nil {
+                let x = UserDefaults.standard.object(forKey: i) as! [String]
+                twoDimArray.append(x)
+            }else{
+                UserDefaults.standard.set([], forKey: i)
+                twoDimArray.append([])
+            }
         }
-
-        twoDimArray[0] = TodoKobetsunonakami1
-        twoDimArray[1] = TodoKobetsunonakami2
-        twoDimArray[2] = TodoKobetsunonakami3
+        
     }
     
      func numberOfSections(in tableView: UITableView) -> Int {
-        return Sectionkobetsunonakami.count
+        return mySections.count
     }
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,7 +44,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
        }
     
      func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Sectionkobetsunonakami[section]
+        return mySections[section]
     }
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,8 +54,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedClass = Sectionkobetsunonakami[indexPath.section]
-        selectedPerson = twoDimArray[indexPath.section][indexPath.row]
+        selectedClass = mySections[indexPath.section]
+        selectedBook = twoDimArray[indexPath.section][indexPath.row]
     }
     
     override func didReceiveMemoryWarning() {
