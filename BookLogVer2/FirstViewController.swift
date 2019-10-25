@@ -32,16 +32,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             Sectionkobetsunonakami = UserDefaults.standard.object(forKey: "SectionList") as! [String]
             
         }
-//        if UserDefaults.standard.object(forKey: "SectionList2") != nil{
-//            Sectionkobetunonakami2 = UserDefaults.standard.object(forKey: "SectionList2") as! [String]
-//
-//        }
-//        if UserDefaults.standard.object(forKey: "SectionList3") != nil{
-//            Sectionkobetunonakami3 = UserDefaults.standard.object(forKey: "SectionList3") as! [String]
-            
-//        }
 
-        // Do any additional setup after loading the view.
         
         for _ in 0 ... 2{
             twoDimArray.append([])
