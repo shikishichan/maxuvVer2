@@ -7,10 +7,8 @@
 //
 
 import UIKit
-var TodoKobetsunonakami1 = [String]()
-var TodoKobetsunonakami2 = [String]()
-var TodoKobetsunonakami3 = [String]()
-var Sectionkobetsunonakami = [String]()
+
+var mySections = [String]()
 
 var selectedSection = ""
 
@@ -19,50 +17,19 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         
     @IBOutlet weak var SectionTextField: UITextField!
     @IBAction func SectionAddButton(_ sender: Any) {
-        Sectionkobetsunonakami.append(selectedSection)
+        mySections.append(SectionTextField.text!)
         SectionTextField.text = ""
-        UserDefaults.standard.set( Sectionkobetsunonakami, forKey: "SectionList" )
-//        if selectedSection == "section1" {
-//
-//            Sectionkobetunonakami1.append(SectionTextField.text!)
-//            UserDefaults.standard.set(Sectionkobetunonakami1, forKey: "SectionList1")
-//
-//        }else if selectedSection == "section2" {
-//
-//            Sectionkobetunonakami2.append(SectionTextField.text!)
-//            UserDefaults.standard.set(Sectionkobetunonakami2, forKey: "SectionList2")
-//
-//        }else if selectedSection == "section3" {
-//
-//            Sectionkobetunonakami3.append(SectionTextField.text!)
-//            UserDefaults.standard.set(Sectionkobetunonakami3, forKey: "SectionList3")
-//
-//        }
-        
-        SectionTextField.text = ""
+        UserDefaults.standard.set( mySections, forKey: "SectionList" )
     }
     
     @IBOutlet weak var TodoTextField: UITextField!
     @IBAction func TodoAddButton(_ sender: Any) {
-        if selectedSection == "section1" {
-            
-            TodoKobetsunonakami1.append(TodoTextField.text!)
-            UserDefaults.standard.set(TodoKobetsunonakami1, forKey: "TodoList1")
-            
-        }else if selectedSection == "section2" {
-            
-            TodoKobetsunonakami2.append(TodoTextField.text!)
-            UserDefaults.standard.set(TodoKobetsunonakami2, forKey: "TodoList2")
-            
-        }else if selectedSection == "section3" {
-            
-            TodoKobetsunonakami3.append(TodoTextField.text!)
-            UserDefaults.standard.set(TodoKobetsunonakami3, forKey: "TodoList3")
-            
-        }
-//        TodoKobetsunonakami.append(TodoTextField.text!)
-//        TodoTextField.text = ""
-//        UserDefaults.standard.set( TodoKobetsunonakami, forKey: "TodoList" )
+        
+        var x = UserDefaults.standard.object(forKey: selectedSection) as! [String]
+        x.append(TodoTextField.text!)
+        TodoTextField.text = ""
+        UserDefaults.standard.set(x, forKey: selectedSection)
+        
     }
     
     @IBOutlet weak var sectionLabel: UILabel!
@@ -79,7 +46,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         // Do any additional setup after loading the view.
         
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
-            Sectionkobetsunonakami = UserDefaults.standard.object(forKey: "SectionList") as! [String]
+            mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
         }
     }
     
@@ -88,14 +55,14 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Sectionkobetsunonakami.count
+        return mySections.count
     }
     
     // UIPickerViewの最初の表示
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
-        return Sectionkobetsunonakami[row]
+        return mySections[row]
     }
     
     // UIPickerViewのRowが選択された時の挙動
@@ -103,8 +70,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                     didSelectRow row: Int,
                     inComponent component: Int) {
         
-//        label.text = dataList[row]
-        selectedSection = Sectionkobetsunonakami[row]
+        selectedSection = mySections[row]
         
     }
     
