@@ -12,8 +12,8 @@ class TableViewCell: UITableViewCell {
 
     @IBOutlet weak var title: UILabel!
     
-    func control_cell(title:String){
-        self.title.text = title
+    func control_cell(book:Book){
+        self.title.text = book.title
     }
     
 }

@@ -20,6 +20,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         mySections.append(SectionTextField.text!)
         SectionTextField.text = ""
         UserDefaults.standard.set( mySections, forKey: "SectionList" )
+
     }
     
     @IBOutlet weak var TodoTextField: UITextField!

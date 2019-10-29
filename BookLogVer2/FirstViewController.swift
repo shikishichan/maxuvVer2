@@ -16,51 +16,74 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var twoDimArray = [[String]]()
     var selectedClass = ""
     var selectedBook = ""
+    var booklist:[Book] = []
+    var view_list:[[Book]] = []
+    var book_shelf_list:[BookShelf] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        if UserDefaults.standard.object(forKey: "SectionList") != nil{
-            mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
-        }
-        
-        for i in mySections{
-            if UserDefaults.standard.object(forKey: i) != nil {
-                let x = UserDefaults.standard.object(forKey: i) as! [String]
-                twoDimArray.append(x)
-            }else{
-                UserDefaults.standard.set([], forKey: i)
-                twoDimArray.append([])
-            }
-        }
-        
         view_table.register (UINib(nibName: "TableViewCell", bundle: nil),forCellReuseIdentifier:"reuse_cell")
+        
+        let get_api = GetDataFromApi()
+        
+        get_api.get_book_shelf(completion: {returnData in
+            self.book_shelf_list = returnData
+            
+            for _ in self.book_shelf_list{
+                self.view_list.append([])
+            }
+
+            //DispatchQueue.main.async {
+            //    self.mytable.reloadData()
+            //}
+        })
+        
+        get_api.get_book(completion: {returnData in
+            self.booklist = returnData
+            
+            var count:Int = 0
+            
+            for i in self.book_shelf_list{
+                for j in self.booklist{
+                    if i.id == j.place_id{
+                        self.view_list[count].append(j)
+                    }
+                }
+                count += 1
+            }
+            
+            DispatchQueue.main.async {
+                self.view_table.reloadData()
+            }
+        })
         
     }
     
      func numberOfSections(in tableView: UITableView) -> Int {
-        return mySections.count
+        return book_shelf_list.count
     }
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-           return twoDimArray[section].count
+           return view_list[section].count
        }
     
      func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return mySections[section]
+        return book_shelf_list[section].name
     }
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuse_cell", for: indexPath) as! TableViewCell
-        cell.control_cell(title: twoDimArray[indexPath.section][indexPath.row])
+        cell.control_cell(book: view_list[indexPath.section][indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedClass = mySections[indexPath.section]
-        selectedBook = twoDimArray[indexPath.section][indexPath.row]
+        selectedClass = book_shelf_list[indexPath.section].name
+        selectedBook = view_list[indexPath.section][indexPath.row].title
+        
+        print(selectedBook)
     }
     
     override func didReceiveMemoryWarning() {
