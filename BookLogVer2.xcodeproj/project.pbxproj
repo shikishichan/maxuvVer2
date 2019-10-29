@@ -17,6 +17,8 @@
 		2B38E8D3234B406B00B82C38 /* BookLogVer2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8D2234B406B00B82C38 /* BookLogVer2Tests.swift */; };
 		2B38E8DE234B406C00B82C38 /* BookLogVer2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */; };
 		2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8EB234B57C900B82C38 /* AddController.swift */; };
+		DC125EF72367DE4D00FDCD66 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC125EF52367DE4D00FDCD66 /* TableViewCell.swift */; };
+		DC125EF82367DE4D00FDCD66 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC125EF62367DE4D00FDCD66 /* TableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLogVer2UITests.swift; sourceTree = "<group>"; };
 		2B38E8DF234B406C00B82C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B38E8EB234B57C900B82C38 /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
+		DC125EF52367DE4D00FDCD66 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		DC125EF62367DE4D00FDCD66 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +116,8 @@
 				2B38E8C4234B406B00B82C38 /* Assets.xcassets */,
 				2B38E8C6234B406B00B82C38 /* LaunchScreen.storyboard */,
 				2B38E8C9234B406B00B82C38 /* Info.plist */,
+				DC125EF52367DE4D00FDCD66 /* TableViewCell.swift */,
+				DC125EF62367DE4D00FDCD66 /* TableViewCell.xib */,
 			);
 			path = BookLogVer2;
 			sourceTree = "<group>";
@@ -239,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B38E8C8234B406B00B82C38 /* LaunchScreen.storyboard in Resources */,
+				DC125EF82367DE4D00FDCD66 /* TableViewCell.xib in Resources */,
 				2B38E8C5234B406B00B82C38 /* Assets.xcassets in Resources */,
 				2B38E8C3234B406A00B82C38 /* Main.storyboard in Resources */,
 			);
@@ -268,6 +275,7 @@
 				2B38E8C0234B406A00B82C38 /* SecondViewController.swift in Sources */,
 				2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */,
 				2B38E8BE234B406A00B82C38 /* FirstViewController.swift in Sources */,
+				DC125EF72367DE4D00FDCD66 /* TableViewCell.swift in Sources */,
 				2B38E8BA234B406A00B82C38 /* AppDelegate.swift in Sources */,
 				2B38E8BC234B406A00B82C38 /* SceneDelegate.swift in Sources */,
 			);

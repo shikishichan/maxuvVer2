@@ -9,6 +9,9 @@
 import UIKit
 
 class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate{
+    
+    @IBOutlet weak var view_table: UITableView!
+    
     var mySections = [String]()
     var twoDimArray = [[String]]()
     var selectedClass = ""
@@ -33,6 +36,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             }
         }
         
+        view_table.register (UINib(nibName: "TableViewCell", bundle: nil),forCellReuseIdentifier:"reuse_cell")
+        
     }
     
      func numberOfSections(in tableView: UITableView) -> Int {
@@ -48,8 +53,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     }
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath)
-        cell.textLabel?.text = twoDimArray[indexPath.section][indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuse_cell", for: indexPath) as! TableViewCell
+        cell.control_cell(title: twoDimArray[indexPath.section][indexPath.row])
         return cell
     }
     
