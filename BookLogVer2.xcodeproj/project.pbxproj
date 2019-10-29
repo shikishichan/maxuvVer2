@@ -17,7 +17,10 @@
 		2B38E8D3234B406B00B82C38 /* BookLogVer2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8D2234B406B00B82C38 /* BookLogVer2Tests.swift */; };
 		2B38E8DE234B406C00B82C38 /* BookLogVer2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */; };
 		2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8EB234B57C900B82C38 /* AddController.swift */; };
-		61FC800A2362CF480067913A /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FC80092362CF480067913A /* Book.swift */; };
+		E672E7AE23638C94009A1530 /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E672E7AD23638C94009A1530 /* CustomNavigationBar.swift */; };
+		E6CAC78C23637DB400B3EBEE /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6CAC78B23637DB400B3EBEE /* TitleViewController.swift */; };
+		E6CAC78E23637E4200B3EBEE /* elly20160628465420_TP_Va.png in Resources */ = {isa = PBXBuildFile; fileRef = E6CAC78D23637E4200B3EBEE /* elly20160628465420_TP_Va.png */; };
+		E6CAC79023637E4700B3EBEE /* elly20160628465420_TP_V.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6CAC78F23637E4700B3EBEE /* elly20160628465420_TP_V.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +57,10 @@
 		2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLogVer2UITests.swift; sourceTree = "<group>"; };
 		2B38E8DF234B406C00B82C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B38E8EB234B57C900B82C38 /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
-		61FC80092362CF480067913A /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		E672E7AD23638C94009A1530 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
+		E6CAC78B23637DB400B3EBEE /* TitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleViewController.swift; sourceTree = "<group>"; };
+		E6CAC78D23637E4200B3EBEE /* elly20160628465420_TP_Va.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = elly20160628465420_TP_Va.png; sourceTree = "<group>"; };
+		E6CAC78F23637E4700B3EBEE /* elly20160628465420_TP_V.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elly20160628465420_TP_V.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,9 +115,12 @@
 				2B38E8BB234B406A00B82C38 /* SceneDelegate.swift */,
 				2B38E8BD234B406A00B82C38 /* FirstViewController.swift */,
 				2B38E8BF234B406A00B82C38 /* SecondViewController.swift */,
-				2B38E8C1234B406A00B82C38 /* Main.storyboard */,
-				61FC80092362CF480067913A /* Book.swift */,
+				E6CAC78B23637DB400B3EBEE /* TitleViewController.swift */,
+				E672E7AD23638C94009A1530 /* CustomNavigationBar.swift */,
 				2B38E8EB234B57C900B82C38 /* AddController.swift */,
+				2B38E8C1234B406A00B82C38 /* Main.storyboard */,
+				E6CAC78D23637E4200B3EBEE /* elly20160628465420_TP_Va.png */,
+				E6CAC78F23637E4700B3EBEE /* elly20160628465420_TP_V.jpg */,
 				2B38E8C4234B406B00B82C38 /* Assets.xcassets */,
 				2B38E8C6234B406B00B82C38 /* LaunchScreen.storyboard */,
 				2B38E8C9234B406B00B82C38 /* Info.plist */,
@@ -241,7 +250,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6CAC78E23637E4200B3EBEE /* elly20160628465420_TP_Va.png in Resources */,
 				2B38E8C8234B406B00B82C38 /* LaunchScreen.storyboard in Resources */,
+				E6CAC79023637E4700B3EBEE /* elly20160628465420_TP_V.jpg in Resources */,
 				2B38E8C5234B406B00B82C38 /* Assets.xcassets in Resources */,
 				2B38E8C3234B406A00B82C38 /* Main.storyboard in Resources */,
 			);
@@ -270,10 +281,11 @@
 			files = (
 				2B38E8C0234B406A00B82C38 /* SecondViewController.swift in Sources */,
 				2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */,
-				61FC800A2362CF480067913A /* Book.swift in Sources */,
 				2B38E8BE234B406A00B82C38 /* FirstViewController.swift in Sources */,
 				2B38E8BA234B406A00B82C38 /* AppDelegate.swift in Sources */,
 				2B38E8BC234B406A00B82C38 /* SceneDelegate.swift in Sources */,
+				E6CAC78C23637DB400B3EBEE /* TitleViewController.swift in Sources */,
+				E672E7AE23638C94009A1530 /* CustomNavigationBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
