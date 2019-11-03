@@ -93,7 +93,7 @@
                                     <navigationItem title="登録" id="GP7-uE-RbF">
                                         <barButtonItem key="leftBarButtonItem" title="一覧" style="done" id="MLs-EY-ZCm">
                                             <connections>
-                                                <segue destination="9pv-A4-QxB" kind="presentation" modalPresentationStyle="fullScreen" id="NYH-Ro-hvg"/>
+                                                <segue destination="RPt-vd-y8c" kind="unwind" unwindAction="unwindPrevFor:towards:" id="ghX-oN-W6b"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -171,8 +171,9 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4cj-ls-LCh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="RPt-vd-y8c" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1572.65625" y="-321.09375"/>
+            <point key="canvasLocation" x="1613" y="-421"/>
         </scene>
         <!--Second-->
         <scene sceneID="wg7-f3-ORb">
@@ -232,8 +233,4 @@
         <image name="first" width="30" height="30"/>
         <image name="second" width="30" height="30"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="buy-xd-tKd"/>
-        <segue reference="NYH-Ro-hvg"/>
-    </inferredMetricsTieBreakers>
 </document>

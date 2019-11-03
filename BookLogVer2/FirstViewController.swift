@@ -12,6 +12,12 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     @IBOutlet weak var view_table: UITableView!
     
+    private let refreshControl = UIRefreshControl()
+    
+    @IBAction func unwindPrev(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
+
+    }
+    
     var mySections = [String]()
     var twoDimArray = [[String]]()
     var selectedClass = ""
@@ -19,6 +25,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var booklist:[Book] = []
     var view_list:[[Book]] = []
     var book_shelf_list:[BookShelf] = []
+    let get_api = GetDataFromApi()
     
     
     override func viewDidLoad() {
@@ -26,38 +33,11 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
 
         view_table.register (UINib(nibName: "TableViewCell", bundle: nil),forCellReuseIdentifier:"reuse_cell")
         
-        let get_api = GetDataFromApi()
+        view_table.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(FirstViewController.refresh(sender:)), for: .valueChanged)
         
-        get_api.get_book_shelf(completion: {returnData in
-            self.book_shelf_list = returnData
-            
-            for _ in self.book_shelf_list{
-                self.view_list.append([])
-            }
-
-            //DispatchQueue.main.async {
-            //    self.mytable.reloadData()
-            //}
-        })
         
-        get_api.get_book(completion: {returnData in
-            self.booklist = returnData
-            
-            var count:Int = 0
-            
-            for i in self.book_shelf_list{
-                for j in self.booklist{
-                    if i.id == j.place_id{
-                        self.view_list[count].append(j)
-                    }
-                }
-                count += 1
-            }
-            
-            DispatchQueue.main.async {
-                self.view_table.reloadData()
-            }
-        })
+        load_data()
         
     }
     
@@ -85,6 +65,65 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         
         print(selectedBook)
     }
+    
+    func load_data(){
+        let dispatchGroup = DispatchGroup()
+        let shelfQueue = DispatchQueue(label: "queue", qos: .userInteractive)
+        let bookQueue = DispatchQueue(label: "queue", qos: .userInteractive)
+        
+        //本と本棚のapiを取得するため、未完了タスクを２つ用意する
+        dispatchGroup.enter()
+        dispatchGroup.enter()
+        
+        shelfQueue.async(group: dispatchGroup) {
+            self.get_api.get_book_shelf(completion: {returnData in
+                self.book_shelf_list = returnData
+                
+                for _ in self.book_shelf_list{
+                    self.view_list.append([])
+                }
+                dispatchGroup.leave()
+                print("shelfDone")
+            })
+        }
+        
+        
+        bookQueue.async(group: dispatchGroup){
+            self.get_api.get_book(completion: {returnData in
+                    self.booklist = returnData
+                    dispatchGroup.leave()
+                    print("bookDone")
+            })
+        }
+        
+        //本と本棚両方のapiを取得後リロード
+        dispatchGroup.notify(queue: .main) {
+            var count:Int = 0
+            
+            for i in self.book_shelf_list{
+                for j in self.booklist{
+                    if i.id == j.place_id{
+                        self.view_list[count].append(j)
+                    }
+                }
+                count += 1
+            }
+            print("All Process Done!")
+            self.view_table.reloadData()
+            
+        }
+
+        
+    }
+    
+    @objc func refresh(sender: UIRefreshControl) {
+
+        
+        load_data()
+        refreshControl.endRefreshing()
+        
+    }
+
     
     override func didReceiveMemoryWarning() {
           super.didReceiveMemoryWarning()
