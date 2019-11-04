@@ -14,19 +14,19 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var selectedClass = ""
     var selectedBook = ""
     
-    
-    @IBAction func unwindPrev(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
-    }
-    
+
+    @IBOutlet weak var tableView: UITableView!
+        
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
         }
-        
+
         for i in mySections{
             if UserDefaults.standard.object(forKey: i) != nil {
                 let x = UserDefaults.standard.object(forKey: i) as! [String]
@@ -36,6 +36,12 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
                 twoDimArray.append([])
             }
         }
+        
+       // editボタンの追加だけ、動作はまだ
+        self.navigationController?.isNavigationBarHidden = false
+        navigationItem.title = "一覧画面"
+        navigationItem.rightBarButtonItem = editButtonItem
+
         
     }
     

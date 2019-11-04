@@ -8,22 +8,19 @@
 
 import UIKit
 
-var mySections = [String]()
-
-var selectedSection = ""
 
 class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-        
-    @IBOutlet weak var SectionTextField: UITextField!
-    @IBAction func SectionAddButton(_ sender: Any) {
-        mySections.append(SectionTextField.text!)
-        SectionTextField.text = ""
-        UserDefaults.standard.set( mySections, forKey: "SectionList" )
-    }
+    var mySections = [String]()
+    var selectedSection = ""
+    
     
     @IBOutlet weak var TodoTextField: UITextField!
     @IBAction func TodoAddButton(_ sender: Any) {
+        
+        if(selectedSection == ""){
+            selectedSection = mySections[0]
+        }
         
         var x = UserDefaults.standard.object(forKey: selectedSection) as! [String]
         x.append(TodoTextField.text!)
