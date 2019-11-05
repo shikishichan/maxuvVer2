@@ -71,6 +71,18 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     override func didReceiveMemoryWarning() {
           super.didReceiveMemoryWarning()
       }
-      
+    override func setEditing(_ editing: Bool, animated: Bool) {
+          //override前の処理を継続してさせる
+          super.setEditing(editing, animated: animated)
+          //tableViewの編集モードを切り替える
+          tableView.isEditing = editing //editingはBool型でeditButtonに依存する変数
+        
+    }
+    
+    private func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    
 }
 
