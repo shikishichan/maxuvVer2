@@ -59,6 +59,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath)
         cell.textLabel?.text = twoDimArray[indexPath.section][indexPath.row]
+        cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
         return cell
     }
     
@@ -113,6 +114,20 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             count += 1
         }
     }
+    
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {50}//sectionの高さ
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {60}//cellの高さ
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+            let label : UILabel = UILabel()
+        label.backgroundColor = UIColor.init(red: 205/255, green: 133/255, blue: 63/255, alpha: 100/100)
+        label.textColor = UIColor.white
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.text = "  "+mySections[section]
+        return label
+    }//sectionの色、文字サイズ
     
     override func didReceiveMemoryWarning() {
           super.didReceiveMemoryWarning()
