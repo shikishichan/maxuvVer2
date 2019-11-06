@@ -22,6 +22,7 @@
 		DC125EFC2367E80500FDCD66 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC125EF92367E80500FDCD66 /* Book.swift */; };
 		DC125EFD2367E80500FDCD66 /* GetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC125EFA2367E80500FDCD66 /* GetData.swift */; };
 		DC125EFE2367E80500FDCD66 /* BookShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC125EFB2367E80500FDCD66 /* BookShelf.swift */; };
+		DC9BC999237309580016E773 /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9BC998237309580016E773 /* PostData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		DC125EF92367E80500FDCD66 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		DC125EFA2367E80500FDCD66 /* GetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetData.swift; sourceTree = "<group>"; };
 		DC125EFB2367E80500FDCD66 /* BookShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookShelf.swift; sourceTree = "<group>"; };
+		DC9BC998237309580016E773 /* PostData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				DC125EFB2367E80500FDCD66 /* BookShelf.swift */,
 				DC125EF92367E80500FDCD66 /* Book.swift */,
 				DC125EFA2367E80500FDCD66 /* GetData.swift */,
+				DC9BC998237309580016E773 /* PostData.swift */,
 			);
 			path = BookLogVer2;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				DC125EFD2367E80500FDCD66 /* GetData.swift in Sources */,
 				2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */,
 				2B38E8BE234B406A00B82C38 /* FirstViewController.swift in Sources */,
+				DC9BC999237309580016E773 /* PostData.swift in Sources */,
 				DC125EF72367DE4D00FDCD66 /* TableViewCell.swift in Sources */,
 				DC125EFE2367E80500FDCD66 /* BookShelf.swift in Sources */,
 				2B38E8BA234B406A00B82C38 /* AppDelegate.swift in Sources */,
