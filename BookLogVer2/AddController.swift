@@ -12,29 +12,81 @@ import UIKit
 class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var mySections = [String]()
+    var twoDimArray = [[String]]()
     var selectedSection = ""
-    
+    var alertController: UIAlertController!
+
     
     @IBOutlet weak var TodoTextField: UITextField!
     @IBAction func TodoAddButton(_ sender: Any) {
         
         if(TodoTextField.text! != ""){
-            if(selectedSection == ""){
+            //titleが入力されている時の処理
+            
+            if(selectedSection == ""){//保管場所を選択していない時は一番目の場所にいれる
                 selectedSection = mySections[0]
             }
             
-            if UserDefaults.standard.object(forKey: selectedSection) != nil{
-                var x = UserDefaults.standard.object(forKey: selectedSection) as! [String]
-                x.append(TodoTextField.text!)
+            //titleが同じものがないかの判定
+            var count = 0
+            loop: for i in twoDimArray{
                 
-                UserDefaults.standard.set(x, forKey: selectedSection)
-            }else{
-                var y = [String]()
-                y.append(TodoTextField.text!)
-               UserDefaults.standard.set(y, forKey: selectedSection)
-           }
-            TodoTextField.text = ""
+                for j in i{
+                    
+                    if(j == TodoTextField.text!){
+                        //ダブりがあった時
+                        let title = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
+                        let message = "登録しますか？"
+                        alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                        break loop
+                    }else{
+                        //ダブりがない時
+                        let title = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
+                        let message = "登録しますか？"
+                        alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                        
+                    }
+                }
+                count += 1
+            }
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+                (action: UIAlertAction!) -> Void in
+                //OKボタンが押された時の処理
+                self.touroku(title: self.TodoTextField.text!, place: self.selectedSection)
+            }))
+            alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
+                (action: UIAlertAction!) -> Void in
+                //キャンセルボタンが押された時の処理
+                self.TodoTextField.text = ""
+            }))
+            present(alertController, animated: true, completion: nil)
+            
+        }else{
+            //titleが入力されていない時の処理
+            let title = "タイトルが入力されていません"
+            let message = "もう一度入力してください"
+            alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+                (action: UIAlertAction!) -> Void in
+                //OKボタンが押された時の処理
+                //何もしない
+            }))
+            present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    func touroku(title:String, place:String) {
+        if UserDefaults.standard.object(forKey: place) != nil{
+            var x = UserDefaults.standard.object(forKey: place) as! [String]
+            x.append(title)
+            UserDefaults.standard.set(x, forKey: place)
+        }else{
+            var x = [String]()
+            x.append(title)
+            UserDefaults.standard.set(x, forKey: place)
+        }
+        TodoTextField.text = ""
     }
     
     @IBOutlet weak var sectionLabel: UILabel!
@@ -56,6 +108,16 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
+        }
+        twoDimArray = []
+        for i in mySections{
+            if UserDefaults.standard.object(forKey: i) != nil {
+                let x = UserDefaults.standard.object(forKey: i) as! [String]
+                twoDimArray.append(x)
+            }else{
+                UserDefaults.standard.set([], forKey: i)
+                twoDimArray.append([])
+            }
         }
         sectionSelect.reloadAllComponents()
         
@@ -82,7 +144,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                     didSelectRow row: Int,
                     inComponent component: Int) {
         
-        selectedSection = mySections[row]        
+        selectedSection = mySections[row]
     }
     
 
