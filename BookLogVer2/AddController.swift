@@ -18,15 +18,23 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     @IBOutlet weak var TodoTextField: UITextField!
     @IBAction func TodoAddButton(_ sender: Any) {
         
-        if(selectedSection == ""){
-            selectedSection = mySections[0]
+        if(TodoTextField.text! != ""){
+            if(selectedSection == ""){
+                selectedSection = mySections[0]
+            }
+            
+            if UserDefaults.standard.object(forKey: selectedSection) != nil{
+                var x = UserDefaults.standard.object(forKey: selectedSection) as! [String]
+                x.append(TodoTextField.text!)
+                
+                UserDefaults.standard.set(x, forKey: selectedSection)
+            }else{
+                var y = [String]()
+                y.append(TodoTextField.text!)
+               UserDefaults.standard.set(y, forKey: selectedSection)
+           }
+            TodoTextField.text = ""
         }
-        
-        var x = UserDefaults.standard.object(forKey: selectedSection) as! [String]
-        x.append(TodoTextField.text!)
-        TodoTextField.text = ""
-        UserDefaults.standard.set(x, forKey: selectedSection)
-        
     }
     
     @IBOutlet weak var sectionLabel: UILabel!
@@ -41,10 +49,17 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         sectionSelect.dataSource = self
 
         // Do any additional setup after loading the view.
+    }
+    
+    //表示時のデータ更新
+    override func viewWillAppear(_ animated: Bool) {
         
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
         }
+        sectionSelect.reloadAllComponents()
+        
+        super.viewWillAppear(animated)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -67,8 +82,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                     didSelectRow row: Int,
                     inComponent component: Int) {
         
-        selectedSection = mySections[row]
-        
+        selectedSection = mySections[row]        
     }
     
 

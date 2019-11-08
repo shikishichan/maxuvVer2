@@ -11,7 +11,7 @@ import UIKit
 class PlaceViewController: UIViewController {
     
     var mySections = [String]()
-    
+
     
     @IBOutlet weak var placeTextField: UITextField!
     
@@ -26,12 +26,10 @@ class PlaceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
         }
     }
 
-
 }
-

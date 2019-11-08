@@ -111,15 +111,15 @@
 		2B38E8B8234B406A00B82C38 /* BookLogVer2 */ = {
 			isa = PBXGroup;
 			children = (
+				2B38E8C1234B406A00B82C38 /* Main.storyboard */,
 				2B38E8B9234B406A00B82C38 /* AppDelegate.swift */,
 				2B38E8BB234B406A00B82C38 /* SceneDelegate.swift */,
 				2B38E8BD234B406A00B82C38 /* FirstViewController.swift */,
-				2B38E8BF234B406A00B82C38 /* PlaceViewController.swift */,
-				2B38E8C1234B406A00B82C38 /* Main.storyboard */,
-				E6849FE723714DD700734D1B /* elly20160628465420_TP_Va.png */,
 				2B38E8EB234B57C900B82C38 /* AddController.swift */,
+				2B38E8BF234B406A00B82C38 /* PlaceViewController.swift */,
 				E6849FE323714DCD00734D1B /* CustomNavigationBar.swift */,
 				E6849FE923714DE000734D1B /* TitleViewController.swift */,
+				E6849FE723714DD700734D1B /* elly20160628465420_TP_Va.png */,
 				E6849FE523714DD300734D1B /* elly20160628465420_TP_V.jpg */,
 				2B38E8C4234B406B00B82C38 /* Assets.xcassets */,
 				2B38E8C6234B406B00B82C38 /* LaunchScreen.storyboard */,

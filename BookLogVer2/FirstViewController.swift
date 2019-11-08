@@ -22,52 +22,62 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         
         
+        self.navigationController?.isNavigationBarHidden = false
+        navigationItem.title = "一覧画面"
+        navigationItem.rightBarButtonItem = editButtonItem
+    }
+        
+      
+    //表示時のデータ更新
+    override func viewWillAppear(_ animated: Bool) {
+
+        
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
         }
-
+        twoDimArray = []
         for i in mySections{
             if UserDefaults.standard.object(forKey: i) != nil {
                 let x = UserDefaults.standard.object(forKey: i) as! [String]
                 twoDimArray.append(x)
+                
             }else{
                 UserDefaults.standard.set([], forKey: i)
                 twoDimArray.append([])
             }
         }
         
-        
-        self.navigationController?.isNavigationBarHidden = false
-        navigationItem.title = "一覧画面"
-        navigationItem.rightBarButtonItem = editButtonItem
-
-        
+        tableView.reloadData()
+        super.viewWillAppear(animated)
+    
     }
     
-     func numberOfSections(in tableView: UITableView) -> Int {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return mySections.count
-    }
+
+     }
+     
+      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return twoDimArray[section].count
+        }
+     
+      func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+         return mySections[section]
+     }
     
-     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-           return twoDimArray[section].count
-       }
-    
-     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return mySections[section]
-    }
-    
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath)
-        cell.textLabel?.text = twoDimArray[indexPath.section][indexPath.row]
-        cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedClass = mySections[indexPath.section]
-        selectedBook = twoDimArray[indexPath.section][indexPath.row]
-        
-    }
+     
+      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath)
+         cell.textLabel?.text = twoDimArray[indexPath.section][indexPath.row]
+         cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
+         return cell
+     }
+     
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         selectedClass = mySections[indexPath.section]
+         selectedBook = twoDimArray[indexPath.section][indexPath.row]
+     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         //override前の処理を継続してさせる
@@ -104,7 +114,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             twoDimArray[sourceIndexPath.section].swapAt(sourceIndexPath.row, destinationIndexPath.row)
         }else{
             twoDimArray[destinationIndexPath.section].insert(twoDimArray[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
-            twoDimArray[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+                twoDimArray[sourceIndexPath.section].remove(at: sourceIndexPath.row)
         }
         
         //変更を保存
@@ -132,6 +142,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     override func didReceiveMemoryWarning() {
           super.didReceiveMemoryWarning()
       }
+
       
 }
 
