@@ -23,53 +23,68 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     @IBOutlet weak var TodoTextField: UITextField!
     @IBAction func TodoAddButton(_ sender: Any) {
         
-        if(TodoTextField.text! != ""){
-            //titleが入力されている時の処理
-            
-            if(selectedSection == ""){//保管場所を選択していない時は一番目の場所にいれる
-                selectedSection = mySections[0]
-            }
-            
-            //titleが同じものがないかの判定
-            var count = 0
-            loop: for i in twoDimArray{
+        if(mySections != []){
+            if(TodoTextField.text! != ""){
+                //titleが入力されている時の処理
                 
-                for j in i{
-                    
-                    if(j == TodoTextField.text!){
-                        //ダブりがあった時
-                        alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
-                        alertMessage = "登録しますか？"
-                        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                        break loop
-                    }else{
-                        //ダブりがない時
-                        alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
-                        let alertMessage = "登録しますか？"
-                        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                        
-                    }
+                if(selectedSection == ""){//保管場所を選択していない時は一番目の場所にいれる
+                    selectedSection = mySections[0]
                 }
-                count += 1
+                
+                //titleが同じものがないかの判定
+                var count = 0
+                loop: for i in twoDimArray{
+                    
+                    for j in i{
+                        if(j == TodoTextField.text!){
+                            //ダブりがあった時
+                            alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
+                            print(alertTitle)
+                            alertMessage = "登録しますか？"
+                            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                            break loop
+                        }else{
+                            //ダブりがない時
+                            alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
+                            let alertMessage = "登録しますか？"
+                            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                            
+                        }
+                    }
+                    count += 1
+                }
+                
+                alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+                    (action: UIAlertAction!) -> Void in
+                    //OKボタンが押された時の処理
+                    self.touroku(title: self.TodoTextField.text!, place: self.selectedSection)
+                }))
+                alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
+                    (action: UIAlertAction!) -> Void in
+                    //キャンセルボタンが押された時の処理
+                    self.TodoTextField.text = ""
+                }))
+                present(alertController, animated: true, completion: nil)
+                print("ok")
+                
+            }else{
+                //titleが入力されていない時の処理
+                alertTitle = "タイトルが入力されていません"
+                alertMessage = "もう一度入力してください"
+                alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+                    (action: UIAlertAction!) -> Void in
+                    //OKボタンが押された時の処理
+                    //何もしない
+                }))
+                present(alertController, animated: true, completion: nil)
+                print("titlenasi")
             }
-            
-            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
-                (action: UIAlertAction!) -> Void in
-                //OKボタンが押された時の処理
-                self.touroku(title: self.TodoTextField.text!, place: self.selectedSection)
-            }))
-            alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
-                (action: UIAlertAction!) -> Void in
-                //キャンセルボタンが押された時の処理
-                self.TodoTextField.text = ""
-            }))
-            present(alertController, animated: true, completion: nil)
-            
         }else{
-            //titleが入力されていない時の処理
-            alertTitle = "タイトルが入力されていません"
-            alertMessage = "もう一度入力してください"
+            //保管場所が存在しない時の処理
+            alertTitle = "保管場所が作成されていません"
+            alertMessage = "保管場所を登録してから入力してください"
             alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
                 (action: UIAlertAction!) -> Void in
@@ -112,7 +127,20 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
+        }else{
+            //保管場所が存在しない時の処理
+            alertTitle = "保管場所が作成されていません"
+            alertMessage = "保管場所を登録してから入力してください"
+            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+                (action: UIAlertAction!) -> Void in
+                //OKボタンが押された時の処理
+                //何もしない
+            }))
+            present(alertController, animated: true, completion: nil)
         }
+        
+//        print(mySections)
 
         for i in mySections{
             if UserDefaults.standard.object(forKey: i) != nil {
