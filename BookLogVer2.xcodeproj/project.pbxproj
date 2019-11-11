@@ -17,6 +17,8 @@
 		2B38E8D3234B406B00B82C38 /* BookLogVer2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8D2234B406B00B82C38 /* BookLogVer2Tests.swift */; };
 		2B38E8DE234B406C00B82C38 /* BookLogVer2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */; };
 		2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8EB234B57C900B82C38 /* AddController.swift */; };
+		2BE9C5AB237441340005C09E /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9C5AA237441340005C09E /* TabBarController.swift */; };
+		2BE9C5AD237494C80005C09E /* TabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9C5AC237494C80005C09E /* TabBarDelegate.swift */; };
 		E6849FE423714DCD00734D1B /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6849FE323714DCD00734D1B /* CustomNavigationBar.swift */; };
 		E6849FE623714DD300734D1B /* elly20160628465420_TP_V.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6849FE523714DD300734D1B /* elly20160628465420_TP_V.jpg */; };
 		E6849FE823714DD700734D1B /* elly20160628465420_TP_Va.png in Resources */ = {isa = PBXBuildFile; fileRef = E6849FE723714DD700734D1B /* elly20160628465420_TP_Va.png */; };
@@ -57,6 +59,8 @@
 		2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLogVer2UITests.swift; sourceTree = "<group>"; };
 		2B38E8DF234B406C00B82C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B38E8EB234B57C900B82C38 /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
+		2BE9C5AA237441340005C09E /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		2BE9C5AC237494C80005C09E /* TabBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDelegate.swift; sourceTree = "<group>"; };
 		E6849FE323714DCD00734D1B /* CustomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		E6849FE523714DD300734D1B /* elly20160628465420_TP_V.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elly20160628465420_TP_V.jpg; sourceTree = "<group>"; };
 		E6849FE723714DD700734D1B /* elly20160628465420_TP_Va.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = elly20160628465420_TP_Va.png; sourceTree = "<group>"; };
@@ -111,6 +115,8 @@
 		2B38E8B8234B406A00B82C38 /* BookLogVer2 */ = {
 			isa = PBXGroup;
 			children = (
+				2BE9C5AA237441340005C09E /* TabBarController.swift */,
+				2BE9C5AC237494C80005C09E /* TabBarDelegate.swift */,
 				2B38E8B9234B406A00B82C38 /* AppDelegate.swift */,
 				2B38E8BB234B406A00B82C38 /* SceneDelegate.swift */,
 				2B38E8BD234B406A00B82C38 /* FirstViewController.swift */,
@@ -280,6 +286,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6849FE423714DCD00734D1B /* CustomNavigationBar.swift in Sources */,
+				2BE9C5AD237494C80005C09E /* TabBarDelegate.swift in Sources */,
+				2BE9C5AB237441340005C09E /* TabBarController.swift in Sources */,
 				2B38E8C0234B406A00B82C38 /* PlaceViewController.swift in Sources */,
 				2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */,
 				E6849FEA23714DE000734D1B /* TitleViewController.swift in Sources */,
