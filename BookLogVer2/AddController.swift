@@ -15,6 +15,9 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     var twoDimArray = [[String]]()
     var selectedSection = ""
     var alertController: UIAlertController!
+    
+    var alertTitle = ""
+    var alertMessage = ""
 
     
     @IBOutlet weak var TodoTextField: UITextField!
@@ -35,21 +38,22 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                     
                     if(j == TodoTextField.text!){
                         //ダブりがあった時
-                        let title = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
-                        let message = "登録しますか？"
-                        alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                        alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
+                        alertMessage = "登録しますか？"
+                        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
                         break loop
                     }else{
                         //ダブりがない時
-                        let title = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
-                        let message = "登録しますか？"
-                        alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                        alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
+                        let alertMessage = "登録しますか？"
+                        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
                         
                     }
                 }
                 count += 1
             }
             
+            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
                 (action: UIAlertAction!) -> Void in
                 //OKボタンが押された時の処理
@@ -64,9 +68,9 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             
         }else{
             //titleが入力されていない時の処理
-            let title = "タイトルが入力されていません"
-            let message = "もう一度入力してください"
-            alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alertTitle = "タイトルが入力されていません"
+            alertMessage = "もう一度入力してください"
+            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
                 (action: UIAlertAction!) -> Void in
                 //OKボタンが押された時の処理
@@ -109,7 +113,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
         }
-        twoDimArray = []
+
         for i in mySections{
             if UserDefaults.standard.object(forKey: i) != nil {
                 let x = UserDefaults.standard.object(forKey: i) as! [String]
