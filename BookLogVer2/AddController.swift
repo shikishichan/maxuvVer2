@@ -24,6 +24,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     @IBAction func TodoAddButton(_ sender: Any) {
         
         if(mySections != []){
+            //保管場所がある時
             if(TodoTextField.text! != ""){
                 //titleが入力されている時の処理
                 
@@ -34,19 +35,32 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                 //titleが同じものがないかの判定
                 var count = 0
                 loop: for i in twoDimArray{
-                    
+                    if(i == [TodoTextField.text!]){//保管場所が１つのみの時
+                        //ダブりがあった時
+                        alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
+                        print(alertTitle)
+                        alertMessage = "登録しますか？"
+                        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                        break loop
+                    }else{
+                        //ダブりがない時
+                        alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
+                        alertMessage = "登録しますか？"
+                        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                        
+                    }
                     for j in i{
                         if(j == TodoTextField.text!){
                             //ダブりがあった時
                             alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
-                            print(alertTitle)
+//                            print(alertTitle)
                             alertMessage = "登録しますか？"
                             alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
                             break loop
                         }else{
                             //ダブりがない時
                             alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
-                            let alertMessage = "登録しますか？"
+                            alertMessage = "登録しますか？"
                             alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
                             
                         }
