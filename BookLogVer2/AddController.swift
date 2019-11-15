@@ -203,5 +203,12 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    @IBAction func camera(_ sender: Any) {
+        let CameraViewController = self.storyboard?.instantiateViewController(withIdentifier: "camera2") as! CameraViewController
+        self.present(CameraViewController, animated: true, completion: nil)
+    }
 }
+    
+    
+
