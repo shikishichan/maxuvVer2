@@ -68,11 +68,11 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
 
         }
 
-//        view.addSubview(codeLabel)
-//        codeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-//        codeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        codeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        codeLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        view.addSubview(codeLabel)
+        codeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        codeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        codeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        codeLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         
         
 
@@ -84,21 +84,21 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     }
     
 
-//    let codeLabel:UILabel = {
-//        let codeLabel = UILabel()
-//        codeLabel.backgroundColor = .white
-//        codeLabel.translatesAutoresizingMaskIntoConstraints = false
-//        return codeLabel
-//    }()
-//
-//    let codeFrame:UIView = {
-//        let codeFrame = UIView()
-//        codeFrame.layer.borderColor = UIColor.green.cgColor
-//        codeFrame.layer.borderWidth = 2
-//        codeFrame.frame = CGRect.zero
-//        codeFrame.translatesAutoresizingMaskIntoConstraints = false
-//        return codeFrame
-//    }()
+    let codeLabel:UILabel = {
+        let codeLabel = UILabel()
+        codeLabel.backgroundColor = .white
+        codeLabel.translatesAutoresizingMaskIntoConstraints = false
+        return codeLabel
+    }()
+
+    let codeFrame:UIView = {
+        let codeFrame = UIView()
+        codeFrame.layer.borderColor = UIColor.green.cgColor
+        codeFrame.layer.borderWidth = 2
+        codeFrame.frame = CGRect.zero
+        codeFrame.translatesAutoresizingMaskIntoConstraints = false
+        return codeFrame
+    }()
 
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
 
@@ -121,7 +121,15 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             text += "\n"
             guard let isbn = convartISBN(value: value) else { continue }
             text += "ISBN:\t\(isbn)"
-            print("text \(text)")
+            let get_api = GetGoogleApi()
+            get_api.searchBook(completion: {returnData in
+                let tab = self.presentingViewController as! UITabBarController
+                let AC = tab.viewControllers![tab.viewControllers!.count-2] as! AddController
+                AC.TodoTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+                self.dismiss(animated: true, completion: nil)
+            }, keyword : isbn)
+            
+            
             
 //            flag = true
             
