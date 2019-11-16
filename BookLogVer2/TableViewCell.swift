@@ -11,9 +11,11 @@ import UIKit
 class TableViewCell: UITableViewCell {
 
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var place_id: UILabel!
     
     func control_cell(book:Book){
         self.title.text = book.title
+        self.place_id.text = String(book.place_id)
     }
     
 }

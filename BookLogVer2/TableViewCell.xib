@@ -23,10 +23,18 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wFG-vN-Jn1">
+                        <rect key="frame" x="602" y="8" width="166" height="55"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="place_id" destination="wFG-vN-Jn1" id="X5v-N8-b6Y"/>
                 <outlet property="title" destination="fEI-av-gZX" id="ndi-pD-dIP"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="117.85714285714285"/>

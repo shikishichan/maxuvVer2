@@ -126,11 +126,10 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
      
       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath)
-        cell.textLabel?.text = view_list[indexPath.section][indexPath.row].title
-         cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
-         return cell
-     }
+          let cell = tableView.dequeueReusableCell(withIdentifier: "reuse_cell", for: indexPath) as! TableViewCell
+          cell.control_cell(book: view_list[indexPath.section][indexPath.row])
+          return cell
+      }
      
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedClass = book_shelf_list[indexPath.section].name
@@ -147,7 +146,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //dataを消してから
         view_list[indexPath.section].remove(at: indexPath.row)
-        //データベースにpostする
+        //データベースにdeleteする
         //UserDefaults.standard.set(twoDimArray[indexPath.section], forKey: book_shelf_list[indexPath.section])
 
         //tableViewCellの削除
@@ -172,8 +171,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         if(sourceIndexPath.section == destinationIndexPath.section){
             view_list[sourceIndexPath.section].swapAt(sourceIndexPath.row, destinationIndexPath.row)
         }else{
+            view_list[sourceIndexPath.section][sourceIndexPath.row].place_id = book_shelf_list[destinationIndexPath.section].id
             view_list[destinationIndexPath.section].insert(view_list[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
-                view_list[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+            view_list[sourceIndexPath.section].remove(at: sourceIndexPath.row)
         }
         
         //変更を保存
@@ -182,6 +182,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
 //            UserDefaults.standard.set(twoDimArray[count], forKey: i)
 //            count += 1
 //        }
+        tableView.reloadData()
+        
     }
     
     
