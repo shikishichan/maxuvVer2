@@ -154,7 +154,6 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             present(alertController, animated: true, completion: nil)
         }
         
-//        print(mySections)
 
         for i in mySections{
             if UserDefaults.standard.object(forKey: i) != nil {

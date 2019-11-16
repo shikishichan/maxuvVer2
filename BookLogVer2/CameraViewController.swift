@@ -15,6 +15,22 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     var captureDevice:AVCaptureDevice?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var captureSession:AVCaptureSession?
+    
+//    var flag:Bool = false
+    
+    @IBAction func button(_ sender: Any) {
+//        if(flag == false){//バーコード読み取れてない時
+//            label.text = "false"
+//        }else{//バーコード読み取れた時
+//            label.text = "true"
+//        }
+        
+        let tab = self.presentingViewController as! UITabBarController
+        let AC = tab.viewControllers![tab.viewControllers!.count-2] as! AddController
+        AC.TodoTextField.text = "hoge"
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,11 +68,13 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
 
         }
 
-        view.addSubview(codeLabel)
-        codeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        codeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        codeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        codeLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+//        view.addSubview(codeLabel)
+//        codeLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+//        codeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        codeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        codeLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        
+        
 
     }
 
@@ -64,22 +82,23 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
-    let codeLabel:UILabel = {
-        let codeLabel = UILabel()
-        codeLabel.backgroundColor = .white
-        codeLabel.translatesAutoresizingMaskIntoConstraints = false
-        return codeLabel
-    }()
-
-    let codeFrame:UIView = {
-        let codeFrame = UIView()
-        codeFrame.layer.borderColor = UIColor.green.cgColor
-        codeFrame.layer.borderWidth = 2
-        codeFrame.frame = CGRect.zero
-        codeFrame.translatesAutoresizingMaskIntoConstraints = false
-        return codeFrame
-    }()
+//    let codeLabel:UILabel = {
+//        let codeLabel = UILabel()
+//        codeLabel.backgroundColor = .white
+//        codeLabel.translatesAutoresizingMaskIntoConstraints = false
+//        return codeLabel
+//    }()
+//
+//    let codeFrame:UIView = {
+//        let codeFrame = UIView()
+//        codeFrame.layer.borderColor = UIColor.green.cgColor
+//        codeFrame.layer.borderWidth = 2
+//        codeFrame.frame = CGRect.zero
+//        codeFrame.translatesAutoresizingMaskIntoConstraints = false
+//        return codeFrame
+//    }()
 
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
 
@@ -103,7 +122,9 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             guard let isbn = convartISBN(value: value) else { continue }
             text += "ISBN:\t\(isbn)"
             print("text \(text)")
-
+            
+//            flag = true
+            
         }
 
 
