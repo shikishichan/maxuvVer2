@@ -17,6 +17,12 @@
 		2B38E8D3234B406B00B82C38 /* BookLogVer2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8D2234B406B00B82C38 /* BookLogVer2Tests.swift */; };
 		2B38E8DE234B406C00B82C38 /* BookLogVer2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */; };
 		2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8EB234B57C900B82C38 /* AddController.swift */; };
+		DC07B689237FD95D00A56F2D /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC07B683237FD95C00A56F2D /* PostData.swift */; };
+		DC07B68A237FD95D00A56F2D /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC07B684237FD95C00A56F2D /* TableViewCell.swift */; };
+		DC07B68B237FD95D00A56F2D /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC07B685237FD95C00A56F2D /* TableViewCell.xib */; };
+		DC07B68C237FD95D00A56F2D /* GetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC07B686237FD95D00A56F2D /* GetData.swift */; };
+		DC07B68D237FD95D00A56F2D /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC07B687237FD95D00A56F2D /* Book.swift */; };
+		DC07B68E237FD95D00A56F2D /* BookShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC07B688237FD95D00A56F2D /* BookShelf.swift */; };
 		E6849FE423714DCD00734D1B /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6849FE323714DCD00734D1B /* CustomNavigationBar.swift */; };
 		E6849FE623714DD300734D1B /* elly20160628465420_TP_V.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6849FE523714DD300734D1B /* elly20160628465420_TP_V.jpg */; };
 		E6849FE823714DD700734D1B /* elly20160628465420_TP_Va.png in Resources */ = {isa = PBXBuildFile; fileRef = E6849FE723714DD700734D1B /* elly20160628465420_TP_Va.png */; };
@@ -57,6 +63,12 @@
 		2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLogVer2UITests.swift; sourceTree = "<group>"; };
 		2B38E8DF234B406C00B82C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B38E8EB234B57C900B82C38 /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
+		DC07B683237FD95C00A56F2D /* PostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
+		DC07B684237FD95C00A56F2D /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		DC07B685237FD95C00A56F2D /* TableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		DC07B686237FD95D00A56F2D /* GetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetData.swift; sourceTree = "<group>"; };
+		DC07B687237FD95D00A56F2D /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		DC07B688237FD95D00A56F2D /* BookShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookShelf.swift; sourceTree = "<group>"; };
 		E6849FE323714DCD00734D1B /* CustomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		E6849FE523714DD300734D1B /* elly20160628465420_TP_V.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elly20160628465420_TP_V.jpg; sourceTree = "<group>"; };
 		E6849FE723714DD700734D1B /* elly20160628465420_TP_Va.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = elly20160628465420_TP_Va.png; sourceTree = "<group>"; };
@@ -117,6 +129,12 @@
 				2B38E8BD234B406A00B82C38 /* FirstViewController.swift */,
 				2B38E8EB234B57C900B82C38 /* AddController.swift */,
 				2B38E8BF234B406A00B82C38 /* PlaceViewController.swift */,
+				DC07B687237FD95D00A56F2D /* Book.swift */,
+				DC07B688237FD95D00A56F2D /* BookShelf.swift */,
+				DC07B686237FD95D00A56F2D /* GetData.swift */,
+				DC07B683237FD95C00A56F2D /* PostData.swift */,
+				DC07B684237FD95C00A56F2D /* TableViewCell.swift */,
+				DC07B685237FD95C00A56F2D /* TableViewCell.xib */,
 				E6849FE323714DCD00734D1B /* CustomNavigationBar.swift */,
 				E6849FE923714DE000734D1B /* TitleViewController.swift */,
 				E6849FE723714DD700734D1B /* elly20160628465420_TP_Va.png */,
@@ -251,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B38E8C8234B406B00B82C38 /* LaunchScreen.storyboard in Resources */,
+				DC07B68B237FD95D00A56F2D /* TableViewCell.xib in Resources */,
 				2B38E8C5234B406B00B82C38 /* Assets.xcassets in Resources */,
 				E6849FE823714DD700734D1B /* elly20160628465420_TP_Va.png in Resources */,
 				E6849FE623714DD300734D1B /* elly20160628465420_TP_V.jpg in Resources */,
@@ -280,12 +299,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6849FE423714DCD00734D1B /* CustomNavigationBar.swift in Sources */,
+				DC07B689237FD95D00A56F2D /* PostData.swift in Sources */,
+				DC07B68C237FD95D00A56F2D /* GetData.swift in Sources */,
+				DC07B68D237FD95D00A56F2D /* Book.swift in Sources */,
 				2B38E8C0234B406A00B82C38 /* PlaceViewController.swift in Sources */,
+				DC07B68A237FD95D00A56F2D /* TableViewCell.swift in Sources */,
 				2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */,
 				E6849FEA23714DE000734D1B /* TitleViewController.swift in Sources */,
 				2B38E8BE234B406A00B82C38 /* FirstViewController.swift in Sources */,
 				2B38E8BA234B406A00B82C38 /* AppDelegate.swift in Sources */,
 				2B38E8BC234B406A00B82C38 /* SceneDelegate.swift in Sources */,
+				DC07B68E237FD95D00A56F2D /* BookShelf.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
