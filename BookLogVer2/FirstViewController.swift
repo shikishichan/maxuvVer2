@@ -23,7 +23,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         
         
         self.navigationController?.isNavigationBarHidden = false
-        navigationItem.title = "一覧画面"
+        navigationItem.title = "一覧"
         navigationItem.rightBarButtonItem = editButtonItem
     }
         
