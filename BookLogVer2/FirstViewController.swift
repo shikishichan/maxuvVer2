@@ -23,7 +23,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         
         
         self.navigationController?.isNavigationBarHidden = false
-        navigationItem.title = "一覧画面"
+        navigationItem.title = "一覧"
         navigationItem.rightBarButtonItem = editButtonItem
     }
         
@@ -57,14 +57,60 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         return mySections.count
 
      }
-     
+ 
+      
+      /*セルの折りたたみ*/
+      
+      private var openedSections = Set<Int>()
+      
+      @objc func tapSectionHeader(sender: UIGestureRecognizer) {
+          if let section = sender.view?.tag {
+              if self.openedSections.contains(section) {
+                  self.openedSections.remove(section)
+              } else {
+                  self.openedSections.insert(section)
+              }
+
+              self.tableView.reloadSections(IndexSet(integer: section), with: .fade)
+          }
+      }
+       
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return twoDimArray[section].count
-        }
-     
-      func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+              //return twoDimArray[section].count
+          if self.openedSections.contains(section) {
+              return twoDimArray[section].count
+          } else {
+              return 0
+          }
+       }
+      
+      
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?{
+        //let label : UILabel = UILabel()
+        let bookNum: String = String("\(twoDimArray[section].count)")
+        let label: String = mySections[section] + "  (" + bookNum + "冊)"
+        let view = UITableViewHeaderFooterView()
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
+        view.addGestureRecognizer(gesture)
+        view.tag = section
+        
+        view.contentView.backgroundColor = UIColor.init(red: 205/255, green: 133/255, blue: 63/255, alpha: 100/100)
+        view.textLabel?.textColor = UIColor.white
+        view.textLabel?.font = UIFont.systemFont(ofSize: 20)
+        view.textLabel?.textAlignment = .right
+        view.textLabel?.text = label//mySections[section]
+        //sectionの色、文字サイズ
+        print("view")
+        
+        
+        return view
+      
+      }/*折りたたみ終わり*/
+      
+        
+      /*func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
          return mySections[section]
-     }
+     }*/
     
      
       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -123,6 +169,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             UserDefaults.standard.set(twoDimArray[count], forKey: i)
             count += 1
         }
+        tableView.reloadData()
     }
     
     
@@ -130,14 +177,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {60}//cellの高さ
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-            let label : UILabel = UILabel()
-        label.backgroundColor = UIColor.init(red: 205/255, green: 133/255, blue: 63/255, alpha: 100/100)
-        label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 20)
-        label.text = "  "+mySections[section]
-        return label
-    }//sectionの色、文字サイズ
+
     
     override func didReceiveMemoryWarning() {
           super.didReceiveMemoryWarning()
