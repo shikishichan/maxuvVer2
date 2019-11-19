@@ -68,7 +68,18 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <navigationItem key="navigationItem" title="本の一覧" largeTitleDisplayMode="always" id="0g4-lB-wd7"/>
+                    <navigationItem key="navigationItem" title="本の一覧" largeTitleDisplayMode="always" id="0g4-lB-wd7">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="nxs-SZ-HnY">
+                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="XOF-OO-FQr">
+                                <rect key="frame" x="20" y="9.5" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="onTintColor" systemColor="systemBrownColor" red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="cellOpenSwitch:" destination="9pv-A4-QxB" eventType="valueChanged" id="rnh-b0-hsd"/>
+                                </connections>
+                            </switch>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="nn1-7g-XjE" id="N2q-yY-9QC"/>
                     </connections>

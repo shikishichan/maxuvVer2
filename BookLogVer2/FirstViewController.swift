@@ -63,6 +63,23 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
       
       private var openedSections = Set<Int>()
       
+    @IBAction func cellOpenSwitch(_ sender: UISwitch) {
+        if sender.isOn {
+            for i in 0..<mySections.count {
+                self.openedSections.insert(i)
+            }
+            
+        } else {
+            for i in 0..<mySections.count {
+                if self.openedSections.contains(i) {
+                    self.openedSections.remove(i)
+                }
+            }
+        }
+        tableView.reloadData()
+    }
+    
+    
       @objc func tapSectionHeader(sender: UIGestureRecognizer) {
           if let section = sender.view?.tag {
               if self.openedSections.contains(section) {
@@ -74,6 +91,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
               self.tableView.reloadSections(IndexSet(integer: section), with: .fade)
           }
       }
+    
+    
        
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
               //return twoDimArray[section].count
