@@ -24,20 +24,6 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     
 //    var flag:Bool = false
     
-    @IBAction func button(_ sender: Any) {
-//        if(flag == false){//バーコード読み取れてない時
-//            label.text = "false"
-//        }else{//バーコード読み取れた時
-//            label.text = "true"
-//        }
-        
-        let tab = self.presentingViewController as! UITabBarController
-        let AC = tab.viewControllers![tab.viewControllers!.count-2] as! AddController
-        AC.TodoTextField.text = "hoge"
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
