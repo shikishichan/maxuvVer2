@@ -15,6 +15,12 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     var captureDevice:AVCaptureDevice?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var captureSession:AVCaptureSession?
+    let detectionArea = UIView()
+    // 検出エリアのビュー
+    let x: CGFloat = 0.05
+    let y: CGFloat = 0.3
+    let width: CGFloat = 0.8
+    let height: CGFloat = 0.2
     
 //    var flag:Bool = false
     
@@ -41,7 +47,6 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         captureDevice = AVCaptureDevice.default(for: .video)
         // Check if captureDevice returns a value and unwrap it
         if let captureDevice = captureDevice {
-
             do {
                 let input = try AVCaptureDeviceInput(device: captureDevice)
 
@@ -51,6 +56,8 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
 
                 let captureMetadataOutput = AVCaptureMetadataOutput()
                 captureSession.addOutput(captureMetadataOutput)
+                // 検出エリアの設定
+                captureMetadataOutput.rectOfInterest = CGRect(x: y,y: 1-x-width,width: height,height: width)
 
                 captureMetadataOutput.setMetadataObjectsDelegate(self, queue: .main)
                 captureMetadataOutput.metadataObjectTypes = [.code128, .qr, .ean13,  .ean8, .code39] //AVMetadataObject.ObjectType
@@ -74,6 +81,13 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         codeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         codeLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         
+        
+        //読み取り範囲の設定
+        detectionArea.frame = CGRect(x: view.frame.size.width * x, y: view.frame.size.height * y, width: view.frame.size.width * width, height: view.frame.size.height * height)
+        detectionArea.layer.borderColor = UIColor.red.cgColor
+        detectionArea.layer.borderWidth = 2
+        view.addSubview(detectionArea)
+        self.view.bringSubviewToFront(detectionArea)
         
 
     }
