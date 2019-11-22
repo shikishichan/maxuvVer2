@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlaceViewController: UIViewController {
+class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
     
     var mySections = [String]()
 
@@ -19,8 +19,12 @@ class PlaceViewController: UIViewController {
         mySections.append(placeTextField.text!)
         placeTextField.text = ""
         UserDefaults.standard.set( mySections, forKey: "SectionList" )
-        
+                        
+        sectionTableView.reloadData()
     }
+    
+
+    @IBOutlet weak var sectionTableView: UITableView!
     
     
     override func viewDidLoad() {
@@ -30,6 +34,25 @@ class PlaceViewController: UIViewController {
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
         }
+    }
+    
+
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return mySections.count
+        
+     }
+
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // セルを取得する
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "sectionCell", for: indexPath)
+        // セルに表示する値を設定する
+        cell.textLabel!.text = mySections[indexPath.row]
+        //cell.textLabel!.font = UIFont(name: "Arial", size: 20)
+        
+        return cell
     }
 
 }
