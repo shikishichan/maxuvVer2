@@ -61,7 +61,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if UserDefaults.standard.object(forKey: i) != nil {
                 let x = UserDefaults.standard.object(forKey: i) as! [String]
                 for j in x {
-                    let book = Book.init(title: j, place: i)
+                    let book = Book.init(title: j, place: i, author: "")
                     books.append(book)
                 }
             }
