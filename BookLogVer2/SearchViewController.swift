@@ -19,7 +19,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let Cell = tableView.dequeueReusableCell(withIdentifier: "ReUseCell", for: indexPath) as! SearchTableViewCell
-        Cell.controlCell(book: books[indexPath.row])
+        Cell.controlCell(book: books[indexPath.row], order: "50音順")
         return Cell
     }
     

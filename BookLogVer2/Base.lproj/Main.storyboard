@@ -31,11 +31,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Title" id="TmR-Yf-UV2">
-                                        <barButtonItem key="leftBarButtonItem" title="reload" id="86h-XQ-78G">
-                                            <connections>
-                                                <action selector="reloadButton:" destination="9pv-A4-QxB" id="Pky-Ln-AdE"/>
-                                            </connections>
-                                        </barButtonItem>
+                                        <barButtonItem key="leftBarButtonItem" title="reload" id="86h-XQ-78G"/>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -78,25 +74,61 @@
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <navigationItem key="navigationItem" title="本の一覧" largeTitleDisplayMode="always" id="0g4-lB-wd7">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="nxs-SZ-HnY">
-                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="XOF-OO-FQr">
-                                <rect key="frame" x="20" y="9.5" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="onTintColor" systemColor="systemBrownColor" red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <leftBarButtonItems>
+                            <barButtonItem style="plain" id="nxs-SZ-HnY">
+                                <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="XOF-OO-FQr">
+                                    <rect key="frame" x="20" y="9.5" width="51" height="31"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="onTintColor" systemColor="systemBrownColor" red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <connections>
+                                        <action selector="cellOpenSwitch:" destination="9pv-A4-QxB" eventType="valueChanged" id="rnh-b0-hsd"/>
+                                    </connections>
+                                </switch>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="arrow.up.arrow.down" catalog="system" id="w9U-CD-oHi">
                                 <connections>
-                                    <action selector="cellOpenSwitch:" destination="9pv-A4-QxB" eventType="valueChanged" id="rnh-b0-hsd"/>
+                                    <action selector="sortSelectButton:" destination="9pv-A4-QxB" id="yRZ-Yk-aOL"/>
                                 </connections>
-                            </switch>
-                        </barButtonItem>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="nn1-7g-XjE" id="N2q-yY-9QC"/>
                         <outlet property="test" destination="cED-wB-Dj6" id="tvz-4h-ym0"/>
+                        <segue destination="JGF-Oj-LN5" kind="show" identifier="toDetail" id="2Wb-pJ-EXx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1515.625" y="-673.2421875"/>
+        </scene>
+        <!--DetailView-->
+        <scene sceneID="Djp-p0-6rO">
+            <objects>
+                <viewController id="JGF-Oj-LN5" customClass="DetailViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oJO-Ty-WXK">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DetailView" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjP-ia-UKZ">
+                                <rect key="frame" x="20" y="50" width="728" height="924"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="sMK-jB-Qeh"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="DetailView" id="Vdu-77-1qT"/>
+                    <connections>
+                        <outlet property="label" destination="hjP-ia-UKZ" id="jTW-gZ-LEx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IZR-qE-Ud2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2231" y="-673"/>
         </scene>
         <!--本の登録-->
         <scene sceneID="IR6-Dy-8QJ">
@@ -151,7 +183,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWz-oC-1bv">
-                                <rect key="frame" x="278" y="704" width="212" height="30"/>
+                                <rect key="frame" x="278" y="861" width="212" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <state key="normal" title="本を登録"/>
@@ -159,6 +191,27 @@
                                     <action selector="TodoAddButton:" destination="I4W-Qw-mp9" eventType="touchUpInside" id="S4m-MU-cSR"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="本のタイトル" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Cf-3j-rPT">
+                                <rect key="frame" x="309" y="791" width="0.0" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="著者名" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Udg-Zf-8ee">
+                                <rect key="frame" x="70" y="750" width="120" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="例）やなせたかし" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9wN-VP-8Du">
+                                <rect key="frame" x="204" y="743" width="360" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="133-i4-dtl"/>
@@ -166,7 +219,8 @@
                     <tabBarItem key="tabBarItem" title="本の登録" image="book" catalog="system" id="TxS-V7-Hda"/>
                     <navigationItem key="navigationItem" id="HcF-M4-HIQ"/>
                     <connections>
-                        <outlet property="TodoTextField" destination="TUI-MQ-pj2" id="9yH-Ir-yhQ"/>
+                        <outlet property="AuthorTextField" destination="9wN-VP-8Du" id="6eG-Cl-R4g"/>
+                        <outlet property="TitleTextField" destination="TUI-MQ-pj2" id="6dx-r6-kvq"/>
                         <outlet property="sectionLabel" destination="si6-g0-zXW" id="88H-D1-2bZ"/>
                         <outlet property="sectionSelect" destination="yAz-aa-7v2" id="1jS-fK-cE7"/>
                     </connections>
@@ -358,6 +412,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.up.arrow.down" catalog="system" width="64" height="48"/>
         <image name="barcode" catalog="system" width="64" height="48"/>
         <image name="book" catalog="system" width="64" height="52"/>
         <image name="cube.box" catalog="system" width="64" height="62"/>

@@ -24,8 +24,10 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     let BookShelfKey = "shelfkey"
     var selectedRow = Int()
 
+    @IBOutlet weak var TitleTextField: UITextField!
+    @IBOutlet weak var AuthorTextField: UITextField!
     
-    @IBOutlet weak var TodoTextField: UITextField!
+    
     @IBAction func TodoAddButton(_ sender: Any) {
         if bookshelfs.isEmpty{
             //保管場所が存在しない時の処理
@@ -35,7 +37,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             return
         }
         
-        if TodoTextField.text! == ""{
+        if TitleTextField.text! == ""{
             //titleが入力されていない時の処理
             alertTitle = "タイトルが入力されていません"
             alertMessage = "もう一度入力してください"
@@ -47,15 +49,15 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             selectedSection = bookshelfs[0].name
         }
         
-        if books.filter({$0.title == TodoTextField.text!}).count > 0{
-            let daburiplace = books.filter({$0.title == TodoTextField.text!})[0].place
+        if books.filter({$0.title == TitleTextField.text!}).count > 0{
+            let daburiplace = books.filter({$0.title == TitleTextField.text!})[0].place
             //ダブりがあった時
-            alertTitle = "警告！\n[\(daburiplace)]に「\(TodoTextField.text!)」は既に登録されています。"
+            alertTitle = "警告！\n[\(daburiplace)]に「\(TitleTextField.text!)」は既に登録されています。"
             alertMessage = "登録しますか？"
             alert(alertTitle: alertTitle, alertMessage: alertMessage, isEntry: true, isCancel: true)
             return
         }
-        touroku(title: TodoTextField.text!, place: selectedSection)
+        touroku(title: TitleTextField.text!, place: selectedSection, author: AuthorTextField.text!)
     }
     
     func alert(alertTitle:String, alertMessage:String, isEntry:Bool, isCancel:Bool){
@@ -64,25 +66,26 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             (action: UIAlertAction!) -> Void in
             //OKボタンが押された時の処理
             if isEntry{
-                self.touroku(title: self.TodoTextField.text!, place: self.selectedSection)
+                self.touroku(title: self.TitleTextField.text!, place: self.selectedSection, author: self.AuthorTextField.text!)
             }
         }))
         if isCancel{
             alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
                 (action: UIAlertAction!) -> Void in
                 //キャンセルボタンが押された時の処理
-                self.TodoTextField.text = ""
+                self.TitleTextField.text = ""
                 
             }))
         }
         present(alertController, animated: true, completion: nil)
     }
     
-    func touroku(title:String, place:String) {
-        books.append(Book.init(title: title, place: place, author: "author"))
+    func touroku(title:String, place:String, author:String) {
+        books.append(Book.init(title: title, place: place, author: author))
         bookshelfs[selectedRow].numofbook += 1
         save(books: books, bookshelfs: bookshelfs)
-        TodoTextField.text = ""
+        TitleTextField.text = ""
+        AuthorTextField.text = ""
     }
     
     @IBOutlet weak var sectionLabel: UILabel!

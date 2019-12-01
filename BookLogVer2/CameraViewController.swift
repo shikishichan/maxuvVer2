@@ -125,7 +125,7 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             get_api.searchBook(completion: {returnData in
                 let tab = self.presentingViewController as! UITabBarController
                 let AC = tab.viewControllers![tab.viewControllers!.count-2] as! AddController
-                AC.TodoTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+                AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
                 self.dismiss(animated: true, completion: nil)
             }, keyword : isbn)
             

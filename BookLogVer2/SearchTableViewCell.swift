@@ -13,9 +13,15 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var TitleLabel: UILabel!
     @IBOutlet weak var PlaceLabel: UILabel!
     
-    func controlCell(book:Book) {
+    func controlCell(book:Book, order:String) {
         self.TitleLabel.text = book.title
-        self.PlaceLabel.text = book.place
+        if order == "保管場所順"{
+            self.PlaceLabel.text = ""
+        }else if order == "50音順"{
+            self.PlaceLabel.text = book.place
+        }else if order == "著者順"{
+            self.PlaceLabel.text = book.author
+        }
     }
     
     override func awakeFromNib() {

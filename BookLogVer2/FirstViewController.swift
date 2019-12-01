@@ -11,7 +11,7 @@ import UIKit
 class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate{
     var twoDimArray = [[Book]]()
     var selectedClass = ""
-    var selectedBook = ""
+    var selectedBook = Book.init(title: "", place: "", author: "")
     
     var books = [Book]()
     var bookshelfs = [BookShelf]()
@@ -22,6 +22,51 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var mySections = [String]()
     var alertController: UIAlertController!
     
+    var order = ""
+    
+    @IBOutlet weak var sortSelectButton: UIBarButtonItem!
+    @IBAction func sortSelectButton(_ sender: Any) {
+        print("hoge")
+        let actionSheet = UIAlertController(title: "並び順", message: nil, preferredStyle: .actionSheet)
+        let action1 = UIAlertAction(title: "保管場所順", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            //hogehoge
+            self.order = "保管場所順"
+            self.tableView.reloadData()
+        })
+        let action2 = UIAlertAction(title: "50音順", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            //hogehoge
+            self.order = "50音順"
+            self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+            self.tableView.reloadData()
+        })
+        let action3 = UIAlertAction(title: "著者順", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            //hogehoge
+            self.order = "著者順"
+            self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
+            self.tableView.reloadData()
+        })
+
+        // To set image in ActionButton
+//        action1.setValue(#imageLiteral(resourceName: "check").withRenderingMode(.alwaysOriginal), forKey: "image")
+
+        // Add Actions to AlertController
+        actionSheet.addAction(action1)
+        actionSheet.addAction(action2)
+        actionSheet.addAction(action3)
+        
+        actionSheet.popoverPresentationController?.sourceView = self.view
+        let screenSize = UIScreen.main.bounds
+        // ここで表示位置を調整
+        // xは画面中央、yは画面下部になる様に指定
+        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: screenSize.size.width/2, y: screenSize.size.height, width: 0, height: 0)
+         
+
+        // Present UIAlertController
+        present(actionSheet, animated: true, completion: nil)
+    }
     
     //以前のuserdefaultsのデータを、クラス化して新しいuserdefaultsに移行するボタン
     @IBOutlet weak var test: UIButton!
@@ -43,7 +88,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
                     let bookshelf = BookShelf.init(name: i, numofbook: x.count)
                     self.bookshelfs.append(bookshelf)
                     for j in x {
-                        let book = Book.init(title: j, place: i, author: "")
+                        let book = Book.init(title: j, place: i, author: "未入力")
                         self.books.append(book)
                     }
                 }
@@ -75,6 +120,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         self.navigationController?.isNavigationBarHidden = false
         navigationItem.title = "一覧"
         navigationItem.rightBarButtonItem = editButtonItem
+        
+        order = "保管場所順"
         
         load()
         
@@ -117,7 +164,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-        
     //表示時のデータ更新
     override func viewWillAppear(_ animated: Bool) {
         
@@ -130,7 +176,16 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return bookshelfs.count
+        var num = Int()
+        if order == "保管場所順"{
+            num = bookshelfs.count
+        }else if order == "50音順"{
+            num = 1
+        }else if order == "著者順"{
+            num = 1
+        }
+        
+        return num
      }
  
       
@@ -143,7 +198,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             for i in 0..<bookshelfs.count {
                 self.openedSections.insert(i)
             }
-            
+
         } else {
             for i in 0..<bookshelfs.count {
                 if self.openedSections.contains(i) {
@@ -171,15 +226,40 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
        
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
               //return twoDimArray[section].count
-          if self.openedSections.contains(section) {
-              return bookshelfs[section].numofbook
-          } else {
-              return 0
-          }
+        if order == "保管場所順"{
+            if self.openedSections.contains(section) {
+                return bookshelfs[section].numofbook
+            } else {
+                return 0
+            }
+        }else if order == "50音順"{
+            if self.openedSections.contains(section) {
+                return books.count
+            } else {
+                return 0
+            }
+        }else if order == "著者順"{
+            if self.openedSections.contains(section) {
+                return books.count
+            } else {
+                return 0
+            }
+        }
+        
+//          if self.openedSections.contains(section) {
+//              return bookshelfs[section].numofbook
+//          } else {
+//              return 0
+//          }
+        return 0
        }
       
       
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?{
+        if order != "保管場所順"{
+            let view = UITableViewHeaderFooterView()
+            return view
+        }
         //let label : UILabel = UILabel()
         let bookNum: String = String("\(bookshelfs[section].numofbook)")
         let label: String = bookshelfs[section].name + "  (" + bookNum + "冊)"
@@ -194,9 +274,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         view.textLabel?.textAlignment = .right
         view.textLabel?.text = label//mySections[section]
         //sectionの色、文字サイズ
-        print("view")
-        
-        
         return view
       
       }/*折りたたみ終わり*/
@@ -208,17 +285,34 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
      
       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         let cell = tableView.dequeueReusableCell(withIdentifier: "ReUseCell", for: indexPath) as! SearchTableViewCell
-        cell.controlCell(book: twoDimArray[indexPath.section][indexPath.row])
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ReUseCell", for: indexPath) as! SearchTableViewCell
         
-         cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
-         return cell
+        if order == "保管場所順"{
+            cell.controlCell(book: twoDimArray[indexPath.section][indexPath.row], order: order)
+        }else{
+            cell.controlCell(book: books[indexPath.row], order: order)
+        }
+        cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
+        return cell
      }
      
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedClass = bookshelfs[indexPath.section].name
-        selectedBook = twoDimArray[indexPath.section][indexPath.row].title
+        
+        if order == "保管場所順"{
+            selectedClass = bookshelfs[indexPath.section].name
+            selectedBook = twoDimArray[indexPath.section][indexPath.row]
+        }else{
+            selectedClass = books[indexPath.row].place
+            selectedBook = books[indexPath.row]
+        }
+        
+        performSegue(withIdentifier: "toDetail",sender: nil)
      }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let detailVC: DetailViewController = (segue.destination as? DetailViewController)!
+        detailVC.bookData = selectedBook
+    }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         //override前の処理を継続してさせる
