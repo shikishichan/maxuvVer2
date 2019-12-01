@@ -10,8 +10,8 @@ import UIKit
 
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var mySections = [String]()
     var books = [Book]()
+    let BookKey = "bookkey"
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return books.count
@@ -53,35 +53,16 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func load(){
-        if UserDefaults.standard.object(forKey: "SectionList") != nil{
-            mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
+        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKey) as? [Data] else {
+            print("userdefaultsに本データが保存されていません")
+            return
         }
-        books = []
-        for i in mySections{
-            if UserDefaults.standard.object(forKey: i) != nil {
-                let x = UserDefaults.standard.object(forKey: i) as! [String]
-                for j in x {
-                    let book = Book.init(title: j, place: i, author: "")
-                    books.append(book)
-                }
-            }
-        }
+        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
+        
         
         //50音順
         books = books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
         
-//        SearchTableView.reloadData()
     }
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

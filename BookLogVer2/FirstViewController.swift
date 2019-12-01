@@ -115,8 +115,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             }
             count += 1
         }
-        print(books.count, bookshelfs.count)
-        print(twoDimArray)
     }
     
         
@@ -211,7 +209,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
      
       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "ReUseCell", for: indexPath) as! SearchTableViewCell
-        print(indexPath.section,indexPath.row)
         cell.controlCell(book: twoDimArray[indexPath.section][indexPath.row])
         
          cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
