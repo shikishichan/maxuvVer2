@@ -18,7 +18,52 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     let BookKey = "bookkey"
     let BookShelfKey = "shelfkey"
     
-
+    //コンバート用、そのうち消します
+    var mySections = [String]()
+    var alertController: UIAlertController!
+    
+    
+    //以前のuserdefaultsのデータを、クラス化して新しいuserdefaultsに移行するボタン
+    @IBOutlet weak var test: UIButton!
+    @IBAction func convert(_ sender: Any) {
+        
+        alertController = UIAlertController(title: "以前の本データをコンバートします", message: "よろしいですか？", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            //OKボタンが押された時の処理
+            
+            if UserDefaults.standard.object(forKey: "SectionList") != nil{
+                self.mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
+            }
+            self.books.removeAll()
+            self.bookshelfs.removeAll()
+            for i in self.mySections{
+                if UserDefaults.standard.object(forKey: i) != nil {
+                    let x = UserDefaults.standard.object(forKey: i) as! [String]
+                    let bookshelf = BookShelf.init(name: i, numofbook: x.count)
+                    self.bookshelfs.append(bookshelf)
+                    for j in x {
+                        let book = Book.init(title: j, place: i, author: "")
+                        self.books.append(book)
+                    }
+                }
+            }
+            
+            self.save(books: self.books, bookshelfs: self.bookshelfs)
+            self.load()
+            self.tableView.reloadData()
+            
+            
+        }))
+        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
+                (action: UIAlertAction!) -> Void in
+                //キャンセルボタンが押された時の処理
+            return
+        }))
+        present(alertController, animated: true, completion: nil)
+        
+    }
+    
     @IBOutlet weak var tableView: UITableView!
         
     
