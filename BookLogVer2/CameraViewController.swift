@@ -124,11 +124,11 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             let get_api = GetGoogleApi()
             get_api.searchBook(completion: {returnData in
                 let tab = self.presentingViewController as! UITabBarController
-                let AC = tab.viewControllers![tab.viewControllers!.count-2] as! AddController
+                let AC = tab.viewControllers![1] as! AddController
                 AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
                 var authors = String()
                 for i in (returnData.items?[0].volumeInfo?.authors!)!{
-                    authors = authors + ", " +  i.description
+                    authors = authors + " " + i.description
                 }
                 AC.AuthorTextField.text = authors
                 
@@ -136,10 +136,6 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             }, keyword : isbn)
                         
         }
-        print("読み込めませんでした")
-
-
-
     }
 
 
