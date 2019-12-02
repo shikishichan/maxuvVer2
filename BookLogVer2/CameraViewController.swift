@@ -126,14 +126,17 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
                 let tab = self.presentingViewController as! UITabBarController
                 let AC = tab.viewControllers![tab.viewControllers!.count-2] as! AddController
                 AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+                var authors = String()
+                for i in (returnData.items?[0].volumeInfo?.authors!)!{
+                    authors = authors + ", " +  i.description
+                }
+                AC.AuthorTextField.text = authors
+                
                 self.dismiss(animated: true, completion: nil)
             }, keyword : isbn)
-            
-            
-            
-//            flag = true
-            
+                        
         }
+        print("読み込めませんでした")
 
 
 
