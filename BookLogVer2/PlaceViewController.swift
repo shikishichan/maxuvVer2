@@ -10,7 +10,6 @@ import UIKit
 
 class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
     
-    var mySections = [String]()
     
     var bookshelfs = [BookShelf]()
     let BookShelfKey = "shelfkey"
