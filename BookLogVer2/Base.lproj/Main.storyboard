@@ -39,15 +39,6 @@
                                 <rect key="frame" x="0.0" y="44" width="768" height="930"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cED-wB-Dj6">
-                                    <rect key="frame" x="0.0" y="100" width="768" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                    <state key="normal" title="convert"/>
-                                    <connections>
-                                        <action selector="convert:" destination="9pv-A4-QxB" eventType="touchUpInside" id="nvr-u3-GQ8"/>
-                                    </connections>
-                                </button>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TodoCell" id="f3a-uD-3xP">
                                         <rect key="frame" x="0.0" y="28" width="768" height="44"/>
@@ -94,7 +85,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="nn1-7g-XjE" id="N2q-yY-9QC"/>
-                        <outlet property="test" destination="cED-wB-Dj6" id="tvz-4h-ym0"/>
                         <segue destination="JGF-Oj-LN5" kind="show" identifier="toDetail" id="2Wb-pJ-EXx"/>
                     </connections>
                 </viewController>
