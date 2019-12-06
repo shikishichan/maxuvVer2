@@ -16,6 +16,7 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var captureSession:AVCaptureSession?
     let detectionArea = UIView()
+    var alertController: UIAlertController!
     // 検出エリアのビュー
     let x: CGFloat = 0.05
     let y: CGFloat = 0.3
@@ -103,7 +104,7 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
 
         captureSession?.stopRunning()
-        guard let objects = metadataObjects as? [AVMetadataObject] else { return }
+        let objects = metadataObjects as [AVMetadataObject]
         var detectionString: String? = nil
         let barcodeTypes = [AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.ean13]
         for metadataObject in objects {
@@ -123,17 +124,28 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             text += "ISBN:\t\(isbn)"
             let get_api = GetGoogleApi()
             get_api.searchBook(completion: {returnData in
-                let tab = self.presentingViewController as! UITabBarController
-                let AC = tab.viewControllers![1] as! AddController
-                AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
-                var authors = String()
-                //あとでもっと丁寧に書きたい
-                for i in (returnData.items?[0].volumeInfo?.authors!)!{
-                    authors = authors + i.description
-                }
-                AC.AuthorTextField.text = authors
                 
-                self.dismiss(animated: true, completion: nil)
+                
+                if (returnData.totalItems != 0){
+                    //googleのBookAPIに本の情報があった時
+                    let tab = self.presentingViewController as! UITabBarController
+                    let AC = tab.viewControllers![1] as! AddController
+                    AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+                    var authors = String()
+                    //あとでもっと丁寧に書きたい
+                    for i in (returnData.items?[0].volumeInfo?.authors!)!{
+                        authors = authors + i.description
+                    }
+                    AC.AuthorTextField.text = authors
+                    
+                    self.dismiss(animated: true, completion: nil)
+                }else{
+                    //本の情報がなかった時
+                    self.alert(alertTitle: "登録情報がありません！！", alertMessage:"手動で入力してください")
+                    
+                }
+                
+                
             }, keyword : isbn)
                         
         }
@@ -165,6 +177,18 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
 
         let checkdigit = 11 - (sum % 11)
         return String(format: "%lld%@", isbn9, (checkdigit == 10) ? "X" : String(format: "%lld", checkdigit % 11))
+    }
+    
+    func alert(alertTitle:String, alertMessage:String){
+        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            
+            self.dismiss(animated: true, completion: nil)
+
+        }))
+        
+        present(alertController, animated: true, completion: nil)
     }
 
 }
