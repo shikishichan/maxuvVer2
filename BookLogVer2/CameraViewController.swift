@@ -24,20 +24,6 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     
 //    var flag:Bool = false
     
-    @IBAction func button(_ sender: Any) {
-//        if(flag == false){//バーコード読み取れてない時
-//            label.text = "false"
-//        }else{//バーコード読み取れた時
-//            label.text = "true"
-//        }
-        
-        let tab = self.presentingViewController as! UITabBarController
-        let AC = tab.viewControllers![tab.viewControllers!.count-2] as! AddController
-        AC.TodoTextField.text = "hoge"
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -138,19 +124,19 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             let get_api = GetGoogleApi()
             get_api.searchBook(completion: {returnData in
                 let tab = self.presentingViewController as! UITabBarController
-                let AC = tab.viewControllers![tab.viewControllers!.count-2] as! AddController
-                AC.TodoTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+                let AC = tab.viewControllers![1] as! AddController
+                AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+                var authors = String()
+                //あとでもっと丁寧に書きたい
+                for i in (returnData.items?[0].volumeInfo?.authors!)!{
+                    authors = authors + i.description
+                }
+                AC.AuthorTextField.text = authors
+                
                 self.dismiss(animated: true, completion: nil)
             }, keyword : isbn)
-            
-            
-            
-//            flag = true
-            
+                        
         }
-
-
-
     }
 
 
