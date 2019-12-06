@@ -7,13 +7,15 @@
 //
 
 import UIKit
+import CoreData
 
 class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate{
     var mySections = [String]()
     var twoDimArray = [[String]]()
     var selectedClass = ""
     var selectedBook = ""
-    
+    var BookArray: [Books] = []
+    var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     @IBOutlet weak var tableView: UITableView!
         
@@ -31,6 +33,13 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     //表示時のデータ更新
     override func viewWillAppear(_ animated: Bool) {
 
+        let AllBooks = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+         do{
+           BookArray = try ManagedObjectContext.fetch(AllBooks) as! [Books]
+         }catch{
+           print("DB Fetch Error.")
+         }
+         print("Fetch success.")
         
         if UserDefaults.standard.object(forKey: "SectionList") != nil{
             mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]

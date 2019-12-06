@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 
 class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -18,6 +19,13 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     
     var alertTitle = ""
     var alertMessage = ""
+    
+    var BookArray: [Books] = []
+    var ShelfArray: [BookShelfs] = []
+    var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var Booknum: Int = 0
+    var idnum: Int16 = 0
 
     
     @IBOutlet weak var TodoTextField: UITextField!
@@ -120,6 +128,21 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             UserDefaults.standard.set(x, forKey: place)
         }
         TodoTextField.text = ""
+        
+        let BookObject = Books(context: self.ManagedObjectContext)
+        BookObject.id = idnum
+        BookObject.title_name = title
+        self.BookArray.append(BookObject)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        let AllBookget = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+        do{
+            BookArray = try ManagedObjectContext.fetch(AllBookget)as! [Books]
+        }catch{
+            print("Core book get error.")
+        }
+        idnum += 1
+        print(BookObject.id)
+        
     }
     
     @IBOutlet weak var sectionLabel: UILabel!
@@ -132,7 +155,21 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         
         sectionSelect.delegate = self
         sectionSelect.dataSource = self
-
+        
+        let AllBooks = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+        do{
+          BookArray = try ManagedObjectContext.fetch(AllBooks) as! [Books]
+        }catch{
+          print("Book Fetch Error.")
+        }
+        let AllShelfs = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        do{
+          ShelfArray = try ManagedObjectContext.fetch(AllShelfs) as! [BookShelfs]
+        }catch{
+          print("BookShelf Fetch Error.")
+        }
+        Booknum = BookArray.count
+        idnum = Int16(BookArray[Booknum - 1].id) + 1
         // Do any additional setup after loading the view.
     }
     
