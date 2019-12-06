@@ -85,7 +85,7 @@
                                     </connections>
                                 </switch>
                             </barButtonItem>
-                            <barButtonItem title="Item" image="arrow.up.arrow.down" catalog="system" id="w9U-CD-oHi">
+                            <barButtonItem title="Item" image="arrow.up.left.square" catalog="system" id="w9U-CD-oHi">
                                 <connections>
                                     <action selector="sortSelectButton:" destination="9pv-A4-QxB" id="yRZ-Yk-aOL"/>
                                 </connections>
@@ -110,7 +110,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DetailView" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjP-ia-UKZ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DetailView" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjP-ia-UKZ">
                                 <rect key="frame" x="20" y="50" width="728" height="924"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
@@ -412,7 +412,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.up.arrow.down" catalog="system" width="64" height="48"/>
+        <image name="arrow.up.left.square" catalog="system" width="64" height="56"/>
         <image name="barcode" catalog="system" width="64" height="48"/>
         <image name="book" catalog="system" width="64" height="52"/>
         <image name="cube.box" catalog="system" width="64" height="62"/>

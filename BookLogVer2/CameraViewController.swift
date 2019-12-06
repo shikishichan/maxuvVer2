@@ -127,8 +127,9 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
                 let AC = tab.viewControllers![1] as! AddController
                 AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
                 var authors = String()
+                //あとでもっと丁寧に書きたい
                 for i in (returnData.items?[0].volumeInfo?.authors!)!{
-                    authors = authors + " " + i.description
+                    authors = authors + i.description
                 }
                 AC.AuthorTextField.text = authors
                 

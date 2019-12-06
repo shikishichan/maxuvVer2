@@ -168,7 +168,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     override func viewWillAppear(_ animated: Bool) {
         
         load()
-        
+        //load()後は保管場所順になっている
+        sort(order: order)
         tableView.reloadData()
         super.viewWillAppear(animated)
     
@@ -222,7 +223,15 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
           }
       }
     
-    
+    func sort(order: String){
+        if order == "保管場所順"{
+            //何もしない
+        }else if order == "50音順"{
+            self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+        }else if order == "著者順"{
+            self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
+        }
+    }
        
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
               //return twoDimArray[section].count
@@ -337,7 +346,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
 
         //tableViewCellの削除
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
-        
         
     }
     
