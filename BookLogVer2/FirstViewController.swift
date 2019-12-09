@@ -11,16 +11,23 @@ import UIKit
 class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate{
     var twoDimArray = [[Book]]()
     var selectedClass = ""
-    var selectedBook = Book.init(title: "", place: "", author: "")
+    var selectedBook = Book.init(title: "", place: "", author: "", id: 0)
     
     var books = [Book]()
     var bookshelfs = [BookShelf]()
-    let BookKey = "bookkey"
-    let BookShelfKey = "shelfkey"
+//    let BookKey = "bookkey"
+//    let BookShelfKey = "shelfkey"
+    
+    let BookKeyVer2 = "bookkeyver2"
+    let BookShelfKeyVer2 = "shelfkeyver2"
     
     var alertController: UIAlertController!
     
+    var alertTitle = ""
+    var alertMessage = ""
+    
     var order = ""
+    var bookId = Int()
     
     @IBOutlet weak var sortSelectButton: UIBarButtonItem!
     @IBAction func sortSelectButton(_ sender: Any) {
@@ -88,20 +95,20 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     func save(books: [Book], bookshelfs: [BookShelf]) {
         
         let bookData = books.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookData, forKey: BookKey)
+        UserDefaults.standard.set(bookData, forKey: BookKeyVer2)
         
         let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKey)
+        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
     }
     
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKey) as? [Data] else {
+        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
             print("userdefaultsに本データが保存されていません")
             return
         }
         books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
         
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKey) as? [Data] else {
+        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
             print("userdefaultsに本棚データが保存されていません")
             return
         }
@@ -122,10 +129,45 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    func alert(alertTitle:String, alertMessage:String, isEntry:Bool, isCancel:Bool){
+        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            //OKボタンが押された時の処理
+            if isEntry{
+//                self.touroku(title: self.TitleTextField.text!, place: self.selectedSection, author: self.AuthorTextField.text!)
+            }
+        }))
+        if isCancel{
+            alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
+                (action: UIAlertAction!) -> Void in
+                //キャンセルボタンが押された時の処理
+//                self.TitleTextField.text = ""
+                
+            }))
+        }
+        present(alertController, animated: true, completion: nil)
+    }
+    
     //表示時のデータ更新
     override func viewWillAppear(_ animated: Bool) {
         
         load()
+        
+        if bookshelfs.isEmpty{
+            //保管場所が存在しない時の処理
+            alertTitle = "保管場所が作成されていません"
+            alertMessage = "保管場所を登録してください"
+            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+                        (action: UIAlertAction!) -> Void in
+                        //OKボタンが押された時の処理
+                        //placeviewに遷移させようかな
+                    }))
+                    present(alertController, animated: true, completion: nil)
+            return
+        }
+        
         //load()後は保管場所順になっている
         sort(order: order)
         tableView.reloadData()
@@ -274,7 +316,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let detailVC: DetailViewController = (segue.destination as? DetailViewController)!
-        detailVC.bookData = selectedBook
+//        detailVC.bookData = selectedBook
+        detailVC.bookDataId = selectedBook.id
+        print(selectedBook.id)
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {

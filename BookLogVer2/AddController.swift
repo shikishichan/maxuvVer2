@@ -20,8 +20,8 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     
     var books = [Book]()
     var bookshelfs = [BookShelf]()
-    let BookKey = "bookkey"
-    let BookShelfKey = "shelfkey"
+    let BookKeyVer2 = "bookkeyver2"
+    let BookShelfKeyVer2 = "shelfkeyver2"
     var selectedRow = Int()
 
     @IBOutlet weak var TitleTextField: UITextField!
@@ -81,7 +81,13 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func touroku(title:String, place:String, author:String) {
-        books.append(Book.init(title: title, place: place, author: author))
+        var newId = Int()
+        if(books.count == 0){
+            newId = 0
+        }else{
+            newId = books.last!.id+1
+        }
+        books.append(Book.init(title: title, place: place, author: author, id: newId))
         bookshelfs[selectedRow].numofbook += 1
         save(books: books, bookshelfs: bookshelfs)
         TitleTextField.text = ""
@@ -105,14 +111,14 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     func save(books: [Book], bookshelfs: [BookShelf]) {
         
         let bookData = books.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookData, forKey: BookKey)
+        UserDefaults.standard.set(bookData, forKey: BookKeyVer2)
         
         let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKey)
+        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
     }
     
     func load(){
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKey) as? [Data] else {
+        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
             print("userdefaultsに本棚データが保存されていません")
             //保管場所が存在しない時の処理
             alertTitle = "保管場所が作成されていません"
@@ -129,7 +135,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         
         bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
         
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKey) as? [Data] else {
+        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
             print("userdefaultsに本データが保存されていません")
             return
         }

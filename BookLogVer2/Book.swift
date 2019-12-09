@@ -8,19 +8,18 @@
 
 import Foundation
 
-class Book: Codable, Equatable{
-    static func == (lhs: Book, rhs: Book) -> Bool {
-        return lhs.title == rhs.title && lhs.place == rhs.place && lhs.author == rhs.author
-    }
+class Book: Codable{
     
     var title: String
     var place: String
     var author: String
+    var id : Int
     
-    init(title:String, place:String, author:String) {
+    init(title:String, place:String, author:String, id:Int) {
         self.title = title
         self.place = place
         self.author = author
+        self.id = id
     }
 }
 

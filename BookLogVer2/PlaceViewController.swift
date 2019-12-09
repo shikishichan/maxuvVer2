@@ -12,7 +12,7 @@ class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDa
     
     
     var bookshelfs = [BookShelf]()
-    let BookShelfKey = "shelfkey"
+    let BookShelfKeyVer2 = "shelfkeyver2"
 
     
     @IBOutlet weak var placeTextField: UITextField!
@@ -39,11 +39,11 @@ class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDa
     
     func save(bookshelfs:[BookShelf]){
         let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKey)
+        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
     }
     
     func load(){
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKey) as? [Data] else {
+        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
             print("userdefaultsに本棚データが保存されていません")
             return
         }

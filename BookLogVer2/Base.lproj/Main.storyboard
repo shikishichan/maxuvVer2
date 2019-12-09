@@ -92,7 +92,7 @@
             </objects>
             <point key="canvasLocation" x="1515.625" y="-673.2421875"/>
         </scene>
-        <!--DetailView-->
+        <!--詳細情報-->
         <scene sceneID="Djp-p0-6rO">
             <objects>
                 <viewController id="JGF-Oj-LN5" customClass="DetailViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
@@ -111,14 +111,91 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="sMK-jB-Qeh"/>
                     </view>
-                    <navigationItem key="navigationItem" title="DetailView" id="Vdu-77-1qT"/>
+                    <navigationItem key="navigationItem" title="詳細情報" id="Vdu-77-1qT">
+                        <barButtonItem key="rightBarButtonItem" title="編集" id="2OP-Gn-bUT">
+                            <connections>
+                                <action selector="toEdit:" destination="JGF-Oj-LN5" id="hkh-vz-jx3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="label" destination="hjP-ia-UKZ" id="jTW-gZ-LEx"/>
+                        <segue destination="fgA-id-k2E" kind="show" identifier="toEdit" id="MCh-l2-oZB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IZR-qE-Ud2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2231" y="-673"/>
+        </scene>
+        <!--詳細情報の編集-->
+        <scene sceneID="bHh-kC-bw6">
+            <objects>
+                <viewController id="fgA-id-k2E" customClass="EditViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Gsh-C9-FqK">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="タイトル" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ABk-Dk-3Q3">
+                                <rect key="frame" x="20" y="143" width="360" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="著者" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHN-Ae-6Ao">
+                                <rect key="frame" x="20" y="342" width="360" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="保管場所" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Rq-pq-2dN">
+                                <rect key="frame" x="20" y="538" width="360" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lMP-Ev-zMn">
+                                <rect key="frame" x="388" y="176" width="360" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u0B-BW-mNX">
+                                <rect key="frame" x="388" y="375" width="360" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4o-Op-U6P">
+                                <rect key="frame" x="278" y="837" width="213" height="73"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="保存"/>
+                                <connections>
+                                    <action selector="saveButton:" destination="fgA-id-k2E" eventType="touchUpInside" id="IcP-Q2-Whs"/>
+                                </connections>
+                            </button>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gHU-Z1-5V7">
+                                <rect key="frame" x="388" y="480" width="360" height="216"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </pickerView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="GcJ-hJ-sHD"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="詳細情報の編集" id="QL3-nF-85a"/>
+                    <connections>
+                        <outlet property="authorEdit" destination="u0B-BW-mNX" id="PrX-vt-ntw"/>
+                        <outlet property="sectionPicker" destination="gHU-Z1-5V7" id="8ja-Ll-rzr"/>
+                        <outlet property="titleEdit" destination="lMP-Ev-zMn" id="CYe-FB-KAp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qxM-AL-42R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2935.9375" y="-673.2421875"/>
         </scene>
         <!--本の登録-->
         <scene sceneID="IR6-Dy-8QJ">
@@ -146,7 +223,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="例）線形代数" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TUI-MQ-pj2">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="例）走れメロス" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TUI-MQ-pj2">
                                 <rect key="frame" x="204" y="150" width="360" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -156,7 +233,7 @@
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yAz-aa-7v2">
                                 <rect key="frame" x="0.0" y="354" width="768" height="283"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="保管場所の選択" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="si6-g0-zXW">
                                 <rect key="frame" x="306" y="310" width="156" height="46"/>
@@ -195,7 +272,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="例）やなせたかし" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9wN-VP-8Du">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="例）太宰治" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9wN-VP-8Du">
                                 <rect key="frame" x="204" y="250" width="360" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -313,53 +390,6 @@
             </objects>
             <point key="canvasLocation" x="750" y="696.6796875"/>
         </scene>
-        <!--Item-->
-        <scene sceneID="vKR-ca-4Fq">
-            <objects>
-                <viewController id="qPv-X2-smp" customClass="SearchViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="xgA-mw-R0Q">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ngN-EX-zGi">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="974"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="OS7-fr-5ot">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <items>
-                                        <navigationItem title="Title" id="zSK-Es-eRf"/>
-                                    </items>
-                                </navigationBar>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ReUseCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="120" id="Y4Y-2h-Fta" customClass="SearchTableViewCell" customModule="BookLogVer2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="768" height="120"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y4Y-2h-Fta" id="6cD-VD-Dlp">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="120"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="qPv-X2-smp" id="7kj-4Y-90p"/>
-                                    <outlet property="delegate" destination="qPv-X2-smp" id="JiS-5E-FVS"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="Tjz-JY-mc2"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="v9k-zM-FHy"/>
-                    <connections>
-                        <outlet property="SearchTableView" destination="ngN-EX-zGi" id="DRU-Pw-eD2"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IMP-Ff-xma" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="750" y="1420.8984375"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
@@ -373,7 +403,6 @@
                         <segue destination="s5J-XO-QGq" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="I4W-Qw-mp9" kind="relationship" relationship="viewControllers" id="8RR-CD-kWI"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="qVS-7g-jyj"/>
-                        <segue destination="qPv-X2-smp" kind="relationship" relationship="viewControllers" id="ss2-Yb-YTH"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>

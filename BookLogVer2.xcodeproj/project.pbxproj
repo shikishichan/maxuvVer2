@@ -20,6 +20,7 @@
 		2B38E8D3234B406B00B82C38 /* BookLogVer2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8D2234B406B00B82C38 /* BookLogVer2Tests.swift */; };
 		2B38E8DE234B406C00B82C38 /* BookLogVer2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */; };
 		2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8EB234B57C900B82C38 /* AddController.swift */; };
+		61574103239A1A9C00A14227 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61574102239A1A9C00A14227 /* EditViewController.swift */; };
 		617CFBAD2393A1200067C596 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CFBAC2393A1200067C596 /* DetailViewController.swift */; };
 		61C075A82387A091004F5151 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C075A62387A091004F5151 /* SearchTableViewCell.swift */; };
 		61C075A92387A091004F5151 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61C075A72387A091004F5151 /* SearchTableViewCell.xib */; };
@@ -68,6 +69,7 @@
 		2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLogVer2UITests.swift; sourceTree = "<group>"; };
 		2B38E8DF234B406C00B82C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B38E8EB234B57C900B82C38 /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
+		61574102239A1A9C00A14227 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		617CFBAC2393A1200067C596 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		61C075A62387A091004F5151 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		61C075A72387A091004F5151 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 		2B38E8B8234B406A00B82C38 /* BookLogVer2 */ = {
 			isa = PBXGroup;
 			children = (
+				61574102239A1A9C00A14227 /* EditViewController.swift */,
 				61C075A62387A091004F5151 /* SearchTableViewCell.swift */,
 				61C075AC2387A6BF004F5151 /* SearchViewController.swift */,
 				61C075A72387A091004F5151 /* SearchTableViewCell.xib */,
@@ -309,6 +312,7 @@
 				2B38E8C0234B406A00B82C38 /* PlaceViewController.swift in Sources */,
 				2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */,
 				61C075A82387A091004F5151 /* SearchTableViewCell.swift in Sources */,
+				61574103239A1A9C00A14227 /* EditViewController.swift in Sources */,
 				E6849FEA23714DE000734D1B /* TitleViewController.swift in Sources */,
 				61C075AD2387A6BF004F5151 /* SearchViewController.swift in Sources */,
 				2B38E8BE234B406A00B82C38 /* FirstViewController.swift in Sources */,
