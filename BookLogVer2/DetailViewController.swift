@@ -10,7 +10,6 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-//    var hoge = String()
     var bookData = Book.init(title: "", place: "", author: "", id: 0)
     var bookDataId = Int()
     
