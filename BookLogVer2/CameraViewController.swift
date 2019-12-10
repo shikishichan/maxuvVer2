@@ -121,7 +121,8 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             text += "読み込んだ値:\t\(value)"
             text += "\n"
             guard let isbn = convartISBN(value: value) else {
-                self.alert_notISBN(alertTitle: "ISBNではありません！", alertMessage: "正しいバーコードを読み込んでください")
+                self.alert_notISBN(alertTitle: "ISBNではありません！", alertMessage: "正しいバーコードを読み込んでください",session: captureSession!)
+                
                 continue
             }
             text += "ISBN:\t\(isbn)"
@@ -195,11 +196,11 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         present(alertController, animated: true, completion: nil)
     }
     
-    func alert_notISBN(alertTitle:String, alertMessage:String){
+    func alert_notISBN(alertTitle:String, alertMessage:String, session:AVCaptureSession){
         alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
             (action: UIAlertAction!) -> Void in
-            
+            session.startRunning()
         }))
         
         present(alertController, animated: true, completion: nil)
