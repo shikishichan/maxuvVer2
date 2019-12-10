@@ -120,7 +120,10 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             guard let value = detectionString else { continue }
             text += "読み込んだ値:\t\(value)"
             text += "\n"
-            guard let isbn = convartISBN(value: value) else { continue }
+            guard let isbn = convartISBN(value: value) else {
+                self.alert_notISBN(alertTitle: "ISBNではありません！", alertMessage: "正しいバーコードを読み込んでください")
+                continue
+            }
             text += "ISBN:\t\(isbn)"
             let get_api = GetGoogleApi()
             get_api.searchBook(completion: {returnData in
@@ -141,7 +144,7 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
                     self.dismiss(animated: true, completion: nil)
                 }else{
                     //本の情報がなかった時
-                    self.alert(alertTitle: "登録情報がありません！！", alertMessage:"手動で入力してください")
+                    self.alert_notfound(alertTitle: "登録情報がありません！！", alertMessage:"手動で入力してください")
                     
                 }
                 
@@ -179,13 +182,24 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         return String(format: "%lld%@", isbn9, (checkdigit == 10) ? "X" : String(format: "%lld", checkdigit % 11))
     }
     
-    func alert(alertTitle:String, alertMessage:String){
+    //本がなかった時の処理
+    func alert_notfound(alertTitle:String, alertMessage:String){
         alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
             (action: UIAlertAction!) -> Void in
             
             self.dismiss(animated: true, completion: nil)
 
+        }))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func alert_notISBN(alertTitle:String, alertMessage:String){
+        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            
         }))
         
         present(alertController, animated: true, completion: nil)
