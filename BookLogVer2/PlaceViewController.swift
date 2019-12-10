@@ -11,8 +11,6 @@ import CoreData
 
 class PlaceViewController: UIViewController {
     
-    var mySections = [String]()
-
     var ShelfArray: [BookShelfs] = []
     var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -34,11 +32,7 @@ class PlaceViewController: UIViewController {
             print("Core shelf get error.")
         }
         placeid += 1
-        
-        
-        mySections.append(placeTextField.text!)
         placeTextField.text = ""
-        UserDefaults.standard.set( mySections, forKey: "SectionList" )
         
     }
     
@@ -46,20 +40,11 @@ class PlaceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
-        if UserDefaults.standard.object(forKey: "SectionList") != nil{
-            mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
-        }
         
-        let AllShelfs = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
-        do{
-          ShelfArray = try ManagedObjectContext.fetch(AllShelfs) as! [BookShelfs]
-        }catch{
-          print("Shelf Fetch Error.")
-        }
         Shelfnum = ShelfArray.count
-        placeid = Int16(ShelfArray[Shelfnum - 1].id) + 1
-        
+        if Shelfnum > 0{
+            placeid = Int16(ShelfArray[Shelfnum - 1].id) + 1
+        }
     }
 
 }

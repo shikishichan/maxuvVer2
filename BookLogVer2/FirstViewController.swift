@@ -15,7 +15,11 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var selectedClass = ""
     var selectedBook = ""
     var BookArray: [Books] = []
+    var ShelfArray: [BookShelfs] = []
     var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var Booknum: Int = 0
+    var Shelfnum: Int = 0
+    var Bookplacesearch: [Books] = []
 
     @IBOutlet weak var tableView: UITableView!
         
@@ -23,42 +27,112 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let AllBooks = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+        do{
+          BookArray = try ManagedObjectContext.fetch(AllBooks) as! [Books]
+        }catch{
+          print("Book Fetch Error.")
+        }
+        let AllShelfs = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        do{
+          ShelfArray = try ManagedObjectContext.fetch(AllShelfs) as! [BookShelfs]
+        }catch{
+          print("BookShelf Fetch Error.")
+        }
+        
+        let context:NSManagedObjectContext = ManagedObjectContext
+        var fetchData = try! context.fetch(AllBooks)
+        if(!fetchData.isEmpty){
+              for i in 0..<fetchData.count{
+                    let deleteObject = fetchData[i] as! Books
+                    context.delete(deleteObject)
+              }
+              do{
+                    try context.save()
+              }catch{
+                    print(error)
+              }
+        }
+        
+        fetchData = try! context.fetch(AllShelfs)
+        if(!fetchData.isEmpty){
+              for i in 0..<fetchData.count{
+                    let deleteObject = fetchData[i] as! BookShelfs
+                    context.delete(deleteObject)
+              }
+              do{
+                    try context.save()
+              }catch{
+                    print(error)
+              }
+        }
+        BookArray = []
+        ShelfArray = []
         
         self.navigationController?.isNavigationBarHidden = false
         navigationItem.title = "一覧画面"
         navigationItem.rightBarButtonItem = editButtonItem
+        
+        if ShelfArray.count != 0{
+            for i in ShelfArray{
+                mySections.append(i.name!)
+            }
+        }
+        
     }
         
       
     //表示時のデータ更新
     override func viewWillAppear(_ animated: Bool) {
-
+        //本棚のフェッチ(データ入手)
+        let AllShelfget = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        do{
+            ShelfArray = try ManagedObjectContext.fetch(AllShelfget)as! [BookShelfs]
+        }catch{
+            print("Core shelf get error.")
+        }
+        print("Shelf Fetch success.")
+        Shelfnum = ShelfArray.count
+        let mycount = mySections.count
+        
+        if (Shelfnum > 0) && (Shelfnum > mycount){
+            for i in 0..<Shelfnum - mycount{
+                mySections.append(ShelfArray[mycount + i].name!)
+            }
+        }else if((Shelfnum == 1) && (Shelfnum > mycount)){
+            mySections.append(ShelfArray[0].name!)
+        }
+        
+        //本のフェッチ(データ入手)
         let AllBooks = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
          do{
            BookArray = try ManagedObjectContext.fetch(AllBooks) as! [Books]
          }catch{
            print("DB Fetch Error.")
          }
-         print("Fetch success.")
+         print("Book Fetch success.")
+        Booknum = BookArray.count
         
-        if UserDefaults.standard.object(forKey: "SectionList") != nil{
-            mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
-        }
         twoDimArray = []
-        for i in mySections{
-            if UserDefaults.standard.object(forKey: i) != nil {
-                let x = UserDefaults.standard.object(forKey: i) as! [String]
-                twoDimArray.append(x)
-                
-            }else{
-                UserDefaults.standard.set([], forKey: i)
-                twoDimArray.append([])
+        
+        for i in 0..<Shelfnum{
+            let BookSearch = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+            BookSearch.predicate = NSPredicate(format:"place_id = %D", i)
+            do{
+                Bookplacesearch = try ManagedObjectContext.fetch(BookSearch)as! [Books]
+            }catch{
+                print("Core searchbooks get error.")
+                continue
+            }
+            twoDimArray.append([])
+            for j in 0..<Bookplacesearch.count{
+                twoDimArray[i].append(Bookplacesearch[j].title_name!)
             }
         }
         
         tableView.reloadData()
         super.viewWillAppear(animated)
-    
+        print(mySections)
     }
     
     
@@ -98,7 +172,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //dataを消してから
         twoDimArray[indexPath.section].remove(at: indexPath.row)
-        UserDefaults.standard.set(twoDimArray[indexPath.section], forKey: mySections[indexPath.section])
 
         //tableViewCellの削除
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -125,13 +198,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             twoDimArray[destinationIndexPath.section].insert(twoDimArray[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
                 twoDimArray[sourceIndexPath.section].remove(at: sourceIndexPath.row)
         }
-        
-        //変更を保存
-        var count = 0
-        for i in mySections{
-            UserDefaults.standard.set(twoDimArray[count], forKey: i)
-            count += 1
-        }
+
     }
     
     

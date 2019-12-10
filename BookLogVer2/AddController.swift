@@ -24,6 +24,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     var ShelfArray: [BookShelfs] = []
     var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    var Searchresult: [BookShelfs] = []
     var Booknum: Int = 0
     var idnum: Int16 = 0
 
@@ -41,39 +42,32 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                 }
                 
                 //titleが同じものがないかの判定
-                var count = 0
-                loop: for i in twoDimArray{
-                    if(i == [TodoTextField.text!]){//保管場所が１つのみの時
+                if Booknum == 0{
+                    alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
+                    alertMessage = "登録しますか？"
+                    alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                }else{
+                    let context:NSManagedObjectContext = ManagedObjectContext
+                    let bookcatcher = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+                    bookcatcher.predicate = NSPredicate(format:"title_name = %@",TodoTextField.text!)
+                    let Catcher = try! context.fetch(bookcatcher) as! [Books]
+                    if Catcher.count != 0{
                         //ダブりがあった時
-                        alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
+                        let context:NSManagedObjectContext = ManagedObjectContext
+                        let finder = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+                        finder.predicate = NSPredicate(format:"id = %D", Catcher[0].place_id)
+                        let Checker = try! context.fetch(finder) as! [BookShelfs]
+                            
+                        alertTitle = "警告！\n[\(Checker[0].name!)]に「\(TodoTextField.text!)」は既に登録されています。"
                         print(alertTitle)
                         alertMessage = "登録しますか？"
                         alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                        break loop
                     }else{
-                        //ダブりがない時
                         alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
                         alertMessage = "登録しますか？"
                         alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                        
                     }
-                    for j in i{
-                        if(j == TodoTextField.text!){
-                            //ダブりがあった時
-                            alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
-//                            print(alertTitle)
-                            alertMessage = "登録しますか？"
-                            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                            break loop
-                        }else{
-                            //ダブりがない時
-                            alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
-                            alertMessage = "登録しますか？"
-                            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                            
-                        }
-                    }
-                    count += 1
+                    
                 }
                 
                 alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
@@ -118,20 +112,17 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func touroku(title:String, place:String) {
-        if UserDefaults.standard.object(forKey: place) != nil{
-            var x = UserDefaults.standard.object(forKey: place) as! [String]
-            x.append(title)
-            UserDefaults.standard.set(x, forKey: place)
-        }else{
-            var x = [String]()
-            x.append(title)
-            UserDefaults.standard.set(x, forKey: place)
+        let Shelfsearch = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        Shelfsearch.predicate = NSPredicate(format:"name = %@", place)
+        do{
+            Searchresult = try ManagedObjectContext.fetch(Shelfsearch)as! [BookShelfs]
+        }catch{
+            print("Core searchshelfs get error.")
         }
-        TodoTextField.text = ""
-        
         let BookObject = Books(context: self.ManagedObjectContext)
         BookObject.id = idnum
         BookObject.title_name = title
+        BookObject.place_id = Searchresult[0].id
         self.BookArray.append(BookObject)
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
         let AllBookget = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
@@ -140,8 +131,9 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         }catch{
             print("Core book get error.")
         }
+        Booknum = BookArray.count
         idnum += 1
-        print(BookObject.id)
+        TodoTextField.text = ""
         
     }
     
@@ -169,16 +161,31 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
           print("BookShelf Fetch Error.")
         }
         Booknum = BookArray.count
-        idnum = Int16(BookArray[Booknum - 1].id) + 1
+        if Booknum > 0{
+            idnum = Int16(BookArray[Booknum - 1].id) + 1
+        }
         // Do any additional setup after loading the view.
+        
+        let Shelfnum = ShelfArray.count
+        if Shelfnum != 0{
+            for i in 0..<Shelfnum{
+                mySections.append(ShelfArray[i].name!)
+            }
+        }
     }
     
     //表示時のデータ更新
     override func viewWillAppear(_ animated: Bool) {
         
-        if UserDefaults.standard.object(forKey: "SectionList") != nil{
-            mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
-        }else{
+        let AllShelfs = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        do{
+          ShelfArray = try ManagedObjectContext.fetch(AllShelfs) as! [BookShelfs]
+        }catch{
+          print("BookShelf Fetch Error.")
+        }
+        let mynum = mySections.count
+        let Shelfnum = ShelfArray.count
+        if mynum == 0{
             //保管場所が存在しない時の処理
             alertTitle = "保管場所が作成されていません"
             alertMessage = "保管場所を登録してから入力してください"
@@ -189,19 +196,20 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                 //何もしない
             }))
             present(alertController, animated: true, completion: nil)
-        }
-        
-//        print(mySections)
-
-        for i in mySections{
-            if UserDefaults.standard.object(forKey: i) != nil {
-                let x = UserDefaults.standard.object(forKey: i) as! [String]
-                twoDimArray.append(x)
-            }else{
-                UserDefaults.standard.set([], forKey: i)
-                twoDimArray.append([])
+        }else if (mynum < Shelfnum){
+            for i in 0..<Shelfnum-mynum{
+                mySections.append(ShelfArray[mynum+i].name!)
+            }
+        }else if(mynum > Shelfnum){
+            for i in 0..<mynum{
+                mySections[i] = ShelfArray[i].name!
             }
         }
+        
+        if Booknum > 0{
+            idnum = Int16(BookArray[Booknum - 1].id) + 1
+        }
+
         sectionSelect.reloadAllComponents()
         
         super.viewWillAppear(animated)
