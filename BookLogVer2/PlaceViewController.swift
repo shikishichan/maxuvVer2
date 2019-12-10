@@ -7,22 +7,36 @@
 //
 
 import UIKit
+import CoreData
 
 class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
-    
-    
-    var bookshelfs = [BookShelf]()
-    let BookShelfKeyVer2 = "shelfkeyver2"
 
+    var ShelfArray: [BookShelfs] = []
+    var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var Shelfnum: Int = 0
+    var placeid: Int16 = 0
     
     @IBOutlet weak var placeTextField: UITextField!
     
     @IBAction func placeAddBotton(_ sender: Any) {
-        let newbookshelf = BookShelf.init(name: placeTextField.text!, numofbook: 0)
-        bookshelfs.append(newbookshelf)
-        placeTextField.text = ""
-        save(bookshelfs: bookshelfs)
                         
+        sectionTableView.reloadData()
+        
+        let ShelfObject = BookShelfs(context: self.ManagedObjectContext)
+        ShelfObject.id = placeid
+        ShelfObject.name = placeTextField.text!
+        self.ShelfArray.append(ShelfObject)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        let AllShelfget = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        do{
+            ShelfArray = try ManagedObjectContext.fetch(AllShelfget)as! [BookShelfs]
+        }catch{
+            print("Core shelf get error.")
+        }
+        placeid += 1
+        placeTextField.text = ""
+        
         sectionTableView.reloadData()
     }
     
@@ -33,28 +47,29 @@ class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
+        Shelfnum = ShelfArray.count
+        if Shelfnum > 0{
+            placeid = Int16(ShelfArray[Shelfnum - 1].id) + 1
+        }
+        
         load()
     }
     
-    func save(bookshelfs:[BookShelf]){
-        let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
-    }
     
     func load(){
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
-            print("userdefaultsに本棚データが保存されていません")
-            return
+        let AllShelfget = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        do{
+            ShelfArray = try ManagedObjectContext.fetch(AllShelfget)as! [BookShelfs]
+        }catch{
+            print("Core shelf get error.")
         }
-        bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
     }
     
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return bookshelfs.count
+        return ShelfArray.count
         
      }
 
@@ -63,7 +78,7 @@ class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDa
         // セルを取得する
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "sectionCell", for: indexPath)
         // セルに表示する値を設定する
-        cell.textLabel!.text = bookshelfs[indexPath.row].name
+        cell.textLabel!.text = ShelfArray[indexPath.row].name
         //cell.textLabel!.font = UIFont(name: "Arial", size: 20)
         
         return cell

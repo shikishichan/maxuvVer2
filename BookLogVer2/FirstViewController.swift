@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import CoreData
 
 class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate{
-    var twoDimArray = [[Book]]()
+    var twoDimArray = [[Books]]()
     var selectedClass = ""
-    var selectedBook = Book.init(title: "", place: "", author: "", id: 0)
+    var selectedBook = Books()
     
-    var books = [Book]()
-    var bookshelfs = [BookShelf]()
+    var books = [Books]()
+    var bookshelfs = [BookShelfs]()
 //    let BookKey = "bookkey"
 //    let BookShelfKey = "shelfkey"
     
@@ -28,6 +29,13 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     var order = ""
     var bookId = Int()
+    
+    var BookArray: [Books] = []
+    var ShelfArray: [BookShelfs] = []
+    var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var Booknum: Int = 0
+    var Shelfnum: Int = 0
+    var Bookplacesearch: [Books] = []
     
     @IBOutlet weak var sortSelectButton: UIBarButtonItem!
     @IBAction func sortSelectButton(_ sender: Any) {
@@ -43,14 +51,14 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             (action: UIAlertAction!) -> Void in
             //hogehoge
             self.order = "50音順"
-            self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+            self.books = self.books.sorted { $0.title_name!.localizedStandardCompare($1.title_name!) == .orderedAscending }
             self.tableView.reloadData()
         })
         let action3 = UIAlertAction(title: "著者順", style: .default, handler:{
             (action: UIAlertAction!) -> Void in
             //hogehoge
             self.order = "著者順"
-            self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
+            self.books = self.books.sorted { $0.author_name!.localizedStandardCompare($1.author_name!) == .orderedAscending }
             self.tableView.reloadData()
         })
 
@@ -92,36 +100,37 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    func save(books: [Book], bookshelfs: [BookShelf]) {
-        
-        let bookData = books.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookData, forKey: BookKeyVer2)
-        
-        let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
-    }
-    
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
+        //本棚のフェッチ(データ入手)
+        let AllShelfget = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        do{
+            ShelfArray = try ManagedObjectContext.fetch(AllShelfget)as! [BookShelfs]
+        }catch{
+            print("Core shelf get error.")
         }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
+        print("Shelf Fetch success.")
+        Shelfnum = ShelfArray.count
         
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
-            print("userdefaultsに本棚データが保存されていません")
-            return
-        }
-        bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
+        //本のフェッチ(データ入手)
+        let AllBooks = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+         do{
+           BookArray = try ManagedObjectContext.fetch(AllBooks) as! [Books]
+         }catch{
+           print("DB Fetch Error.")
+         }
+         print("Book Fetch success.")
+        Booknum = BookArray.count
+        
+        books = BookArray
         
         twoDimArray.removeAll()
-        for _ in bookshelfs{
+        for _ in ShelfArray{
             twoDimArray.append([])
         }
         var count = 0
-        for i in bookshelfs{
+        for i in ShelfArray{
             for j in books{
-                if i.name == j.place{
+                if i.id == j.place_id{
                     twoDimArray[count].append(j)
                 }
             }
@@ -227,9 +236,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         if order == "保管場所順"{
             //何もしない
         }else if order == "50音順"{
-            self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+            self.books = self.books.sorted { $0.title_name!.localizedStandardCompare($1.title_name!) == .orderedAscending }
         }else if order == "著者順"{
-            self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
+            self.books = self.books.sorted { $0.author_name!.localizedStandardCompare($1.author_name!) == .orderedAscending }
         }
     }
        
@@ -237,7 +246,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
               //return twoDimArray[section].count
         if order == "保管場所順"{
             if self.openedSections.contains(section) {
-                return bookshelfs[section].numofbook
+                return Int(ShelfArray[section].id)
             } else {
                 return 0
             }
@@ -270,8 +279,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             return view
         }
         //let label : UILabel = UILabel()
-        let bookNum: String = String("\(bookshelfs[section].numofbook)")
-        let label: String = bookshelfs[section].name + "  (" + bookNum + "冊)"
+        let bookNum: String = String("\(Int(ShelfArray[section].id))")
+        let label: String = ShelfArray[section].name! + "  (" + bookNum + "冊)"
         let view = UITableViewHeaderFooterView()
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
         view.addGestureRecognizer(gesture)
@@ -304,10 +313,14 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if order == "保管場所順"{
-            selectedClass = bookshelfs[indexPath.section].name
+            selectedClass = ShelfArray[indexPath.section].name!
             selectedBook = twoDimArray[indexPath.section][indexPath.row]
         }else{
-            selectedClass = books[indexPath.row].place
+            let context:NSManagedObjectContext = ManagedObjectContext
+            let bookcatcher = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+            bookcatcher.predicate = NSPredicate(format:"id = %D",books[indexPath.row].place_id)
+            let Catcher = try! context.fetch(bookcatcher) as! [BookShelfs]
+            selectedClass = Catcher[0].name!
             selectedBook = books[indexPath.row]
         }
         
@@ -317,7 +330,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let detailVC: DetailViewController = (segue.destination as? DetailViewController)!
 //        detailVC.bookData = selectedBook
-        detailVC.bookDataId = selectedBook.id
+        detailVC.bookDataId = Int(selectedBook.id)
         print(selectedBook.id)
     }
     
@@ -335,12 +348,10 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         twoDimArray[indexPath.section].remove(at: indexPath.row)
 
         //本の数のデクリメント
-        bookshelfs[indexPath.section].numofbook -= 1
         
         //{$0 == tmp}じゃできなかった、、、
-        let removebookindex = books.firstIndex(where: {$0.title == tmp.title && $0.place == tmp.place})!
+        let removebookindex = books.firstIndex(where: {$0.title_name == tmp.title_name && $0.place_id == tmp.place_id})!
         books.remove(at: removebookindex)
-        save(books: books, bookshelfs: bookshelfs)
 
         //tableViewCellの削除
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -365,11 +376,14 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         if(sourceIndexPath.section == destinationIndexPath.section){
             twoDimArray[sourceIndexPath.section].swapAt(sourceIndexPath.row, destinationIndexPath.row)
         }else{
-            twoDimArray[sourceIndexPath.section][sourceIndexPath.row].place = bookshelfs[destinationIndexPath.section].name
+            twoDimArray[sourceIndexPath.section][sourceIndexPath.row].place_id = bookshelfs[destinationIndexPath.section].id
+            let context:NSManagedObjectContext = ManagedObjectContext
+            let bookcatcher = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+            bookcatcher.predicate = NSPredicate(format:"title_name = %@",twoDimArray[sourceIndexPath.section][sourceIndexPath.row].title_name!)
+            let Catcher = try! context.fetch(bookcatcher) as! [Books]
+            Catcher[0].id = twoDimArray[sourceIndexPath.section][sourceIndexPath.row].place_id
             twoDimArray[destinationIndexPath.section].insert(twoDimArray[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
                 twoDimArray[sourceIndexPath.section].remove(at: sourceIndexPath.row)
-            bookshelfs[sourceIndexPath.section].numofbook -= 1
-            bookshelfs[destinationIndexPath.section].numofbook += 1
         }
         
         books = []
@@ -379,7 +393,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             }
         }
         
-        save(books: books, bookshelfs: bookshelfs)
         tableView.reloadData()
     }
     

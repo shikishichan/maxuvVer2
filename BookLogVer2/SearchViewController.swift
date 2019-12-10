@@ -10,7 +10,7 @@ import UIKit
 
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var books = [Book]()
+    var books = [Books]()
     let BookKey = "bookkey"
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,15 +53,10 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKey) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
-        }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
         
         
         //50音順
-        books = books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+        books = books.sorted { $0.title_name!.localizedStandardCompare($1.title_name!) == .orderedAscending }
         
     }
 

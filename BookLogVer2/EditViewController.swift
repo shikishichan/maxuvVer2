@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -25,15 +26,17 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     var selectedSection = String()
     var selectedRow = Int()
     
-    var recieveData = Book.init(title: "", place: "", author: "", id: 0)
+    var recieveData = Books()
     var recieveDataId = Int()
     
-    var returnData = Book.init(title: "", place: "", author: "", id: 0)
+    var returnData = Books()
     
-    var books = [Book]()
-    var bookshelfs = [BookShelf]()
+    var books = [Books]()
+    var bookshelfs = [BookShelfs]()
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
+    
+    var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     @IBOutlet weak var sectionPicker: UIPickerView!
     
@@ -48,56 +51,41 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         
         recieveData = books.filter({$0.id == recieveDataId})[0]
 
-        titleEdit.text = recieveData.title
+        titleEdit.text = recieveData.title_name
 //        placeEdit.text = recieveData.place
-        selectedSection = recieveData.place
-        authorEdit.text = recieveData.author
+        let context:NSManagedObjectContext = ManagedObjectContext
+        let shelfcatcher = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        shelfcatcher.predicate = NSPredicate(format:"id = %D",recieveData.place_id)
+        let Finder = try! context.fetch(shelfcatcher) as! [BookShelfs]
+        selectedSection = Finder[0].name!
+        authorEdit.text = recieveData.author_name
         // pickerの初期値を設定したかった
 //        sectionPicker.selectRow(<#T##row: Int##Int#>, inComponent: <#T##Int#>, animated: <#T##Bool#>)
     }
     
     @IBAction func saveButton(_ sender: Any) {
-        returnData = Book.init(title: titleEdit.text!, place: selectedSection, author: authorEdit.text!, id: recieveDataId)
+        //returnData = Books.init(title: titleEdit.text!, place: selectedSection, author: authorEdit.text!, id: recieveDataId)
+        returnData = Books()
+        returnData.title_name = titleEdit.text!
+        returnData.author_name = authorEdit.text!
+        let context:NSManagedObjectContext = ManagedObjectContext
+        let bookcatcher = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        bookcatcher.predicate = NSPredicate(format:"id = %@",selectedSection)
+        let Catcher = try! context.fetch(bookcatcher) as! [BookShelfs]
         
         books[recieveDataId] = returnData
-        
-        save(books: books)
         
         let DVC: DetailViewController = DetailViewController()
         DVC.bookData = returnData
         print("edit")
-        print("\(books[recieveDataId].place),\(books[recieveDataId].author)")
+        print("\(books[recieveDataId].place_id),\(books[recieveDataId].author_name!)")
 
     }
     
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
-        }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
         
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
-            print("userdefaultsに本棚データが保存されていません")
-            return
-        }
-        bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
     }
-    
-    func save(books: [Book]) {
         
-        let bookData = books.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookData, forKey: BookKeyVer2)
-        
-        //保管場所変更時のnumofbookの更新
-        for (index, element) in bookshelfs.enumerated(){
-            bookshelfs[index].numofbook = books.filter({$0.place == element.name}).count
-        }
-        
-        let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
-    }
-    
     // UIPickerViewの最初の表示
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
@@ -110,7 +98,7 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                     didSelectRow row: Int,
                     inComponent component: Int) {
         
-        selectedSection = bookshelfs[row].name
+        selectedSection = bookshelfs[row].name!
         selectedRow = row
     }
 

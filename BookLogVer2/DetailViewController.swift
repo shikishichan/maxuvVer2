@@ -7,16 +7,19 @@
 //
 
 import UIKit
+import CoreData
 
 class DetailViewController: UIViewController {
     
-    var bookData = Book.init(title: "", place: "", author: "", id: 0)
+    var bookData = Books()
     var bookDataId = Int()
     
-    var books = [Book]()
-    var bookshelfs = [BookShelf]()
+    var books = [Books]()
+    var bookshelfs = [BookShelfs]()
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
+    
+    var ManagedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     @IBOutlet weak var label: UILabel!
     @IBAction func toEdit(_ sender: Any) {
@@ -41,20 +44,22 @@ class DetailViewController: UIViewController {
         
         super.viewWillAppear(animated)
         load()
+        
         bookData = books.filter({$0.id == bookDataId})[0]
-        label.text = "Title  :  \(bookData.title) \n\nPlace  :  \(bookData.place) \n\nauthor  :  \(bookData.author)"
+        
+        let context:NSManagedObjectContext = ManagedObjectContext
+        let shelfcatcher = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        shelfcatcher.predicate = NSPredicate(format:"id = %D",bookData.place_id)
+        let Finder = try! context.fetch(shelfcatcher) as! [BookShelfs]
+        
+        label.text = "Title  :  \(bookData.title_name!) \n\nPlace  :  \(Finder[0].name!) \n\nauthor  :  \(bookData.author_name!)"
         print("detail")
-        print(bookData.author)
-        print(bookData.place)
+        print(bookData.author_name!)
+        print(bookData.place_id)
 
     }
     
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
-        }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
     }
     
 
