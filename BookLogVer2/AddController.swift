@@ -11,115 +11,87 @@ import UIKit
 
 class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var mySections = [String]()
     var twoDimArray = [[String]]()
     var selectedSection = ""
     var alertController: UIAlertController!
     
     var alertTitle = ""
     var alertMessage = ""
-
     
-    @IBOutlet weak var TodoTextField: UITextField!
+    var books = [Book]()
+    var bookshelfs = [BookShelf]()
+    let BookKeyVer2 = "bookkeyver2"
+    let BookShelfKeyVer2 = "shelfkeyver2"
+    var selectedRow = Int()
+
+    @IBOutlet weak var TitleTextField: UITextField!
+    @IBOutlet weak var AuthorTextField: UITextField!
+    
+    
     @IBAction func TodoAddButton(_ sender: Any) {
-        
-        if(mySections != []){
-            //保管場所がある時
-            if(TodoTextField.text! != ""){
-                //titleが入力されている時の処理
-                
-                if(selectedSection == ""){//保管場所を選択していない時は一番目の場所にいれる
-                    selectedSection = mySections[0]
-                }
-                
-                //titleが同じものがないかの判定
-                var count = 0
-                loop: for i in twoDimArray{
-                    if(i == [TodoTextField.text!]){//保管場所が１つのみの時
-                        //ダブりがあった時
-                        alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
-                        print(alertTitle)
-                        alertMessage = "登録しますか？"
-                        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                        break loop
-                    }else{
-                        //ダブりがない時
-                        alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
-                        alertMessage = "登録しますか？"
-                        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                        
-                    }
-                    for j in i{
-                        if(j == TodoTextField.text!){
-                            //ダブりがあった時
-                            alertTitle = "警告！\n[\(mySections[count])]に「\(TodoTextField.text!)」は既に登録されています。"
-//                            print(alertTitle)
-                            alertMessage = "登録しますか？"
-                            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                            break loop
-                        }else{
-                            //ダブりがない時
-                            alertTitle = "[\(selectedSection)]に「\(TodoTextField.text!)」を登録します。"
-                            alertMessage = "登録しますか？"
-                            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                            
-                        }
-                    }
-                    count += 1
-                }
-                
-                alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    //OKボタンが押された時の処理
-                    self.touroku(title: self.TodoTextField.text!, place: self.selectedSection)
-                }))
-                alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    //キャンセルボタンが押された時の処理
-                    self.TodoTextField.text = ""
-                }))
-                present(alertController, animated: true, completion: nil)
-                print("ok")
-                
-            }else{
-                //titleが入力されていない時の処理
-                alertTitle = "タイトルが入力されていません"
-                alertMessage = "もう一度入力してください"
-                alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    //OKボタンが押された時の処理
-                    //何もしない
-                }))
-                present(alertController, animated: true, completion: nil)
-                print("titlenasi")
-            }
-        }else{
+        if bookshelfs.isEmpty{
             //保管場所が存在しない時の処理
             alertTitle = "保管場所が作成されていません"
-            alertMessage = "保管場所を登録してから入力してください"
-            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
-                (action: UIAlertAction!) -> Void in
-                //OKボタンが押された時の処理
-                //何もしない
-            }))
-            present(alertController, animated: true, completion: nil)
+            alertMessage = "保管場所を登録してください"
+            alert(alertTitle: alertTitle, alertMessage: alertMessage, isEntry: false, isCancel: false)
+            return
         }
+        
+        if TitleTextField.text! == ""{
+            //titleが入力されていない時の処理
+            alertTitle = "タイトルが入力されていません"
+            alertMessage = "もう一度入力してください"
+            alert(alertTitle: alertTitle, alertMessage: alertMessage, isEntry: false, isCancel: false)
+            return
+        }
+        
+        if selectedSection == ""{
+            selectedSection = bookshelfs[0].name
+        }
+        
+        if books.filter({$0.title == TitleTextField.text!}).count > 0{
+            let daburiplace = books.filter({$0.title == TitleTextField.text!})[0].place
+            //ダブりがあった時
+            alertTitle = "警告！\n[\(daburiplace)]に「\(TitleTextField.text!)」は既に登録されています。"
+            alertMessage = "登録しますか？"
+            alert(alertTitle: alertTitle, alertMessage: alertMessage, isEntry: true, isCancel: true)
+            return
+        }
+        touroku(title: TitleTextField.text!, place: selectedSection, author: AuthorTextField.text!)
     }
     
-    func touroku(title:String, place:String) {
-        if UserDefaults.standard.object(forKey: place) != nil{
-            var x = UserDefaults.standard.object(forKey: place) as! [String]
-            x.append(title)
-            UserDefaults.standard.set(x, forKey: place)
-        }else{
-            var x = [String]()
-            x.append(title)
-            UserDefaults.standard.set(x, forKey: place)
+    func alert(alertTitle:String, alertMessage:String, isEntry:Bool, isCancel:Bool){
+        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            //OKボタンが押された時の処理
+            if isEntry{
+                self.touroku(title: self.TitleTextField.text!, place: self.selectedSection, author: self.AuthorTextField.text!)
+            }
+        }))
+        if isCancel{
+            alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
+                (action: UIAlertAction!) -> Void in
+                //キャンセルボタンが押された時の処理
+                self.TitleTextField.text = ""
+                
+            }))
         }
-        TodoTextField.text = ""
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func touroku(title:String, place:String, author:String) {
+        var newId = Int()
+        if(books.count == 0){
+            newId = 0
+        }else{
+            newId = books.last!.id+1
+        }
+        books.append(Book.init(title: title, place: place, author: author, id: newId))
+        bookshelfs[selectedRow].numofbook += 1
+        save(books: books, bookshelfs: bookshelfs)
+        TitleTextField.text = ""
+        AuthorTextField.text = ""
     }
     
     @IBOutlet weak var sectionLabel: UILabel!
@@ -132,19 +104,25 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         
         sectionSelect.delegate = self
         sectionSelect.dataSource = self
-
-        // Do any additional setup after loading the view.
+        
+        load()
     }
     
-    //表示時のデータ更新
-    override func viewWillAppear(_ animated: Bool) {
+    func save(books: [Book], bookshelfs: [BookShelf]) {
         
-        if UserDefaults.standard.object(forKey: "SectionList") != nil{
-            mySections = UserDefaults.standard.object(forKey: "SectionList") as! [String]
-        }else{
+        let bookData = books.map { try? JSONEncoder().encode($0) }
+        UserDefaults.standard.set(bookData, forKey: BookKeyVer2)
+        
+        let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
+        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
+    }
+    
+    func load(){
+        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
+            print("userdefaultsに本棚データが保存されていません")
             //保管場所が存在しない時の処理
             alertTitle = "保管場所が作成されていません"
-            alertMessage = "保管場所を登録してから入力してください"
+            alertMessage = "保管場所を登録してください"
             alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
                 (action: UIAlertAction!) -> Void in
@@ -152,19 +130,22 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                 //何もしない
             }))
             present(alertController, animated: true, completion: nil)
+            return
         }
         
-//        print(mySections)
-
-        for i in mySections{
-            if UserDefaults.standard.object(forKey: i) != nil {
-                let x = UserDefaults.standard.object(forKey: i) as! [String]
-                twoDimArray.append(x)
-            }else{
-                UserDefaults.standard.set([], forKey: i)
-                twoDimArray.append([])
-            }
+        bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
+        
+        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
+            print("userdefaultsに本データが保存されていません")
+            return
         }
+        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
+    }
+    
+    //表示時のデータ更新
+    override func viewWillAppear(_ animated: Bool) {
+        
+        load()
         sectionSelect.reloadAllComponents()
         
         super.viewWillAppear(animated)
@@ -175,14 +156,14 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return mySections.count
+        return bookshelfs.count
     }
     
     // UIPickerViewの最初の表示
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
-        return mySections[row]
+        return bookshelfs[row].name
     }
     
     // UIPickerViewのRowが選択された時の挙動
@@ -190,18 +171,12 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                     didSelectRow row: Int,
                     inComponent component: Int) {
         
-        selectedSection = mySections[row]
+        selectedSection = bookshelfs[row].name
+        selectedRow = row
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        
+    @IBAction func camera(_ sender: Any) {
+        let CameraViewController = self.storyboard?.instantiateViewController(withIdentifier: "camera2") as! CameraViewController
+        self.present(CameraViewController, animated: true, completion: nil)
     }
-    */
-
 }
