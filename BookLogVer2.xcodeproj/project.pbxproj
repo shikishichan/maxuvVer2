@@ -21,10 +21,10 @@
 		2B38E8DE234B406C00B82C38 /* BookLogVer2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8DD234B406C00B82C38 /* BookLogVer2UITests.swift */; };
 		2B38E8EC234B57C900B82C38 /* AddController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38E8EB234B57C900B82C38 /* AddController.swift */; };
 		61574103239A1A9C00A14227 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61574102239A1A9C00A14227 /* EditViewController.swift */; };
+		6176AAA023A34C4200FA98B9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6176AA9F23A34C4200FA98B9 /* SearchViewController.swift */; };
 		617CFBAD2393A1200067C596 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CFBAC2393A1200067C596 /* DetailViewController.swift */; };
 		61C075A82387A091004F5151 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C075A62387A091004F5151 /* SearchTableViewCell.swift */; };
 		61C075A92387A091004F5151 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61C075A72387A091004F5151 /* SearchTableViewCell.xib */; };
-		61C075AD2387A6BF004F5151 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C075AC2387A6BF004F5151 /* SearchViewController.swift */; };
 		61C075AF2387B2CD004F5151 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C075AE2387B2CD004F5151 /* Book.swift */; };
 		E6849FE423714DCD00734D1B /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6849FE323714DCD00734D1B /* CustomNavigationBar.swift */; };
 		E6849FE623714DD300734D1B /* elly20160628465420_TP_V.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6849FE523714DD300734D1B /* elly20160628465420_TP_V.jpg */; };
@@ -70,10 +70,10 @@
 		2B38E8DF234B406C00B82C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B38E8EB234B57C900B82C38 /* AddController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddController.swift; sourceTree = "<group>"; };
 		61574102239A1A9C00A14227 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
+		6176AA9F23A34C4200FA98B9 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		617CFBAC2393A1200067C596 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		61C075A62387A091004F5151 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		61C075A72387A091004F5151 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
-		61C075AC2387A6BF004F5151 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		61C075AE2387B2CD004F5151 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		E6849FE323714DCD00734D1B /* CustomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		E6849FE523714DD300734D1B /* elly20160628465420_TP_V.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elly20160628465420_TP_V.jpg; sourceTree = "<group>"; };
@@ -129,9 +129,9 @@
 		2B38E8B8234B406A00B82C38 /* BookLogVer2 */ = {
 			isa = PBXGroup;
 			children = (
+				6176AA9F23A34C4200FA98B9 /* SearchViewController.swift */,
 				61574102239A1A9C00A14227 /* EditViewController.swift */,
 				61C075A62387A091004F5151 /* SearchTableViewCell.swift */,
-				61C075AC2387A6BF004F5151 /* SearchViewController.swift */,
 				61C075A72387A091004F5151 /* SearchTableViewCell.xib */,
 				2B0060A523802A8600FC0DB7 /* ReturnJson.swift */,
 				61C075AE2387B2CD004F5151 /* Book.swift */,
@@ -307,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6176AAA023A34C4200FA98B9 /* SearchViewController.swift in Sources */,
 				E6849FE423714DCD00734D1B /* CustomNavigationBar.swift in Sources */,
 				2B0060A623802A8600FC0DB7 /* ReturnJson.swift in Sources */,
 				2B38E8C0234B406A00B82C38 /* PlaceViewController.swift in Sources */,
@@ -314,7 +315,6 @@
 				61C075A82387A091004F5151 /* SearchTableViewCell.swift in Sources */,
 				61574103239A1A9C00A14227 /* EditViewController.swift in Sources */,
 				E6849FEA23714DE000734D1B /* TitleViewController.swift in Sources */,
-				61C075AD2387A6BF004F5151 /* SearchViewController.swift in Sources */,
 				2B38E8BE234B406A00B82C38 /* FirstViewController.swift in Sources */,
 				2B00609A237E628200FC0DB7 /* CameraViewController.swift in Sources */,
 				2B38E8BA234B406A00B82C38 /* AppDelegate.swift in Sources */,
