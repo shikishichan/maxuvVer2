@@ -42,8 +42,8 @@ class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         load()
         bookData = books.filter({$0.id == bookDataId})[0]
-        label.text = "Title  :  \(bookData.title) \n\nPlace  :  \(bookData.place) \n\nauthor  :  \(bookData.author)"
-        print("detail")
+//        label.text = "Title  :  \(bookData.title) \n\nPlace  :  \(bookData.place) \n\nauthor  :  \(bookData.author)"
+         label.text = "タイトル  :  \(bookData.title) \n\n保管場所  :  \(bookData.place) \n\n著者  :  \(bookData.author)"
         print(bookData.author)
         print(bookData.place)
 

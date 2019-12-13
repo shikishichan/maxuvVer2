@@ -66,7 +66,11 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         let screenSize = UIScreen.main.bounds
         // ここで表示位置を調整
         // xは画面中央、yは画面下部になる様に指定
-        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: screenSize.size.width/2, y: screenSize.size.height, width: 0, height: 0)
+//        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: screenSize.size.width/2, y: screenSize.size.height, width: 0, height: 0)
+        
+        // 左上のボタンの下のちょうどいい位置
+        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: 100, y: 70, width: 0, height: 0)
+        
          
 
         // Present UIAlertController
@@ -85,6 +89,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         self.navigationController?.isNavigationBarHidden = false
         navigationItem.title = "一覧"
         navigationItem.rightBarButtonItem = editButtonItem
+        navigationItem.rightBarButtonItem?.title = "編集"
         
         order = "保管場所順"
         
