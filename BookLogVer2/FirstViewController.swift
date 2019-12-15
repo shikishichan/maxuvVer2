@@ -63,7 +63,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         actionSheet.addAction(action3)
         
         actionSheet.popoverPresentationController?.sourceView = self.view
-        let screenSize = UIScreen.main.bounds
+        //let screenSize = UIScreen.main.bounds
         // ここで表示位置を調整
         // xは画面中央、yは画面下部になる様に指定
 //        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: screenSize.size.width/2, y: screenSize.size.height, width: 0, height: 0)
@@ -215,13 +215,15 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         tableView.reloadData()
     }
     
-    
+      var openSection = Bool()
       @objc func tapSectionHeader(sender: UIGestureRecognizer) {
           if let section = sender.view?.tag {
               if self.openedSections.contains(section) {
                   self.openedSections.remove(section)
+                  openSection = false
               } else {
                   self.openedSections.insert(section)
+                  openSection = true
               }
 
               self.tableView.reloadSections(IndexSet(integer: section), with: .fade)
@@ -274,9 +276,17 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             let view = UITableViewHeaderFooterView()
             return view
         }
+        
+        var sectionImage = UIImage()
+        if openSection {
+            sectionImage = UIImage(named: "arrow_up.png")!
+            
+        }else{
+            sectionImage = UIImage(named: "arrow_down.png")!
+        }
         //let label : UILabel = UILabel()
         let bookNum: String = String("\(bookshelfs[section].numofbook)")
-        let label: String = bookshelfs[section].name + "  (" + bookNum + "冊)"
+        let label: String = "         " + bookshelfs[section].name + "  (" + bookNum + "冊)"
         let view = UITableViewHeaderFooterView()
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
         view.addGestureRecognizer(gesture)
@@ -287,6 +297,11 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         view.textLabel?.font = UIFont.systemFont(ofSize: 20)
         view.textLabel?.textAlignment = .right
         view.textLabel?.text = label
+        
+
+        let sectionImageView = UIImageView(image: sectionImage)
+        sectionImageView.frame = CGRect(x: 10, y: 15, width: 25, height: 20)
+        view.addSubview(sectionImageView)
         //sectionの色、文字サイズ
         return view
       
