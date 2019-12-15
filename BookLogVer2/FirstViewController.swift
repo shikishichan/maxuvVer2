@@ -277,13 +277,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             return view
         }
         
-        var sectionImage = UIImage()
-        if openSection {
-            sectionImage = UIImage(named: "arrow_up.png")!
-            
-        }else{
-            sectionImage = UIImage(named: "arrow_down.png")!
-        }
+        let sectionImage = UIImage(named: openSection ? "arrow_up.png" : "arrow_down.png")!
         //let label : UILabel = UILabel()
         let bookNum: String = String("\(bookshelfs[section].numofbook)")
         let label: String = "         " + bookshelfs[section].name + "  (" + bookNum + "冊)"
