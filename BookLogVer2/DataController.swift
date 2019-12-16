@@ -91,4 +91,48 @@ class DataController: NSObject{
             print("Add Shelf error.")
         }
     }
+    
+    func searchBooks(num:Int, conditionNum:Int16, conditionStr:String) -> [Books]{
+        let context = persistentContainer.viewContext
+        let BooksFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+        if num == 0{
+            BooksFetch.predicate = NSPredicate(format: "id == %D", conditionNum)
+        }else if(num == 1){
+            BooksFetch.predicate = NSPredicate(format: "title_name = %@", conditionStr)
+        }else if(num == 2){
+            BooksFetch.predicate = NSPredicate(format: "place_id = %D", conditionNum)
+        }
+        do {
+            let fetchedBooks = try context.fetch(BooksFetch) as! [Books]
+            return fetchedBooks
+        } catch {
+            fatalError("Failed to fetch Books: \(error)")
+        }
+
+        return []
+    }
+    
+    func whereBook(title:String) -> [BookShelfs]{
+        let context = persistentContainer.viewContext
+        let BooksFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+        BooksFetch.predicate = NSPredicate(format: "title_name = %@", title)
+        var fetchedBooks: [Books] = []
+        do {
+            fetchedBooks = try context.fetch(BooksFetch) as! [Books]
+        } catch {
+            fatalError("Failed to fetch Books: \(error)")
+        }
+        if fetchedBooks.count == 0{
+            return []
+        }
+        let ShelfsFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        ShelfsFetch.predicate = NSPredicate(format: "id = %D", fetchedBooks[0].place_id)
+        var fetchedShelfs: [BookShelfs] = []
+        do {
+            fetchedShelfs = try context.fetch(ShelfsFetch) as! [BookShelfs]
+        } catch {
+            fatalError("Failed to fetch Books: \(error)")
+        }
+        return fetchedShelfs
+    }
 }
