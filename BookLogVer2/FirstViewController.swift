@@ -303,6 +303,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             cell.controlCell(book: books[indexPath.row], order: order)
         }
         cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
+        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
         return cell
      }
      
