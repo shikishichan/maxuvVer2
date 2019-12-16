@@ -23,6 +23,8 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
     var selectedRow = Int()
+    
+    var datacontroll = DataController(){}
 
     @IBOutlet weak var TitleTextField: UITextField!
     @IBOutlet weak var AuthorTextField: UITextField!
@@ -118,6 +120,9 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func load(){
+        //books = datacontroll.fetchBooks()
+        //bookshelfs = datacontroll.fetchShelfs()
+        
         guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
             print("userdefaultsに本棚データが保存されていません")
             //保管場所が存在しない時の処理

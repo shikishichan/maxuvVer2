@@ -11,18 +11,21 @@ import UIKit
 class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
     
     
-    var bookshelfs = [BookShelf]()
+    var bookshelfs = [BookShelfs]()
     let BookShelfKeyVer2 = "shelfkeyver2"
-
+    
+    var datacontroll = DataController(){}
+    
+    var shelfnum: Int16 = 0
     
     @IBOutlet weak var placeTextField: UITextField!
     
     @IBAction func placeAddBotton(_ sender: Any) {
-        let newbookshelf = BookShelf.init(name: placeTextField.text!, numofbook: 0)
-        bookshelfs.append(newbookshelf)
+
+        datacontroll.addShelf(id: shelfnum, name: placeTextField.text!)
         placeTextField.text = ""
-        save(bookshelfs: bookshelfs)
-                        
+
+        load()
         sectionTableView.reloadData()
     }
     
@@ -37,17 +40,11 @@ class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDa
         load()
     }
     
-    func save(bookshelfs:[BookShelf]){
-        let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
-    }
+    
     
     func load(){
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
-            print("userdefaultsに本棚データが保存されていません")
-            return
-        }
-        bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
+        bookshelfs = datacontroll.fetchShelfs()
+        shelfnum = Int16(bookshelfs.count)
     }
     
 
