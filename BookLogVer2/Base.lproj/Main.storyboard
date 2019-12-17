@@ -173,7 +173,7 @@
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gHU-Z1-5V7">
                                 <rect key="frame" x="321" y="516" width="427" height="216"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="保管場所" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Rq-pq-2dN">
                                 <rect key="frame" x="20" y="574" width="360" height="100"/>
@@ -233,7 +233,7 @@
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yAz-aa-7v2">
                                 <rect key="frame" x="0.0" y="411" width="768" height="283"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="本のタイトル" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LG3-00-OrV">
                                 <rect key="frame" x="60" y="110" width="200" height="60"/>
@@ -311,22 +311,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E80-Mh-jFn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1515.625" y="0.0"/>
-        </scene>
-        <!--検索-->
-        <scene sceneID="OLo-Cn-3S2">
-            <objects>
-                <viewController id="bz0-PW-Duo" customClass="SearchViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="xTO-lZ-wAL">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="l9b-zx-FP4"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="検索" image="magnifyingglass" catalog="system" id="Sn5-kd-hMT"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1f5-VD-Do7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="0.0" y="900.58593749999989"/>
         </scene>
         <!--場所の登録-->
         <scene sceneID="wg7-f3-ORb">
@@ -419,7 +403,6 @@
                         <segue destination="s5J-XO-QGq" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="I4W-Qw-mp9" kind="relationship" relationship="viewControllers" id="8RR-CD-kWI"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="qVS-7g-jyj"/>
-                        <segue destination="bz0-PW-Duo" kind="relationship" relationship="viewControllers" id="S1m-nb-x77"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -453,6 +436,5 @@
         <image name="book" catalog="system" width="64" height="52"/>
         <image name="cube.box" catalog="system" width="64" height="62"/>
         <image name="list.bullet" catalog="system" width="64" height="44"/>
-        <image name="magnifyingglass" catalog="system" width="64" height="60"/>
     </resources>
 </document>
