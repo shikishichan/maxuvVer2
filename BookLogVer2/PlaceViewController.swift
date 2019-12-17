@@ -17,6 +17,7 @@ class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var placeTextField: UITextField!
     
+    
     @IBAction func placeAddBotton(_ sender: Any) {
         let newbookshelf = BookShelf.init(name: placeTextField.text!, numofbook: 0)
         bookshelfs.append(newbookshelf)
@@ -25,6 +26,8 @@ class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDa
                         
         sectionTableView.reloadData()
     }
+    
+
     
 
     @IBOutlet weak var sectionTableView: UITableView!

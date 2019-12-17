@@ -29,6 +29,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var order = ""
     var bookId = Int()
     
+    var openSection = Bool()
+    
     @IBOutlet weak var sortSelectButton: UIBarButtonItem!
     @IBAction func sortSelectButton(_ sender: Any) {
         print("hoge")
@@ -180,10 +182,10 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     }
     
-    
+    var num = Int()
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        var num = Int()
-        if order == "保管場所順"{
+                if order == "保管場所順"{
             num = bookshelfs.count
         }else if order == "50音順"{
             num = 1
@@ -201,11 +203,13 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
       
     @IBAction func cellOpenSwitch(_ sender: UISwitch) {
         if sender.isOn {
+            openSection = true
             for i in 0..<bookshelfs.count {
                 self.openedSections.insert(i)
             }
 
         } else {
+            openSection = false
             for i in 0..<bookshelfs.count {
                 if self.openedSections.contains(i) {
                     self.openedSections.remove(i)
@@ -215,7 +219,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         tableView.reloadData()
     }
     
-      var openSection = Bool()
+      
       @objc func tapSectionHeader(sender: UIGestureRecognizer) {
           if let section = sender.view?.tag {
               if self.openedSections.contains(section) {
@@ -249,17 +253,19 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
                 return 0
             }
         }else if order == "50音順"{
-            if self.openedSections.contains(section) {
+            /*if self.openedSections.contains(section) {
                 return books.count
             } else {
                 return 0
-            }
+            }*/
+            return books.count
         }else if order == "著者順"{
-            if self.openedSections.contains(section) {
+            /*if self.openedSections.contains(section) {
                 return books.count
             } else {
                 return 0
-            }
+            }*/
+            return books.count
         }
         
 //          if self.openedSections.contains(section) {
@@ -269,8 +275,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
 //          }
         return 0
        }
-      
-      
+
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?{
         if order != "保管場所順"{
             let view = UITableViewHeaderFooterView()
@@ -285,24 +291,14 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
         view.addGestureRecognizer(gesture)
         view.tag = section
-        
-        //view.contentView.backgroundColor = UIColor.init(red: 205/255, green: 133/255, blue: 63/255, alpha: 100/100)
-        //view.contentView.backgroundColor = UIColor.init(red: 255/255, green: 85/255, blue: 0/255, alpha: 100/100)
-        //view.contentView.backgroundColor = UIColor.init(red: 255/255, green: 140/255, blue: 83/255, alpha: 100/100)
-        //view.contentView.backgroundColor = UIColor.init(red: 39/255, green: 165/255, blue: 184/255, alpha: 100/100)
-        //view.contentView.backgroundColor = UIColor.init(red: 63/255, green: 167/255, blue: 201/255, alpha: 100/100)
-        //view.contentView.backgroundColor = UIColor.init(red: 28/255, green: 84/255, blue: 177/255, alpha: 100/100)
-
         view.contentView.backgroundColor = UIColor.init(red: 240/255, green: 132/255, blue: 26/255, alpha: 100/100)
         
         view.textLabel?.textColor = UIColor.white
-        view.textLabel?.font = UIFont.systemFont(ofSize: 20)
-        view.textLabel?.textAlignment = .right
+        view.textLabel?.font = UIFont.systemFont(ofSize: 25)
         view.textLabel?.text = label
         
-
         let sectionImageView = UIImageView(image: sectionImage)
-        sectionImageView.frame = CGRect(x: 700, y: 15, width: 25, height: 20)
+        sectionImageView.frame = CGRect(x: 600, y: 20, width: 25, height: 20)
         view.addSubview(sectionImageView)
         //sectionの色、文字サイズ
         return view
@@ -319,7 +315,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         }else{
             cell.controlCell(book: books[indexPath.row], order: order)
         }
-        cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
+        cell.textLabel!.font = UIFont(name: "Arial", size: 25)//cellのfont,size
         return cell
      }
      
@@ -406,7 +402,24 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     }
     
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {50}//sectionの高さ
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+            if (num == 1){
+                return 0
+            }else {
+                return 60
+            }
+        }//sectionの高さ
+    
+    
+    //footer
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {5}
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?{
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        return view
+    }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {60}//cellの高さ
     
