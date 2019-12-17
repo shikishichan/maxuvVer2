@@ -5,7 +5,6 @@
 //  Created by kisho shiraishi on 2019/11/15.
 //  Copyright © 2019 kisho shiraishi. All rights reserved.
 //
-
 import UIKit
 import AVFoundation
 import AudioToolbox
@@ -16,6 +15,7 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var captureSession:AVCaptureSession?
     let detectionArea = UIView()
+    var alertController: UIAlertController!
     // 検出エリアのビュー
     let x: CGFloat = 0.05
     let y: CGFloat = 0.3
@@ -47,7 +47,6 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
 
                 captureMetadataOutput.setMetadataObjectsDelegate(self, queue: .main)
                 captureMetadataOutput.metadataObjectTypes = [.code128, .qr, .ean13,  .ean8, .code39] //AVMetadataObject.ObjectType
-
                 captureSession.startRunning()
 
                 videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -103,7 +102,7 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
 
         captureSession?.stopRunning()
-        guard let objects = metadataObjects as? [AVMetadataObject] else { return }
+        let objects = metadataObjects as [AVMetadataObject]
         var detectionString: String? = nil
         let barcodeTypes = [AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.ean13]
         for metadataObject in objects {
@@ -119,21 +118,36 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             guard let value = detectionString else { continue }
             text += "読み込んだ値:\t\(value)"
             text += "\n"
-            guard let isbn = convartISBN(value: value) else { continue }
+            guard let isbn = convartISBN(value: value) else {
+                self.alert_notISBN(alertTitle: "ISBNではありません！", alertMessage: "正しいバーコードを読み込んでください",session: captureSession!)
+                
+                continue
+            }
             text += "ISBN:\t\(isbn)"
             let get_api = GetGoogleApi()
             get_api.searchBook(completion: {returnData in
-                let tab = self.presentingViewController as! UITabBarController
-                let AC = tab.viewControllers![1] as! AddController
-                AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
-                var authors = String()
-                //あとでもっと丁寧に書きたい
-                for i in (returnData.items?[0].volumeInfo?.authors!)!{
-                    authors = authors + i.description
-                }
-                AC.AuthorTextField.text = authors
                 
-                self.dismiss(animated: true, completion: nil)
+                
+                if (returnData.totalItems != 0){
+                    //googleのBookAPIに本の情報があった時
+                    let tab = self.presentingViewController as! UITabBarController
+                    let AC = tab.viewControllers![1] as! AddController
+                    AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+                    var authors = String()
+                    //あとでもっと丁寧に書きたい
+                    for i in (returnData.items?[0].volumeInfo?.authors!)!{
+                        authors = authors + i.description
+                    }
+                    AC.AuthorTextField.text = authors
+                    
+                    self.dismiss(animated: true, completion: nil)
+                }else{
+                    //本の情報がなかった時
+                    self.alert_notfound(alertTitle: "登録情報がありません！！", alertMessage:"手動で入力してください")
+                    
+                }
+                
+                
             }, keyword : isbn)
                         
         }
@@ -166,18 +180,38 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
         let checkdigit = 11 - (sum % 11)
         return String(format: "%lld%@", isbn9, (checkdigit == 10) ? "X" : String(format: "%lld", checkdigit % 11))
     }
+    
+    //本がなかった時の処理
+    func alert_notfound(alertTitle:String, alertMessage:String){
+        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            
+            self.dismiss(animated: true, completion: nil)
+
+        }))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func alert_notISBN(alertTitle:String, alertMessage:String, session:AVCaptureSession){
+        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            session.startRunning()
+        }))
+        
+        present(alertController, animated: true, completion: nil)
+    }
 
 }
     
 
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
     */
-
-
