@@ -13,12 +13,13 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var TitleLabel: UILabel!
     @IBOutlet weak var PlaceLabel: UILabel!
     
-    func controlCell(book:Book, order:String) {
+    func controlCell(book:Books, order:String, datacontroll:DataController) {
+        let place = datacontroll.searchShelf(id: book.place_id)
         self.TitleLabel.text = book.title
         if order == "保管場所順"{
             self.PlaceLabel.text = ""
         }else if order == "50音順"{
-            self.PlaceLabel.text = book.place
+            self.PlaceLabel.text = place[0].name!
         }else if order == "著者順"{
             self.PlaceLabel.text = book.author
         }

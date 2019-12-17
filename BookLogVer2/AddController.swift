@@ -11,14 +11,12 @@ import UIKit
 
 class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var twoDimArray = [[String]]()
     var selectedSection = BookShelfs()
     var alertController: UIAlertController!
     
     var alertTitle = ""
     var alertMessage = ""
     
-    var books = [Books]()
     var bookshelfs = [BookShelfs]()
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
@@ -48,13 +46,9 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             return
         }
         
-        if selectedSection == nil{
-            selectedSection = bookshelfs[0]
-        }
-        
         let wherebook = datacontroll.whereBook(title: TitleTextField.text!)
         
-        if wherebook.count != 0{
+        if !wherebook.isEmpty{
             alertTitle = "警告！\n[\(wherebook.first!.name!)]に「\(TitleTextField.text!)」は既に登録されています。"
             alertMessage = "登録しますか？"
             alert(alertTitle: alertTitle, alertMessage: alertMessage, isEntry: true, isCancel: true)
@@ -106,10 +100,10 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func load(){
-        let bookarray = datacontroll.fetchBooks()
+        let books = datacontroll.fetchBooks(sort: 0)
         bookshelfs = datacontroll.fetchShelfs()
-        if bookarray.count != 0{
-            idnum = bookarray.last!.id + 1
+        if !books.isEmpty{
+            idnum = books.last!.id + 1
         }
     }
     

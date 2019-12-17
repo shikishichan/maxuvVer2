@@ -9,12 +9,12 @@
 import UIKit
 
 class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate{
-    var twoDimArray = [[Book]]()
-    var selectedClass = ""
-    var selectedBook = Book.init(title: "", place: "", author: "", id: 0)
+    var twoDimArray = [[Books]]()
+    var selectedClass = Int16()
+    var selectedBook = Books()
     
-    var books = [Book]()
-    var bookshelfs = [BookShelf]()
+    var books = [Books]()
+    var bookshelfs = [BookShelfs]()
 //    let BookKey = "bookkey"
 //    let BookShelfKey = "shelfkey"
     
@@ -28,6 +28,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     var order = ""
     var bookId = Int()
+    
+    var datacontroll = DataController(){}
     
     @IBOutlet weak var sortSelectButton: UIBarButtonItem!
     @IBAction func sortSelectButton(_ sender: Any) {
@@ -43,14 +45,14 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             (action: UIAlertAction!) -> Void in
             //hogehoge
             self.order = "50音順"
-            self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+            self.books = self.datacontroll.fetchBooks(sort: 1)
             self.tableView.reloadData()
         })
         let action3 = UIAlertAction(title: "著者順", style: .default, handler:{
             (action: UIAlertAction!) -> Void in
             //hogehoge
             self.order = "著者順"
-            self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
+            self.books = self.datacontroll.fetchBooks(sort: 2)
             self.tableView.reloadData()
         })
 
@@ -97,40 +99,26 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    func save(books: [Book], bookshelfs: [BookShelf]) {
-        
-        let bookData = books.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookData, forKey: BookKeyVer2)
-        
-        let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
-    }
-    
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
-        }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
-        
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
-            print("userdefaultsに本棚データが保存されていません")
-            return
-        }
-        bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
+        bookshelfs = datacontroll.fetchShelfs()
         
         twoDimArray.removeAll()
-        for _ in bookshelfs{
-            twoDimArray.append([])
-        }
-        var count = 0
-        for i in bookshelfs{
-            for j in books{
-                if i.name == j.place{
-                    twoDimArray[count].append(j)
-                }
+        if bookshelfs.isEmpty{
+            //保管場所が存在しない時の処理
+            alertTitle = "保管場所が作成されていません"
+            alertMessage = "保管場所を登録してください"
+            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
+                        (action: UIAlertAction!) -> Void in
+                        //OKボタンが押された時の処理
+                        //placeviewに遷移させようかな
+                    }))
+                    present(alertController, animated: true, completion: nil)
+        }else{
+            for i in bookshelfs{
+                let bookarray = datacontroll.searchBooks(num: 2, conditionNum: i.id, conditionStr: "")
+                twoDimArray.append(bookarray)
             }
-            count += 1
         }
     }
     
@@ -158,20 +146,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     override func viewWillAppear(_ animated: Bool) {
         
         load()
-        
-        if bookshelfs.isEmpty{
-            //保管場所が存在しない時の処理
-            alertTitle = "保管場所が作成されていません"
-            alertMessage = "保管場所を登録してください"
-            alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
-                        (action: UIAlertAction!) -> Void in
-                        //OKボタンが押された時の処理
-                        //placeviewに遷移させようかな
-                    }))
-                    present(alertController, animated: true, completion: nil)
-            return
-        }
         
         //load()後は保管場所順になっている
         sort(order: order)
@@ -232,9 +206,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         if order == "保管場所順"{
             //何もしない
         }else if order == "50音順"{
-            self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+            self.books = self.datacontroll.fetchBooks(sort: 1)
         }else if order == "著者順"{
-            self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
+            self.books = self.datacontroll.fetchBooks(sort: 2)
         }
     }
        
@@ -242,7 +216,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
               //return twoDimArray[section].count
         if order == "保管場所順"{
             if self.openedSections.contains(section) {
-                return bookshelfs[section].numofbook
+                return twoDimArray[section].count
             } else {
                 return 0
             }
@@ -275,8 +249,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             return view
         }
         //let label : UILabel = UILabel()
-        let bookNum: String = String("\(bookshelfs[section].numofbook)")
-        let label: String = bookshelfs[section].name + "  (" + bookNum + "冊)"
+        let bookNum: String = String("\(twoDimArray[section].count)")
+        let label: String = bookshelfs[section].name! + "  (" + bookNum + "冊)"
         let view = UITableViewHeaderFooterView()
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
         view.addGestureRecognizer(gesture)
@@ -298,9 +272,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReUseCell", for: indexPath) as! SearchTableViewCell
         
         if order == "保管場所順"{
-            cell.controlCell(book: twoDimArray[indexPath.section][indexPath.row], order: order)
+            cell.controlCell(book: twoDimArray[indexPath.section][indexPath.row], order: order, datacontroll:datacontroll)
         }else{
-            cell.controlCell(book: books[indexPath.row], order: order)
+            cell.controlCell(book: books[indexPath.row], order: order, datacontroll: datacontroll)
         }
         cell.textLabel!.font = UIFont(name: "Arial", size: 20)//cellのfont,size
         return cell
@@ -309,10 +283,10 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if order == "保管場所順"{
-            selectedClass = bookshelfs[indexPath.section].name
+            selectedClass = bookshelfs[indexPath.section].id
             selectedBook = twoDimArray[indexPath.section][indexPath.row]
         }else{
-            selectedClass = books[indexPath.row].place
+            selectedClass = books[indexPath.row].place_id
             selectedBook = books[indexPath.row]
         }
         
@@ -322,7 +296,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let detailVC: DetailViewController = (segue.destination as? DetailViewController)!
 //        detailVC.bookData = selectedBook
-        detailVC.bookDataId = selectedBook.id
+        detailVC.bookDataId = Int(selectedBook.id)
         print(selectedBook.id)
     }
     
@@ -338,14 +312,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         let tmp = twoDimArray[indexPath.section][indexPath.row]
         //dataを消してから
         twoDimArray[indexPath.section].remove(at: indexPath.row)
-
-        //本の数のデクリメント
-        bookshelfs[indexPath.section].numofbook -= 1
         
-        //{$0 == tmp}じゃできなかった、、、
-        let removebookindex = books.firstIndex(where: {$0.title == tmp.title && $0.place == tmp.place})!
-        books.remove(at: removebookindex)
-        save(books: books, bookshelfs: bookshelfs)
+        datacontroll.deleteBook(id: tmp.id)
 
         //tableViewCellの削除
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -365,26 +333,28 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         _ tableView: UITableView,
         moveRowAt sourceIndexPath: IndexPath,
         to destinationIndexPath: IndexPath) {
-        
+        let tmps = twoDimArray[sourceIndexPath.section][sourceIndexPath.row]
+        let tmpd = twoDimArray[destinationIndexPath.section][destinationIndexPath.row]
         //同一section内ならswap, 別のsectionならinsert&remove
         if(sourceIndexPath.section == destinationIndexPath.section){
-            twoDimArray[sourceIndexPath.section].swapAt(sourceIndexPath.row, destinationIndexPath.row)
+            datacontroll.changeBook(id: tmps.id, title: tmps.title!, place: tmps.place_id, author: tmps.author!, number: tmpd.number)
+            datacontroll.changeBook(id: tmpd.id, title: tmpd.title!, place: tmpd.place_id, author: tmpd.author!, number: tmps.number)
         }else{
-            twoDimArray[sourceIndexPath.section][sourceIndexPath.row].place = bookshelfs[destinationIndexPath.section].name
-            twoDimArray[destinationIndexPath.section].insert(twoDimArray[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
-                twoDimArray[sourceIndexPath.section].remove(at: sourceIndexPath.row)
-            bookshelfs[sourceIndexPath.section].numofbook -= 1
-            bookshelfs[destinationIndexPath.section].numofbook += 1
-        }
-        
-        books = []
-        for i in twoDimArray{
-            for j in i{
-                books.append(j)
+            for i in twoDimArray[destinationIndexPath.section]{
+                if i.number >= tmpd.number{
+                    datacontroll.changeBook(id: i.id, title: i.title!, place: i.place_id, author: i.author!, number: i.number+1)
+                }
+            }
+            datacontroll.changeBook(id: tmps.id, title: tmps.title!, place: tmpd.place_id, author: tmps.author!, number: tmpd.number)
+            twoDimArray[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+            for j in twoDimArray[sourceIndexPath.section]{
+                if j.number >= tmps.number{
+                    datacontroll.changeBook(id: j.id, title: j.title!, place: j.place_id, author: j.author!, number: j.number-1)
+                }
             }
         }
+        load()
         
-        save(books: books, bookshelfs: bookshelfs)
         tableView.reloadData()
     }
     

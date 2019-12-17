@@ -36,10 +36,14 @@ class DataController: NSObject{
         return bookshelfs
     }
     
-    func fetchBooks() -> [Books] {
+    func fetchBooks(sort: Int) -> [Books] {
         let context = persistentContainer.viewContext
         let BooksFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
-
+        if sort == 1{
+            BooksFetch.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        }else if(sort == 2){
+            BooksFetch.sortDescriptors = [NSSortDescriptor(key: "author", ascending: true)]
+        }
         do {
             let fetchedBooks = try context.fetch(BooksFetch) as! [Books]
             return fetchedBooks
@@ -101,6 +105,7 @@ class DataController: NSObject{
             BooksFetch.predicate = NSPredicate(format: "title_name = %@", conditionStr)
         }else if(num == 2){
             BooksFetch.predicate = NSPredicate(format: "place_id = %D", conditionNum)
+            BooksFetch.sortDescriptors = [NSSortDescriptor(key: "number", ascending: true)]
         }
         do {
             let fetchedBooks = try context.fetch(BooksFetch) as! [Books]
@@ -110,6 +115,20 @@ class DataController: NSObject{
         }
 
         return []
+    }
+    
+    func searchShelf(id: Int16) -> [BookShelfs]{
+        let context = persistentContainer.viewContext
+        let ShelfsFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        ShelfsFetch.predicate = NSPredicate(format: "id = %D", id)
+        do {
+            let fetchedShelfs = try context.fetch(ShelfsFetch) as! [BookShelfs]
+            return fetchedShelfs
+        } catch {
+            fatalError("Failed to fetch Books: \(error)")
+        }
+        return []
+            
     }
     
     func whereBook(title:String) -> [BookShelfs]{
@@ -127,12 +146,55 @@ class DataController: NSObject{
         }
         let ShelfsFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
         ShelfsFetch.predicate = NSPredicate(format: "id = %D", fetchedBooks[0].place_id)
-        var fetchedShelfs: [BookShelfs] = []
+        var fetchedShelfs: [BookShelfs]
         do {
             fetchedShelfs = try context.fetch(ShelfsFetch) as! [BookShelfs]
         } catch {
             fatalError("Failed to fetch Books: \(error)")
         }
         return fetchedShelfs
+    }
+    
+    func changeBook(id:Int16, title:String, place:Int16, author:String, number:Int16){
+        let context = persistentContainer.viewContext
+        let BooksFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+        BooksFetch.predicate = NSPredicate(format: "id == %D", id)
+        var change: [Books]
+        do {
+            change = try context.fetch(BooksFetch) as! [Books]
+        } catch {
+            fatalError("Failed to fetch Books: \(error)")
+        }
+        change[0].id = id
+        change[0].title = title
+        change[0].place_id = place
+        change[0].author = author
+        change[0].number = number
+        do{
+              try context.save()
+        }catch{
+              print(error)
+        }
+    }
+    
+    
+    func deleteBook(id:Int16){
+        let context = persistentContainer.viewContext
+        let BooksFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+        BooksFetch.predicate = NSPredicate(format: "id == %D", id)
+        var deletebook: [Books]
+        do {
+            deletebook = try context.fetch(BooksFetch) as! [Books]
+        } catch {
+            fatalError("Failed to fetch Books: \(error)")
+        }
+        if !deletebook.isEmpty{
+            context.delete(deletebook[0])
+        }
+        do{
+              try context.save()
+        }catch{
+              print(error)
+        }
     }
 }
