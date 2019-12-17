@@ -280,13 +280,21 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         let sectionImage = UIImage(named: openSection ? "arrow_up.png" : "arrow_down.png")!
         //let label : UILabel = UILabel()
         let bookNum: String = String("\(bookshelfs[section].numofbook)")
-        let label: String = "         " + bookshelfs[section].name + "  (" + bookNum + "冊)"
+        let label: String = "   " + bookshelfs[section].name + "  (" + bookNum + "冊)"
         let view = UITableViewHeaderFooterView()
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
         view.addGestureRecognizer(gesture)
         view.tag = section
         
-        view.contentView.backgroundColor = UIColor.init(red: 205/255, green: 133/255, blue: 63/255, alpha: 100/100)
+        //view.contentView.backgroundColor = UIColor.init(red: 205/255, green: 133/255, blue: 63/255, alpha: 100/100)
+        //view.contentView.backgroundColor = UIColor.init(red: 255/255, green: 85/255, blue: 0/255, alpha: 100/100)
+        //view.contentView.backgroundColor = UIColor.init(red: 255/255, green: 140/255, blue: 83/255, alpha: 100/100)
+        //view.contentView.backgroundColor = UIColor.init(red: 39/255, green: 165/255, blue: 184/255, alpha: 100/100)
+        //view.contentView.backgroundColor = UIColor.init(red: 63/255, green: 167/255, blue: 201/255, alpha: 100/100)
+        //view.contentView.backgroundColor = UIColor.init(red: 28/255, green: 84/255, blue: 177/255, alpha: 100/100)
+
+        view.contentView.backgroundColor = UIColor.init(red: 240/255, green: 132/255, blue: 26/255, alpha: 100/100)
+        
         view.textLabel?.textColor = UIColor.white
         view.textLabel?.font = UIFont.systemFont(ofSize: 20)
         view.textLabel?.textAlignment = .right
@@ -294,7 +302,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         
 
         let sectionImageView = UIImageView(image: sectionImage)
-        sectionImageView.frame = CGRect(x: 10, y: 15, width: 25, height: 20)
+        sectionImageView.frame = CGRect(x: 700, y: 15, width: 25, height: 20)
         view.addSubview(sectionImageView)
         //sectionの色、文字サイズ
         return view

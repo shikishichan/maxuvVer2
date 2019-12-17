@@ -64,7 +64,7 @@ class PlaceViewController: UIViewController,  UITableViewDelegate, UITableViewDa
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "sectionCell", for: indexPath)
         // セルに表示する値を設定する
         cell.textLabel!.text = bookshelfs[indexPath.row].name
-        //cell.textLabel!.font = UIFont(name: "Arial", size: 20)
+        cell.textLabel!.font = UIFont(name: "Arial", size: 25)
         
         return cell
     }

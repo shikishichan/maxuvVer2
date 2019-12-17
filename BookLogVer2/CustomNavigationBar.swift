@@ -32,7 +32,7 @@ class CustomNavigationBar: UINavigationBar{
             var stringFromClass = NSStringFromClass(subview.classForCoder)
             if stringFromClass.contains("BarBackground") {
                 subview.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: customHeight)
-                subview.backgroundColor = .brown
+                //subview.backgroundColor = .brown
 
             }
 
