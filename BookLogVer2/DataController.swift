@@ -46,6 +46,9 @@ class DataController: NSObject{
         }
         do {
             let fetchedBooks = try context.fetch(BooksFetch) as! [Books]
+            for i in fetchedBooks{
+                print(i.id)
+            }
             return fetchedBooks
         } catch {
             fatalError("Failed to fetch Books: \(error)")
@@ -59,11 +62,13 @@ class DataController: NSObject{
         let ShelfsFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
         do {
             let fetchedShelfs = try context.fetch(ShelfsFetch) as! [BookShelfs]
+            for i in fetchedShelfs{
+                print(i.id)
+            }
             return fetchedShelfs
         } catch {
             fatalError("Failed to fetch Books: \(error)")
         }
-
         return []
     }
     
@@ -102,7 +107,7 @@ class DataController: NSObject{
         if num == 0{
             BooksFetch.predicate = NSPredicate(format: "id == %D", conditionNum)
         }else if(num == 1){
-            BooksFetch.predicate = NSPredicate(format: "title_name = %@", conditionStr)
+            BooksFetch.predicate = NSPredicate(format: "title = %@", conditionStr)
         }else if(num == 2){
             BooksFetch.predicate = NSPredicate(format: "place_id = %D", conditionNum)
             BooksFetch.sortDescriptors = [NSSortDescriptor(key: "number", ascending: true)]
@@ -134,7 +139,7 @@ class DataController: NSObject{
     func whereBook(title:String) -> [BookShelfs]{
         let context = persistentContainer.viewContext
         let BooksFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
-        BooksFetch.predicate = NSPredicate(format: "title_name = %@", title)
+        BooksFetch.predicate = NSPredicate(format: "title = %@", title)
         var fetchedBooks: [Books] = []
         do {
             fetchedBooks = try context.fetch(BooksFetch) as! [Books]
@@ -190,6 +195,44 @@ class DataController: NSObject{
         }
         if !deletebook.isEmpty{
             context.delete(deletebook[0])
+        }
+        do{
+              try context.save()
+        }catch{
+              print(error)
+        }
+    }
+    
+    func AlldeleteBook(){
+        let context = persistentContainer.viewContext
+        let BooksFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Books")
+        var deletebook: [Books]
+        do {
+            deletebook = try context.fetch(BooksFetch) as! [Books]
+        } catch {
+            fatalError("Failed to fetch Books: \(error)")
+        }
+        for i in deletebook{
+            context.delete(i)
+        }
+        do{
+              try context.save()
+        }catch{
+              print(error)
+        }
+    }
+    
+    func AlldeleteShelf(){
+        let context = persistentContainer.viewContext
+        let BooksFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "BookShelfs")
+        var deletebook: [BookShelfs]
+        do {
+            deletebook = try context.fetch(BooksFetch) as! [BookShelfs]
+        } catch {
+            fatalError("Failed to fetch Books: \(error)")
+        }
+        for i in deletebook{
+            context.delete(i)
         }
         do{
               try context.save()

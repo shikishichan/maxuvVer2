@@ -95,11 +95,11 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         
         order = "保管場所順"
         
-        load()
-        
     }
     
     func load(){
+        //datacontroll.AlldeleteBook()
+        //datacontroll.AlldeleteShelf()
         bookshelfs = datacontroll.fetchShelfs()
         
         twoDimArray.removeAll()
@@ -285,6 +285,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         if order == "保管場所順"{
             selectedClass = bookshelfs[indexPath.section].id
             selectedBook = twoDimArray[indexPath.section][indexPath.row]
+            datacontroll.changeBook(id: selectedBook.id, title: "test2", place: 0, author: "atest2", number: 1)
+            load()
         }else{
             selectedClass = books[indexPath.row].place_id
             selectedBook = books[indexPath.row]
@@ -296,7 +298,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let detailVC: DetailViewController = (segue.destination as? DetailViewController)!
 //        detailVC.bookData = selectedBook
-        detailVC.bookDataId = Int(selectedBook.id)
+        detailVC.bookData = selectedBook
         print(selectedBook.id)
     }
     

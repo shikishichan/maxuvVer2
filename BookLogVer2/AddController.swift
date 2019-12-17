@@ -96,7 +96,6 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         sectionSelect.delegate = self
         sectionSelect.dataSource = self
         
-        load()
     }
     
     func load(){
@@ -104,6 +103,9 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         bookshelfs = datacontroll.fetchShelfs()
         if !books.isEmpty{
             idnum = books.last!.id + 1
+        }
+        if !bookshelfs.isEmpty{
+            selectedSection = bookshelfs[0]
         }
     }
     

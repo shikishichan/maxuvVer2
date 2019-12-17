@@ -10,13 +10,14 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    var bookData = Book.init(title: "", place: "", author: "", id: 0)
-    var bookDataId = Int()
+    var bookData = Books()
+    var shelfData = [BookShelfs]()
     
-    var books = [Book]()
-    var bookshelfs = [BookShelf]()
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
+
+    
+    var datacontroll = DataController(){}
     
     @IBOutlet weak var label: UILabel!
     @IBAction func toEdit(_ sender: Any) {
@@ -27,7 +28,8 @@ class DetailViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let EditVC: EditViewController = (segue.destination as? EditViewController)!
 //        EditVC.recieveData = bookData
-        EditVC.recieveDataId = bookDataId
+        EditVC.recieveData = bookData
+        EditVC.recieveShelf = shelfData[0]
     }
     
     override func viewDidLoad() {
@@ -41,20 +43,14 @@ class DetailViewController: UIViewController {
         
         super.viewWillAppear(animated)
         load()
-        bookData = books.filter({$0.id == bookDataId})[0]
+        shelfData = datacontroll.searchShelf(id: bookData.place_id)
+        
 //        label.text = "Title  :  \(bookData.title) \n\nPlace  :  \(bookData.place) \n\nauthor  :  \(bookData.author)"
-         label.text = "タイトル  :  \(bookData.title) \n\n保管場所  :  \(bookData.place) \n\n著者  :  \(bookData.author)"
-        print(bookData.author)
-        print(bookData.place)
+        label.text = "タイトル  :  \(bookData.title!) \n\n保管場所  :  \(shelfData[0].name!) \n\n著者  :  \(bookData.author!)"
 
     }
     
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
-        }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
     }
     
 
