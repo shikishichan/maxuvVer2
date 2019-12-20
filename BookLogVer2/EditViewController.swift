@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -22,18 +23,21 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     @IBOutlet weak var authorEdit: UITextField!
 //    @IBOutlet weak var placeEdit: UITextField!
     
-    var selectedSection = String()
+    var selectedSection = BookShelfs()
     var selectedRow = Int()
     
-    var recieveData = Book.init(title: "", place: "", author: "", id: 0)
+    var recieveData = Books()
     var recieveDataId = Int()
     
-    var returnData = Book.init(title: "", place: "", author: "", id: 0)
+    var returnData = Books()
     
-    var books = [Book]()
-    var bookshelfs = [BookShelf]()
+    var books = [Books]()
+    var bookshelfs = [BookShelfs]()
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
+    
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var Booknum: Int16 = 0
     
     @IBOutlet weak var sectionPicker: UIPickerView!
     
@@ -45,57 +49,69 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         sectionPicker.dataSource = self
         
         load()
-        
-        recieveData = books.filter({$0.id == recieveDataId})[0]
 
         titleEdit.text = recieveData.title
 //        placeEdit.text = recieveData.place
-        selectedSection = recieveData.place
+        selectedSection = recieveData.bookshelfs!
         authorEdit.text = recieveData.author
         // pickerの初期値を設定したかった
 //        sectionPicker.selectRow(<#T##row: Int##Int#>, inComponent: <#T##Int#>, animated: <#T##Bool#>)
     }
     
     @IBAction func saveButton(_ sender: Any) {
-        returnData = Book.init(title: titleEdit.text!, place: selectedSection, author: authorEdit.text!, id: recieveDataId)
+        let numRequest:NSFetchRequest<Books> = Books.fetchRequest()
+        numRequest.predicate = NSPredicate(format:"bookshelfs.name == %@",selectedSection.name!)
+        let numData = try! context.fetch(numRequest)
+        changeBook(id: recieveData.id, title: titleEdit.text!, author: authorEdit.text!, number: Int16(numData.count), shelf: selectedSection)
         
-        books[recieveDataId] = returnData
-        
-        save(books: books)
+        if selectedSection != recieveData.bookshelfs!{
+            let justSourRequest:NSFetchRequest<Books> = Books.fetchRequest()
+            justSourRequest.predicate = NSPredicate(format:"bookshelfs.name == %@ AND number > %D",recieveData.bookshelfs!,recieveData.number)
+            books = try! context.fetch(justSourRequest)
+            if(!books.isEmpty){
+                for i in books{
+                    changeBook(id: i.id, title:i.title!, author:i.author!, number: i.number-1, shelf: i.bookshelfs!)
+                }
+            }
+            let numRequest:NSFetchRequest<Books> = Books.fetchRequest()
+            numRequest.predicate = NSPredicate(format:"bookshelfs.name == %@",selectedSection.name!)
+            let numData = try! context.fetch(numRequest)
+            changeBook(id: recieveData.id, title: titleEdit.text!, author: authorEdit.text!, number: Int16(numData.count), shelf: selectedSection)
+        }else{
+            changeBook(id: recieveData.id, title: titleEdit.text!, author: authorEdit.text!, number: recieveData.id, shelf: selectedSection)
+        }
+        print(selectedSection)
         
         let DVC: DetailViewController = DetailViewController()
-        DVC.bookData = returnData
-        print("edit")
-        print("\(books[recieveDataId].place),\(books[recieveDataId].author)")
-
+        DVC.bookDataid = recieveData.id
+        
     }
     
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
+        do {
+            let shelfRequest: NSFetchRequest<BookShelfs> = BookShelfs.fetchRequest()
+            bookshelfs = try context.fetch(shelfRequest)
+        } catch {
+            print("Error")
         }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
         
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
-            print("userdefaultsに本棚データが保存されていません")
-            return
-        }
-        bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
     }
     
-    func save(books: [Book]) {
-        
-        let bookData = books.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookData, forKey: BookKeyVer2)
-        
-        //保管場所変更時のnumofbookの更新
-        for (index, element) in bookshelfs.enumerated(){
-            bookshelfs[index].numofbook = books.filter({$0.place == element.name}).count
+    func changeBook(id:Int16, title:String, author:String, number:Int16, shelf:BookShelfs){
+        let changeRequest:NSFetchRequest<Books> = Books.fetchRequest()
+        changeRequest.predicate = NSPredicate(format:"id = %D",id)
+        let changeData = try! context.fetch(changeRequest)
+        if(!changeData.isEmpty){
+            changeData[0].title! = title
+            changeData[0].author! = author
+            changeData[0].number = number
+            changeData[0].bookshelfs! = shelf
+            do{
+                try context.save()
+            }catch{
+                print(error)
+            }
         }
-        
-        let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
     }
     
     // UIPickerViewの最初の表示
@@ -110,7 +126,7 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                     didSelectRow row: Int,
                     inComponent component: Int) {
         
-        selectedSection = bookshelfs[row].name
+        selectedSection = bookshelfs[row]
         selectedRow = row
     }
 

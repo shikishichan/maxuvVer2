@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import CoreData
 
 class DetailViewController: UIViewController {
     
-    var bookData = Book.init(title: "", place: "", author: "", id: 0)
-    var bookDataId = Int()
+    var bookData = Books()
+    var bookDataid = Int16()
     
-    var books = [Book]()
-    var bookshelfs = [BookShelf]()
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
+    
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     @IBOutlet weak var label: UILabel!
     @IBAction func toEdit(_ sender: Any) {
@@ -27,7 +28,7 @@ class DetailViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let EditVC: EditViewController = (segue.destination as? EditViewController)!
 //        EditVC.recieveData = bookData
-        EditVC.recieveDataId = bookDataId
+        EditVC.recieveData = bookData
     }
     
     override func viewDidLoad() {
@@ -40,22 +41,17 @@ class DetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
-        load()
-        bookData = books.filter({$0.id == bookDataId})[0]
+        
+        let changeBookRequest:NSFetchRequest<Books> = Books.fetchRequest()
+        changeBookRequest.predicate = NSPredicate(format:"id = %D",bookDataid)
+        let changeBookData = try! context.fetch(changeBookRequest)
+        if(!changeBookData.isEmpty){
+            bookData = changeBookData[0]
+        }
+        print(bookData)
 //        label.text = "Title  :  \(bookData.title) \n\nPlace  :  \(bookData.place) \n\nauthor  :  \(bookData.author)"
-         label.text = "タイトル  :  \(bookData.title) \n\n保管場所  :  \(bookData.place) \n\n著者  :  \(bookData.author)"
-        print(bookData.author)
-        print(bookData.place)
+        label.text = "タイトル  :  \(bookData.title!) \n\n保管場所  :  \(bookData.bookshelfs!.name!) \n\n著者  :  \(bookData.author!)"
 
     }
-    
-    func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
-        }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
-    }
-    
 
 }

@@ -7,22 +7,25 @@
 //
 
 import UIKit
+import CoreData
 
 
 class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var twoDimArray = [[String]]()
-    var selectedSection = ""
+    var selectedSection = BookShelfs()
     var alertController: UIAlertController!
     
     var alertTitle = ""
     var alertMessage = ""
     
-    var books = [Book]()
-    var bookshelfs = [BookShelf]()
+    var books = [Books]()
+    var bookshelfs = [BookShelfs]()
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
-    var selectedRow = Int()
+    
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var wherelist = [Books]()
+    var id: Int16 = 0
 
     @IBOutlet weak var TitleTextField: UITextField!
     @IBOutlet weak var AuthorTextField: UITextField!
@@ -45,19 +48,25 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             return
         }
         
-        if selectedSection == ""{
-            selectedSection = bookshelfs[0].name
+        do {
+            let whereRequest: NSFetchRequest<Books> = Books.fetchRequest()
+            whereRequest.predicate = NSPredicate(format: "title == %@",TitleTextField.text!)
+            wherelist = try context.fetch(whereRequest)
+        } catch {
+            print("Error")
         }
         
-        if books.filter({$0.title == TitleTextField.text!}).count > 0{
-            let daburiplace = books.filter({$0.title == TitleTextField.text!})[0].place
+        print(selectedSection)
+        
+        if !wherelist.isEmpty{
+            let daburiplace = books[0].bookshelfs!
             //ダブりがあった時
-            alertTitle = "警告！\n[\(daburiplace)]に「\(TitleTextField.text!)」は既に登録されています。"
+            alertTitle = "警告！\n[\(daburiplace.name!)]に「\(TitleTextField.text!)」は既に登録されています。"
             alertMessage = "登録しますか？"
             alert(alertTitle: alertTitle, alertMessage: alertMessage, isEntry: true, isCancel: true)
             return
         }
-        touroku(title: TitleTextField.text!, place: selectedSection, author: AuthorTextField.text!)
+        touroku(id:self.id, title: self.TitleTextField.text!, shelf: self.selectedSection, author: self.AuthorTextField.text!)
     }
     
     func alert(alertTitle:String, alertMessage:String, isEntry:Bool, isCancel:Bool){
@@ -66,7 +75,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             (action: UIAlertAction!) -> Void in
             //OKボタンが押された時の処理
             if isEntry{
-                self.touroku(title: self.TitleTextField.text!, place: self.selectedSection, author: self.AuthorTextField.text!)
+                self.touroku(id:self.id, title: self.TitleTextField.text!, shelf: self.selectedSection, author: self.AuthorTextField.text!)
             }
         }))
         if isCancel{
@@ -80,18 +89,21 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         present(alertController, animated: true, completion: nil)
     }
     
-    func touroku(title:String, place:String, author:String) {
-        var newId = Int()
-        if(books.count == 0){
-            newId = 0
-        }else{
-            newId = books.last!.id+1
-        }
-        books.append(Book.init(title: title, place: place, author: author, id: newId))
-        bookshelfs[selectedRow].numofbook += 1
-        save(books: books, bookshelfs: bookshelfs)
+    func touroku(id:Int16, title:String, shelf:BookShelfs, author:String) {
+        let number = shelf.books!.count
+        let bookObject = Books(context: context)
+        bookObject.id = id
+        bookObject.title = title
+        bookObject.author = author
+        bookObject.number = Int16(number)
+        bookObject.bookshelfs = shelf
+
+        //保存する
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        
         TitleTextField.text = ""
         AuthorTextField.text = ""
+        load()
     }
     
     @IBOutlet weak var sectionLabel: UILabel!
@@ -106,20 +118,31 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         sectionSelect.dataSource = self
         
         load()
-    }
-    
-    func save(books: [Book], bookshelfs: [BookShelf]) {
-        
-        let bookData = books.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookData, forKey: BookKeyVer2)
-        
-        let bookShelfData = bookshelfs.map { try? JSONEncoder().encode($0) }
-        UserDefaults.standard.set(bookShelfData, forKey: BookShelfKeyVer2)
+        if !bookshelfs.isEmpty{
+            selectedSection = bookshelfs[0]
+        }
+        for i in books{
+            print(i)
+        }
+        for j in bookshelfs{
+            print(j)
+        }
     }
     
     func load(){
-        guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
-            print("userdefaultsに本棚データが保存されていません")
+        do {
+            let shelfRequest: NSFetchRequest<BookShelfs> = BookShelfs.fetchRequest()
+            bookshelfs = try context.fetch(shelfRequest)
+        } catch {
+            print("Error")
+        }
+        do {
+            let bookRequest: NSFetchRequest<Books> = Books.fetchRequest()
+            books = try context.fetch(bookRequest)
+        } catch {
+            print("Error")
+        }
+        if bookshelfs.isEmpty{
             //保管場所が存在しない時の処理
             alertTitle = "保管場所が作成されていません"
             alertMessage = "保管場所を登録してください"
@@ -132,14 +155,12 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             present(alertController, animated: true, completion: nil)
             return
         }
-        
-        bookshelfs = encodedBookShelfData.map { try! JSONDecoder().decode(BookShelf.self, from: $0) }
-        
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
-            print("userdefaultsに本データが保存されていません")
-            return
+        if !books.isEmpty{
+            id = books.last!.id + 1
         }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
+        print("-----------------")
+        print(books)
+        print("-----------------")
     }
     
     //表示時のデータ更新
@@ -171,8 +192,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
                     didSelectRow row: Int,
                     inComponent component: Int) {
         
-        selectedSection = bookshelfs[row].name
-        selectedRow = row
+        selectedSection = bookshelfs[row]
     }
         
     @IBAction func camera(_ sender: Any) {
