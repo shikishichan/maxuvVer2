@@ -153,10 +153,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         //渡された文字列が空の場合は全てを表示
                 book_list = books
             }
-    //        order = "50音順"
         //tableViewを再読み込みする
-            tableView.reloadData()
-            }
+        tableView.reloadData()
+    }
     
     func save(books: [Book], bookshelfs: [BookShelf]) {
         
@@ -168,11 +167,12 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     }
     
     func load(){
-        guard let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] else {
+        if let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] {
+            books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
+        }else{
             print("userdefaultsに本データが保存されていません")
-            return
         }
-        books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
+        
         
         guard let encodedBookShelfData = UserDefaults.standard.array(forKey: BookShelfKeyVer2) as? [Data] else {
             print("userdefaultsに本棚データが保存されていません")
@@ -225,7 +225,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var num = Int()
 
     func numberOfSections(in tableView: UITableView) -> Int {
-                if order == "保管場所順"{
+        if order == "保管場所順"{
             num = bookshelfs.count
         }else if order == "50音順"{
             num = 1
@@ -294,35 +294,19 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
                 return 0
             }
         }else if order == "50音順"{
-            /*if self.openedSections.contains(section) {
-                return books.count
-            } else {
-                return 0
-            }*/
             return book_list.count
         }else if order == "著者順"{
-            /*if self.openedSections.contains(section) {
-                return books.count
-            } else {
-                return 0
-            }*/
             return book_list.count
         }
-        
-//          if self.openedSections.contains(section) {
-//              return bookshelfs[section].numofbook
-//          } else {
-//              return 0
-//          }
         return 0
        }
 
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?{
-        if order != "保管場所順"{
-            let view = UITableViewHeaderFooterView()
-            return view
-        }
+//        if order != "保管場所順"{
+//            let view = UITableViewHeaderFooterView()
+//            return view
+//        }
         
         let sectionImage = UIImage(named: openSection ? "arrow_up.png" : "arrow_down.png")!
         //let label : UILabel = UILabel()
@@ -337,6 +321,12 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         view.textLabel?.textColor = UIColor.white
         view.textLabel?.font = UIFont.systemFont(ofSize: 25)
         view.textLabel?.text = label
+        
+        if order == "保管場所順"{
+            view.textLabel?.text = label
+        }else{
+            view.textLabel?.text = order
+        }
         
         let sectionImageView = UIImageView(image: sectionImage)
         sectionImageView.frame = CGRect(x: 600, y: 20, width: 25, height: 20)
@@ -443,12 +433,13 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            if (num == 1){
-                return 0
-            }else {
-                return 60
-            }
-        }//sectionの高さ
+//            if (num == 1){
+//                return 0
+//            }else {
+//                return 60
+//            }
+        return 60
+    }//sectionの高さ
     
     
     //footer
