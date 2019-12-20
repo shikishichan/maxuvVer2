@@ -128,9 +128,11 @@ self.myTableView.contentOffset = CGPoint(x: 0, y: -self.topSafeAreaHeight)
         if searchText != "" {
             searchResult = items.filter { item in
                 if searchCategory == "タイトル"{
-                    return item.title.contains(searchText)
+                    //return item.title.contains(searchText)
+                    return item.title.lowercased().contains(searchText)
                 }else if searchCategory == "著者"{
-                    return item.author.contains(searchText)
+                    //return item.author.contains(searchText)
+                    return item.author.lowercased().contains(searchText)
                 }else{
                     return true
                 }

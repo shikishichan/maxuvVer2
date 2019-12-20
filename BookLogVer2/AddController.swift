@@ -45,6 +45,11 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             return
         }
         
+        if AuthorTextField.text == ""{
+            alert(alertTitle: "著者が入力されていません", alertMessage: "もう一度入力してください", isEntry: false, isCancel: false)
+            return
+        }
+        
         if selectedSection == ""{
             selectedSection = bookshelfs[0].name
         }
