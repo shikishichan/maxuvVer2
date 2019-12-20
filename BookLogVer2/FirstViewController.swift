@@ -92,7 +92,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         navigationItem.title = "一覧"
         navigationItem.rightBarButtonItem = editButtonItem
         navigationItem.rightBarButtonItem?.title = "編集"
-        
+       
         order = "保管場所順"
         
         load()
@@ -159,6 +159,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     //表示時のデータ更新
     override func viewWillAppear(_ animated: Bool) {
         
+         //UILabel.appearance().font = UIFont(name: "Senobi-Gothic-Regular" , size: 20)
+        
         load()
         
         if bookshelfs.isEmpty{
@@ -224,10 +226,10 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
           if let section = sender.view?.tag {
               if self.openedSections.contains(section) {
                   self.openedSections.remove(section)
-                  openSection = false
+                  //openSection = false
               } else {
                   self.openedSections.insert(section)
-                  openSection = true
+                  //openSection = true
               }
 
               self.tableView.reloadSections(IndexSet(integer: section), with: .fade)
@@ -283,23 +285,26 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             return view
         }
         
-        let sectionImage = UIImage(named: openSection ? "arrow_up.png" : "arrow_down.png")!
-        //let label : UILabel = UILabel()
+        //let sectionImage = UIImage(named: openSection ? "arrow_up.png" : "arrow_down.png")!
+        let sectionImage = UIImage(named: "arrow_down.png")
+        
         let bookNum: String = String("\(bookshelfs[section].numofbook)")
-        let label: String = "   " + bookshelfs[section].name + "  (" + bookNum + "冊)"
+        
         let view = UITableViewHeaderFooterView()
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
-        view.addGestureRecognizer(gesture)
+        
+         let label: String = "   " + bookshelfs[section].name + "  (" + bookNum + "冊)"
+         view.addGestureRecognizer(gesture)
         view.tag = section
         view.contentView.backgroundColor = UIColor.init(red: 240/255, green: 132/255, blue: 26/255, alpha: 100/100)
-        
-        view.textLabel?.textColor = UIColor.white
-        view.textLabel?.font = UIFont.systemFont(ofSize: 25)
         view.textLabel?.text = label
+        view.textLabel?.textColor = UIColor.white
+       // view.textLabel!.font = UIFont(name: "Senobi-Gothic-Regular" , size: 30)
         
         let sectionImageView = UIImageView(image: sectionImage)
         sectionImageView.frame = CGRect(x: 600, y: 20, width: 25, height: 20)
         view.addSubview(sectionImageView)
+        
         //sectionの色、文字サイズ
         return view
       
@@ -403,11 +408,11 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            if (num == 1){
+            /*if (num == 1){
                 return 0
-            }else {
+            }else {*/
                 return 60
-            }
+            //}
         }//sectionの高さ
     
     

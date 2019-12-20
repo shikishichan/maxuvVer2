@@ -9,9 +9,9 @@
 import UIKit
 
 
-class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class AddController: UIViewController{
     
-    var twoDimArray = [[String]]()
+   /* var twoDimArray = [[String]]()
     var selectedSection = ""
     var alertController: UIAlertController!
     
@@ -25,10 +25,10 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     var selectedRow = Int()
 
     @IBOutlet weak var TitleTextField: UITextField!
-    @IBOutlet weak var AuthorTextField: UITextField!
+    @IBOutlet weak var AuthorTextField: UITextField!*/
     
     
-    @IBAction func TodoAddButton(_ sender: Any) {
+   /* @IBAction func TodoAddButton(_ sender: Any) {
         if bookshelfs.isEmpty{
             //保管場所が存在しない時の処理
             alertTitle = "保管場所が作成されていません"
@@ -92,21 +92,26 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         save(books: books, bookshelfs: bookshelfs)
         TitleTextField.text = ""
         AuthorTextField.text = ""
-    }
+    }*/
     
-    @IBOutlet weak var sectionLabel: UILabel!
+   /* @IBOutlet weak var sectionLabel: UILabel!
     
-    @IBOutlet weak var sectionSelect: UIPickerView!
+    @IBOutlet weak var sectionSelect: UIPickerView!*/
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sectionSelect.delegate = self
+        /*sectionSelect.delegate = self
         sectionSelect.dataSource = self
         
-        load()
-    }
+        load()*/
+        
+        
+
+
+        
+    }/*
     
     func save(books: [Book], bookshelfs: [BookShelf]) {
         
@@ -142,7 +147,7 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
     }
     
-    //表示時のデータ更新
+   //表示時のデータ更新
     override func viewWillAppear(_ animated: Bool) {
         
         load()
@@ -173,8 +178,15 @@ class AddController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         
         selectedSection = bookshelfs[row].name
         selectedRow = row
-    }
+    }*/
+    
+
+    
+    //入力画面から戻る
+    @IBAction func unwindToTop(segue: UIStoryboardSegue) {}
         
+    
+    
     @IBAction func camera(_ sender: Any) {
         let CameraViewController = self.storyboard?.instantiateViewController(withIdentifier: "camera2") as! CameraViewController
         self.present(CameraViewController, animated: true, completion: nil)

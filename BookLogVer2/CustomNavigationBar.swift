@@ -22,7 +22,7 @@ class CustomNavigationBar: UINavigationBar{
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        
         frame = CGRect(x: frame.origin.x, y:  0, width: frame.size.width, height: customHeight)
 
         // title position (statusbar height / 2)
@@ -40,7 +40,7 @@ class CustomNavigationBar: UINavigationBar{
             if stringFromClass.contains("BarContent") {
 
                 subview.frame = CGRect(x: subview.frame.origin.x, y: 30, width: subview.frame.width, height: customHeight - 20)
-
+                
                 //subview.backgroundColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.4)
 
             }

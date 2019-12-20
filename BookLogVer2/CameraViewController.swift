@@ -124,7 +124,8 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             let get_api = GetGoogleApi()
             get_api.searchBook(completion: {returnData in
                 let tab = self.presentingViewController as! UITabBarController
-                let AC = tab.viewControllers![1] as! AddController
+                //let AC = tab.viewControllers![1] as! AddController
+                let AC = tab.viewControllers![1] as!  EnterViewController
                 AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
                 var authors = String()
                 //あとでもっと丁寧に書きたい
