@@ -45,6 +45,14 @@ class EnterViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
             return
         }
         
+        if AuthorTextField.text! == ""{
+            //titleが入力されていない時の処理
+            alertTitle = "著者が入力されていません"
+            alertMessage = "もう一度入力してください"
+            alert(alertTitle: alertTitle, alertMessage: alertMessage, isEntry: false, isCancel: false)
+            return
+        }
+        
         if selectedSection == ""{
             selectedSection = bookshelfs[0].name
         }
