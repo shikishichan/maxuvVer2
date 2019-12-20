@@ -370,13 +370,13 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             selectedBook = book_list[indexPath.row]
         }
         
-        performSegue(withIdentifier: "toDetail",sender: nil)
+        performSegue(withIdentifier: "toEdit",sender: nil)
      }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let detailVC: DetailViewController = (segue.destination as? DetailViewController)!
+        let EVC: EditViewController = (segue.destination as? EditViewController)!
 //        detailVC.bookData = selectedBook
-        detailVC.bookDataId = selectedBook.id
+        EVC.recieveDataId = selectedBook.id
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
