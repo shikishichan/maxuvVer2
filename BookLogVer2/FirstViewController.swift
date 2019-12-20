@@ -126,9 +126,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             if searchText != "" {
                 book_list = books.filter { item in
                     if searchCategory == "タイトル"{
-                        return item.title.contains(searchText)
+                        return item.title.lowercased().contains(searchText.lowercased())
                     }else if searchCategory == "著者"{
-                        return item.author.contains(searchText)
+                        return item.author.lowercased().contains(searchText.lowercased())
                     }else{
                         return true
                     }
