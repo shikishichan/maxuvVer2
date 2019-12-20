@@ -8,11 +8,13 @@
 
 import UIKit
 
-class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate{
+class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate, SortDelegate{
+
     var twoDimArray = [[Book]]()
     var selectedClass = ""
     var selectedBook = Book.init(title: "", place: "", author: "", id: 0)
-    
+    var calloutView: CalloutView!
+    var calloutView2: CalloutView2!
     var books = [Book]()
     var bookshelfs = [BookShelf]()
 //    let BookKey = "bookkey"
@@ -30,6 +32,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var bookId = Int()
     
     var openSection = Bool()
+
     
     @IBOutlet weak var sortSelectButton: UIBarButtonItem!
     @IBAction func sortSelectButton(_ sender: Any) {
@@ -82,6 +85,69 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     @IBOutlet weak var tableView: UITableView!
         
+    override func viewDidAppear(_ animated: Bool) {
+        let width = self.view.frame.width
+        let height = self.view.frame.height
+        
+        let buttonSize = width*0.1
+        
+        let button = UIButton()
+        button.backgroundColor = .orange
+        button.setImage(UIImage(named: "sort"), for: .init())
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 15);
+        button.frame = CGRect(x: width*0.85, y: height*0.7, width: buttonSize, height: buttonSize)
+        button.layer.cornerRadius = buttonSize*0.5
+        button.addTarget(self, action: #selector(self.sort_tapped(button:)), for: .touchUpInside)
+        
+        self.view.addSubview(button)
+        
+        let menu_button = UIButton()
+        menu_button.backgroundColor = .orange
+        menu_button.setImage(UIImage(named: "menu"), for: .init())
+        menu_button.imageView?.contentMode = .scaleAspectFit
+        menu_button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20);
+        menu_button.frame = CGRect(x: width*0.85, y: height*0.8, width: buttonSize, height: buttonSize)
+        menu_button.layer.cornerRadius = buttonSize*0.5
+        menu_button.addTarget(self, action: #selector(self.manu_tapped(button:)), for: .touchUpInside)
+        
+        self.view.addSubview(menu_button)
+        
+    }
+    
+
+    @objc func sort_tapped(button: UIButton) {
+        if self.view.subviews.first(where: { $0 is CalloutView }) != nil {
+            self.calloutView.removeFromSuperview()
+            return
+        }
+        let width = self.view.frame.width
+        let height = self.view.frame.height
+        
+        let rect = CGRect(x: button.frame.minX - width*0.4, y: height*0.6, width: width*0.4, height: height*0.2)
+        self.calloutView = CalloutView(labelList: ["保管場所順", "タイトル順", "著者順"],
+                                       imageNameList: ["bookshelf", "books", "person"],
+                                       frame: rect)
+        self.calloutView.delegate = self
+        self.view.addSubview(self.calloutView)
+    }
+    
+    @objc func manu_tapped(button: UIButton) {
+        if self.view.subviews.first(where: { $0 is CalloutView2 }) != nil {
+            self.calloutView2.removeFromSuperview()
+            return
+        }
+        let width = self.view.frame.width
+        let height = self.view.frame.height
+        
+        let rect = CGRect(x: button.frame.minX - width*0.4, y: height*0.8, width: width*0.4, height: height*0.13)
+        self.calloutView2 = CalloutView2(labelList: ["本棚を編集する", "全ての本を隠す"],
+        imageNameList: ["dot", "hiddenBook"],
+        frame: rect)
+        self.calloutView2.delegate = self
+        self.view.addSubview(self.calloutView2)
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,9 +155,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         tableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "ReUseCell")
         
         self.navigationController?.isNavigationBarHidden = false
-        navigationItem.title = "一覧"
+
         navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem?.title = "編集"
+        //navigationItem.rightBarButtonItem?.title = "編集"
         
         order = "保管場所順"
         
@@ -185,7 +251,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var num = Int()
 
     func numberOfSections(in tableView: UITableView) -> Int {
-                if order == "保管場所順"{
+        if order == "保管場所順"{
             num = bookshelfs.count
         }else if order == "50音順"{
             num = 1
@@ -200,6 +266,17 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
       /*セルの折りたたみ*/
       
       private var openedSections = Set<Int>()
+    
+    func hidden_book(){
+        openSection = false
+        for i in 0..<bookshelfs.count {
+            if self.openedSections.contains(i) {
+                self.openedSections.remove(i)
+            }
+        }
+
+        tableView.reloadData()
+    }
       
     @IBAction func cellOpenSwitch(_ sender: UISwitch) {
         if sender.isOn {
@@ -210,11 +287,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
 
         } else {
             openSection = false
-            for i in 0..<bookshelfs.count {
-                if self.openedSections.contains(i) {
-                    self.openedSections.remove(i)
-                }
-            }
+            hidden_book()
         }
         tableView.reloadData()
     }
@@ -236,12 +309,22 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     func sort(order: String){
         if order == "保管場所順"{
-            //何もしない
-        }else if order == "50音順"{
+            self.order = "保管場所順"
+        }else if order == "タイトル順"{
+            self.order = "50音順"
             self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
         }else if order == "著者順"{
+            self.order = "著者順"
             self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
         }
+        
+        self.tableView.reloadData()
+    }
+    
+    func sort_title(){
+        self.order = "50音順"
+        self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+        self.tableView.reloadData()
     }
        
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

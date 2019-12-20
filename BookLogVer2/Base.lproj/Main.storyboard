@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--本の一覧-->
+        <!--First View Controller-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
                 <viewController id="9pv-A4-QxB" customClass="FirstViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
@@ -69,25 +69,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <navigationItem key="navigationItem" title="本の一覧" largeTitleDisplayMode="always" id="0g4-lB-wd7">
-                        <leftBarButtonItems>
-                            <barButtonItem style="plain" id="nxs-SZ-HnY">
-                                <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="XOF-OO-FQr">
-                                    <rect key="frame" x="20" y="9.5" width="51" height="31"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="onTintColor" red="0.94117647059999998" green="0.51764705879999995" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <connections>
-                                        <action selector="cellOpenSwitch:" destination="9pv-A4-QxB" eventType="valueChanged" id="rnh-b0-hsd"/>
-                                    </connections>
-                                </switch>
-                            </barButtonItem>
-                            <barButtonItem title="Item" image="arrow.up.arrow.down" catalog="system" id="w9U-CD-oHi">
-                                <connections>
-                                    <action selector="sortSelectButton:" destination="9pv-A4-QxB" id="yRZ-Yk-aOL"/>
-                                </connections>
-                            </barButtonItem>
-                        </leftBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="0g4-lB-wd7"/>
                     <connections>
                         <outlet property="tableView" destination="nn1-7g-XjE" id="N2q-yY-9QC"/>
                         <segue destination="JGF-Oj-LN5" kind="show" identifier="toDetail" id="2Wb-pJ-EXx"/>
@@ -521,7 +503,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.up.arrow.down" catalog="system" width="64" height="48"/>
         <image name="barcode" catalog="system" width="64" height="46"/>
         <image name="book" catalog="system" width="64" height="50"/>
         <image name="cube.box" catalog="system" width="64" height="62"/>
