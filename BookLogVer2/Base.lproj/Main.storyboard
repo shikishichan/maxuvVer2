@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--本の一覧-->
+        <!--First View Controller-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
                 <viewController id="9pv-A4-QxB" customClass="FirstViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
@@ -69,25 +69,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <navigationItem key="navigationItem" title="本の一覧" largeTitleDisplayMode="always" id="0g4-lB-wd7">
-                        <leftBarButtonItems>
-                            <barButtonItem style="plain" id="nxs-SZ-HnY">
-                                <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="XOF-OO-FQr">
-                                    <rect key="frame" x="20" y="9.5" width="51" height="31"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="onTintColor" red="0.94117647059999998" green="0.51764705879999995" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <connections>
-                                        <action selector="cellOpenSwitch:" destination="9pv-A4-QxB" eventType="valueChanged" id="rnh-b0-hsd"/>
-                                    </connections>
-                                </switch>
-                            </barButtonItem>
-                            <barButtonItem title="Item" image="arrow.up.arrow.down" catalog="system" id="w9U-CD-oHi">
-                                <connections>
-                                    <action selector="sortSelectButton:" destination="9pv-A4-QxB" id="yRZ-Yk-aOL"/>
-                                </connections>
-                            </barButtonItem>
-                        </leftBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="0g4-lB-wd7"/>
                     <connections>
                         <outlet property="tableView" destination="nn1-7g-XjE" id="N2q-yY-9QC"/>
                         <segue destination="fgA-id-k2E" kind="show" identifier="toEdit" id="ZyZ-th-B5J"/>
@@ -97,7 +79,7 @@
             </objects>
             <point key="canvasLocation" x="1515.625" y="-673.2421875"/>
         </scene>
-        <!--詳細情報の編集-->
+        <!--詳細情報-->
         <scene sceneID="bHh-kC-bw6">
             <objects>
                 <viewController id="fgA-id-k2E" customClass="EditViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
@@ -164,7 +146,7 @@
                         <color key="backgroundColor" red="0.96748298406600952" green="0.91489440202713013" blue="0.84704786539077759" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <viewLayoutGuide key="safeArea" id="GcJ-hJ-sHD"/>
                     </view>
-                    <navigationItem key="navigationItem" title="詳細情報の編集" id="QL3-nF-85a"/>
+                    <navigationItem key="navigationItem" title="詳細情報" id="QL3-nF-85a"/>
                     <connections>
                         <outlet property="authorEdit" destination="u0B-BW-mNX" id="PrX-vt-ntw"/>
                         <outlet property="sectionPicker" destination="gHU-Z1-5V7" id="8ja-Ll-rzr"/>
@@ -191,7 +173,7 @@
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="本の登録" id="GP7-uE-RbF"/>
+                                    <navigationItem id="GP7-uE-RbF"/>
                                 </items>
                             </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWz-oC-1bv">
@@ -339,7 +321,7 @@
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="保管場所の登録" id="pS3-5Z-rjd"/>
+                                    <navigationItem id="pS3-5Z-rjd"/>
                                 </items>
                             </navigationBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="場所の名前" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YBT-k3-o6s">
@@ -464,9 +446,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.up.arrow.down" catalog="system" width="64" height="48"/>
-        <image name="barcode" catalog="system" width="64" height="48"/>
-        <image name="book" catalog="system" width="64" height="52"/>
+        <image name="barcode" catalog="system" width="64" height="46"/>
+        <image name="book" catalog="system" width="64" height="50"/>
         <image name="cube.box" catalog="system" width="64" height="62"/>
         <image name="list.bullet" catalog="system" width="64" height="44"/>
     </resources>

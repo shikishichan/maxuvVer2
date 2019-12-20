@@ -8,10 +8,13 @@
 
 import UIKit
 
-class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
+class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SortDelegate{
     var twoDimArray = [[Book]]()
     var selectedClass = ""
     var selectedBook = Book.init(title: "", place: "", author: "", id: 0)
+    
+    var calloutView: CalloutView!
+    var calloutView2: CalloutView2!
     
     var books = [Book]()
     var bookshelfs = [BookShelf]()
@@ -87,6 +90,69 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     
     @IBOutlet weak var tableView: UITableView!
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let width = self.view.frame.width
+        let height = self.view.frame.height
+
+        let buttonSize = width*0.1
+
+        let button = UIButton()
+        button.backgroundColor = UIColor(red: 255/255, green: 221/255, blue: 143/255, alpha: 100)
+        button.setImage(UIImage(named: "sort"), for: .init())
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 15);
+        button.frame = CGRect(x: width*0.85, y: height*0.7, width: buttonSize, height: buttonSize)
+        button.layer.cornerRadius = buttonSize*0.5
+        button.addTarget(self, action: #selector(self.sort_tapped(button:)), for: .touchUpInside)
+
+        self.view.addSubview(button)
+
+        let menu_button = UIButton()
+        menu_button.backgroundColor = UIColor(red: 255/255, green: 221/255, blue: 143/255, alpha: 100)
+        menu_button.setImage(UIImage(named: "menu"), for: .init())
+        menu_button.imageView?.contentMode = .scaleAspectFit
+        menu_button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20);
+        menu_button.frame = CGRect(x: width*0.85, y: height*0.8, width: buttonSize, height: buttonSize)
+        menu_button.layer.cornerRadius = buttonSize*0.5
+        menu_button.addTarget(self, action: #selector(self.manu_tapped(button:)), for: .touchUpInside)
+
+        self.view.addSubview(menu_button)
+
+    }
+
+
+    @objc func sort_tapped(button: UIButton) {
+        if self.view.subviews.first(where: { $0 is CalloutView }) != nil {
+            self.calloutView.removeFromSuperview()
+            return
+        }
+        let width = self.view.frame.width
+        let height = self.view.frame.height
+
+        let rect = CGRect(x: button.frame.minX - width*0.4, y: height*0.6, width: width*0.4, height: height*0.2)
+        self.calloutView = CalloutView(labelList: ["保管場所順", "タイトル順", "著者順"],
+                                       imageNameList: ["bookshelf", "books", "person"],
+                                       frame: rect)
+        self.calloutView.delegate = self
+        self.view.addSubview(self.calloutView)
+    }
+
+    @objc func manu_tapped(button: UIButton) {
+        if self.view.subviews.first(where: { $0 is CalloutView2 }) != nil {
+            self.calloutView2.removeFromSuperview()
+            return
+        }
+        let width = self.view.frame.width
+        let height = self.view.frame.height
+
+        let rect = CGRect(x: button.frame.minX - width*0.4, y: height*0.8, width: width*0.4, height: height*0.08)
+        self.calloutView2 = CalloutView2(labelList: ["全ての本を隠す"],
+        imageNameList: ["hiddenBook"],
+        frame: rect)
+        self.calloutView2.delegate = self
+        self.view.addSubview(self.calloutView2)
+    }
         
     
     override func viewDidLoad() {
@@ -98,7 +164,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         // 検索ボタンの追加
         let searchbutton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(addsearchbar))
         navigationItem.rightBarButtonItems = [editButtonItem, searchbutton]
-        navigationItem.rightBarButtonItems?[0].title = "編集"
+        //navigationItem.rightBarButtonItems?[0].title = "編集"
         
         order = "保管場所順"
         
@@ -106,53 +172,69 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    // 検索バーを追加するボタン
-    @objc func addsearchbar(){
-            //SearchBarの作成
-            mySearchBar = UISearchBar()
-            //デリゲートを設定
-            mySearchBar.delegate = self
-            //大きさの指定
-            mySearchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: searchBarHeight)
-            //キャンセルボタンの追加
-            mySearchBar.showsCancelButton = true
-            //scopeBarの追加
-            mySearchBar.showsScopeBar = true
-            mySearchBar.scopeButtonTitles = scopeList
-
-        mySearchBar.barTintColor = UIColor.init(red: 255/255, green: 204/255, blue: 102/255, alpha: 100/100)
-            searchCategory = "タイトル"
-            //searchbarがないなら出す、あるなら消す
-            if tableView.tableHeaderView == nil{
-                tableView.tableHeaderView = mySearchBar
-            }else{
-                tableView.tableHeaderView = nil
-            }
-
-            if searchCategory == scopeList[0]{
-                order = "50音順"
-            }else if searchCategory == scopeList[1]{
-                order = "著者順"
+    func hidden_book(){
+        openSection = false
+        for i in 0..<bookshelfs.count {
+            if self.openedSections.contains(i) {
+                self.openedSections.remove(i)
             }
         }
 
-        //渡された文字列を含む要素を検索し、テーブルビューを再表示する
-        func searchItems(searchText: String, searchCategory: String) {
+        tableView.reloadData()
+    }
+    
+    // 検索バーを追加するボタン
+    @objc func addsearchbar(){
+        //SearchBarの作成
+        mySearchBar = UISearchBar()
+        //デリゲートを設定
+        mySearchBar.delegate = self
+        //大きさの指定
+        mySearchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: searchBarHeight)
+
+        //キャンセルボタンの追加
+        //mySearchBar.showsCancelButton = true
+        let cancelButton = mySearchBar.value(forKey: "cancelButton") as? UIButton
+        cancelButton?.tintColor = .red
+        
+        //scopeBarの追加
+        mySearchBar.showsScopeBar = true
+        mySearchBar.scopeButtonTitles = scopeList
+        
+        mySearchBar.barTintColor = .white //UIColor.init(red: 255/255, green: 204/255, blue: 102/255, alpha: 100/100)
+        mySearchBar.backgroundColor = .black
+        searchCategory = "タイトル"
+        //searchbarがないなら出す、あるなら消す
+        if tableView.tableHeaderView == nil{
+            tableView.tableHeaderView = mySearchBar
+        }else{
+            tableView.tableHeaderView = nil
+        }
+        
+        if searchCategory == scopeList[0]{
+            order = "50音順"
+        }else if searchCategory == scopeList[1]{
+            order = "著者順"
+        }
+    }
+
+    //渡された文字列を含む要素を検索し、テーブルビューを再表示する
+    func searchItems(searchText: String, searchCategory: String) {
         //要素を検索する
-            if searchText != "" {
-                book_list = books.filter { item in
-                    if searchCategory == "タイトル"{
-                        return item.title.lowercased().contains(searchText.lowercased())
-                    }else if searchCategory == "著者"{
-                        return item.author.lowercased().contains(searchText.lowercased())
-                    }else{
-                        return true
-                    }
+        if searchText != "" {
+            book_list = books.filter { item in
+                if searchCategory == "タイトル"{
+                    return item.title.lowercased().contains(searchText.lowercased())
+                }else if searchCategory == "著者"{
+                    return item.author.lowercased().contains(searchText.lowercased())
+                }else{
+                    return true
+                }
                 } as Array
-            } else {
-        //渡された文字列が空の場合は全てを表示
-                book_list = books
-            }
+        } else {
+            //渡された文字列が空の場合は全てを表示
+            book_list = books
+        }
         //tableViewを再読み込みする
         tableView.reloadData()
     }
@@ -276,13 +358,17 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     func sort(order: String){
         if order == "保管場所順"{
-            //何もしない
-        }else if order == "50音順"{
+            self.order = "保管場所順"
+        }else if order == "タイトル順"{
+            self.order = "50音順"
             self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
         }else if order == "著者順"{
+            self.order = "著者順"
             self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
         }
         self.book_list = self.books
+        self.tableView.reloadData()
+        
     }
        
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
