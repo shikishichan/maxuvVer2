@@ -62,11 +62,6 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         books[recieveDataId] = returnData
         
         save(books: books)
-        
-        let DVC: DetailViewController = DetailViewController()
-        DVC.bookData = returnData
-        print("edit")
-        print("\(books[recieveDataId].place),\(books[recieveDataId].author)")
 
     }
     

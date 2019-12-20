@@ -90,52 +90,12 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="nn1-7g-XjE" id="N2q-yY-9QC"/>
-                        <segue destination="JGF-Oj-LN5" kind="show" identifier="toDetail" id="2Wb-pJ-EXx"/>
+                        <segue destination="fgA-id-k2E" kind="show" identifier="toEdit" id="ZyZ-th-B5J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1515.625" y="-673.2421875"/>
-        </scene>
-        <!--詳細情報-->
-        <scene sceneID="Djp-p0-6rO">
-            <objects>
-                <viewController id="JGF-Oj-LN5" customClass="DetailViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="oJO-Ty-WXK">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wVw-1I-B9d">
-                                <rect key="frame" x="84" y="226" width="600" height="572"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.8717877538071066" green="0.6412079641307904" blue="0.22707431125678315" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DetailView" lineBreakMode="tailTruncation" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjP-ia-UKZ">
-                                <rect key="frame" x="123" y="191" width="520" height="641"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.99084240198135376" green="0.92679417133331299" blue="0.85096794366836548" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <viewLayoutGuide key="safeArea" id="sMK-jB-Qeh"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="詳細情報" id="Vdu-77-1qT">
-                        <barButtonItem key="rightBarButtonItem" title="編集" id="2OP-Gn-bUT">
-                            <connections>
-                                <action selector="toEdit:" destination="JGF-Oj-LN5" id="hkh-vz-jx3"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="label" destination="hjP-ia-UKZ" id="jTW-gZ-LEx"/>
-                        <segue destination="fgA-id-k2E" kind="show" identifier="toEdit" id="MCh-l2-oZB"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IZR-qE-Ud2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2230.46875" y="-673.2421875"/>
         </scene>
         <!--詳細情報の編集-->
         <scene sceneID="bHh-kC-bw6">
