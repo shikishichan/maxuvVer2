@@ -8,15 +8,13 @@
 
 import UIKit
 
-class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate{
+class FirstViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
     var twoDimArray = [[Book]]()
     var selectedClass = ""
     var selectedBook = Book.init(title: "", place: "", author: "", id: 0)
     
     var books = [Book]()
     var bookshelfs = [BookShelf]()
-//    let BookKey = "bookkey"
-//    let BookShelfKey = "shelfkey"
     
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
@@ -29,6 +27,12 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     var order = ""
     var bookId = Int()
     
+    var mySearchBar: UISearchBar!
+    var searchBarHeight: CGFloat = 44
+    let scopeList = ["タイトル","著者"]
+    var searchCategory = String()
+    var book_list = [Book]()
+    
     var openSection = Bool()
     
     @IBOutlet weak var sortSelectButton: UIBarButtonItem!
@@ -37,45 +41,31 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         let actionSheet = UIAlertController(title: "並び順", message: nil, preferredStyle: .actionSheet)
         let action1 = UIAlertAction(title: "保管場所順", style: .default, handler:{
             (action: UIAlertAction!) -> Void in
-            //hogehoge
             self.order = "保管場所順"
             self.tableView.reloadData()
         })
         let action2 = UIAlertAction(title: "50音順", style: .default, handler:{
             (action: UIAlertAction!) -> Void in
-            //hogehoge
             self.order = "50音順"
             self.books = self.books.sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
             self.tableView.reloadData()
         })
         let action3 = UIAlertAction(title: "著者順", style: .default, handler:{
             (action: UIAlertAction!) -> Void in
-            //hogehoge
             self.order = "著者順"
             self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
             self.tableView.reloadData()
         })
 
-        // To set image in ActionButton
-//        action1.setValue(#imageLiteral(resourceName: "check").withRenderingMode(.alwaysOriginal), forKey: "image")
-
-        // Add Actions to AlertController
         actionSheet.addAction(action1)
         actionSheet.addAction(action2)
         actionSheet.addAction(action3)
         
         actionSheet.popoverPresentationController?.sourceView = self.view
-        //let screenSize = UIScreen.main.bounds
-        // ここで表示位置を調整
-        // xは画面中央、yは画面下部になる様に指定
-//        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: screenSize.size.width/2, y: screenSize.size.height, width: 0, height: 0)
         
         // 左上のボタンの下のちょうどいい位置
         actionSheet.popoverPresentationController?.sourceRect = CGRect(x: 100, y: 70, width: 0, height: 0)
         
-         
-
-        // Present UIAlertController
         present(actionSheet, animated: true, completion: nil)
     }
     
@@ -89,15 +79,69 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         tableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "ReUseCell")
         
         self.navigationController?.isNavigationBarHidden = false
-        navigationItem.title = "一覧"
-        navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem?.title = "編集"
+        // 検索ボタンの追加
+        let searchbutton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(addsearchbar))
+        navigationItem.rightBarButtonItems = [editButtonItem, searchbutton]
+        navigationItem.rightBarButtonItems?[0].title = "編集"
        
         order = "保管場所順"
         
         load()
         
     }
+    
+    // 検索バーを追加するボタン
+    @objc func addsearchbar(){
+            //SearchBarの作成
+            mySearchBar = UISearchBar()
+            //デリゲートを設定
+            mySearchBar.delegate = self
+            //大きさの指定
+            mySearchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: searchBarHeight)
+            //キャンセルボタンの追加
+            mySearchBar.showsCancelButton = true
+            //scopeBarの追加
+            mySearchBar.showsScopeBar = true
+            mySearchBar.scopeButtonTitles = scopeList
+        
+        mySearchBar.barTintColor = UIColor.init(red: 205/255, green: 133/255, blue: 63/255, alpha: 100/100)
+            searchCategory = "タイトル"
+            //searchbarがないなら出す、あるなら消す
+            if tableView.tableHeaderView == nil{
+                tableView.tableHeaderView = mySearchBar
+            }else{
+                tableView.tableHeaderView = nil
+            }
+            
+            if searchCategory == scopeList[0]{
+                order = "50音順"
+            }else if searchCategory == scopeList[1]{
+                order = "著者順"
+            }
+        }
+        
+        //渡された文字列を含む要素を検索し、テーブルビューを再表示する
+        func searchItems(searchText: String, searchCategory: String) {
+        //要素を検索する
+            if searchText != "" {
+                book_list = books.filter { item in
+                    if searchCategory == "タイトル"{
+                        return item.title.contains(searchText)
+                    }else if searchCategory == "著者"{
+                        return item.author.contains(searchText)
+                    }else{
+                        return true
+                    }
+                } as Array
+            } else {
+        //渡された文字列が空の場合は全てを表示
+                book_list = books
+            }
+    //        order = "50音順"
+        //tableViewを再読み込みする
+            tableView.reloadData()
+            }
+    
     
     func save(books: [Book], bookshelfs: [BookShelf]) {
         
@@ -136,33 +180,14 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func alert(alertTitle:String, alertMessage:String, isEntry:Bool, isCancel:Bool){
-        alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:{
-            (action: UIAlertAction!) -> Void in
-            //OKボタンが押された時の処理
-            if isEntry{
-//                self.touroku(title: self.TitleTextField.text!, place: self.selectedSection, author: self.AuthorTextField.text!)
-            }
-        }))
-        if isCancel{
-            alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler:{
-                (action: UIAlertAction!) -> Void in
-                //キャンセルボタンが押された時の処理
-//                self.TitleTextField.text = ""
-                
-            }))
-        }
-        present(alertController, animated: true, completion: nil)
-    }
-    
     //表示時のデータ更新
     override func viewWillAppear(_ animated: Bool) {
         
          //UILabel.appearance().font = UIFont(name: "Senobi-Gothic-Regular" , size: 20)
         
         load()
-        
+        //load()後は保管場所順になっている
+        sort(order: order)
         if bookshelfs.isEmpty{
             //保管場所が存在しない時の処理
             alertTitle = "保管場所が作成されていません"
@@ -176,18 +201,14 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
                     present(alertController, animated: true, completion: nil)
             return
         }
-        
-        //load()後は保管場所順になっている
-        sort(order: order)
         tableView.reloadData()
         super.viewWillAppear(animated)
-    
     }
     
-    var num = Int()
 
     func numberOfSections(in tableView: UITableView) -> Int {
-                if order == "保管場所順"{
+        var num = Int()
+        if order == "保管場所順"{
             num = bookshelfs.count
         }else if order == "50音順"{
             num = 1
@@ -244,10 +265,10 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         }else if order == "著者順"{
             self.books = self.books.sorted { $0.author.localizedStandardCompare($1.author) == .orderedAscending }
         }
+        self.book_list = self.books
     }
-       
-      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-              //return twoDimArray[section].count
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if order == "保管場所順"{
             if self.openedSections.contains(section) {
                 return bookshelfs[section].numofbook
@@ -255,62 +276,46 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
                 return 0
             }
         }else if order == "50音順"{
-            /*if self.openedSections.contains(section) {
-                return books.count
+            if self.openedSections.contains(section) {
+                return book_list.count
             } else {
                 return 0
-            }*/
-            return books.count
+            }
         }else if order == "著者順"{
-            /*if self.openedSections.contains(section) {
-                return books.count
+            if self.openedSections.contains(section) {
+                return book_list.count
             } else {
                 return 0
-            }*/
-            return books.count
+            }
         }
-        
-//          if self.openedSections.contains(section) {
-//              return bookshelfs[section].numofbook
-//          } else {
-//              return 0
-//          }
         return 0
-       }
+    }
 
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?{
-        if order != "保管場所順"{
-            let view = UITableViewHeaderFooterView()
-            return view
-        }
-        
-        //let sectionImage = UIImage(named: openSection ? "arrow_up.png" : "arrow_down.png")!
-        let sectionImage = UIImage(named: "arrow_down.png")
-        
-        let bookNum: String = String("\(bookshelfs[section].numofbook)")
-        
-        let view = UITableViewHeaderFooterView()
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
-        
-         let label: String = "   " + bookshelfs[section].name + "  (" + bookNum + "冊)"
-         view.addGestureRecognizer(gesture)
-        view.tag = section
-        view.contentView.backgroundColor = UIColor.init(red: 240/255, green: 132/255, blue: 26/255, alpha: 100/100)
-        view.textLabel?.text = label
-        view.textLabel?.textColor = UIColor.white
-       // view.textLabel!.font = UIFont(name: "Senobi-Gothic-Regular" , size: 30)
-        
-        let sectionImageView = UIImageView(image: sectionImage)
-        sectionImageView.frame = CGRect(x: 600, y: 20, width: 25, height: 20)
-        view.addSubview(sectionImageView)
-        
-        //sectionの色、文字サイズ
-        return view
+      let sectionImage = UIImage(named: "arrow_down.png")
+      let bookNum: String = String("\(bookshelfs[section].numofbook)")
+      let label: String = "   " + bookshelfs[section].name + "  (" + bookNum + "冊)"
+      let view = UITableViewHeaderFooterView()
+      let gesture = UITapGestureRecognizer(target: self, action: #selector(self.tapSectionHeader(sender:)))
+      view.addGestureRecognizer(gesture)
+      view.tag = section
       
-      }/*折りたたみ終わり*/
+      view.contentView.backgroundColor = UIColor.init(red: 240/255, green: 132/255, blue: 26/255, alpha: 100/100)
+      view.textLabel?.textColor = UIColor.white
+//      view.textLabel?.font = UIFont.systemFont(ofSize: 20)
+//      view.textLabel?.textAlignment = .right
+      let sectionImageView = UIImageView(image: sectionImage)
+      sectionImageView.frame = CGRect(x: 600, y: 20, width: 25, height: 20)
+      view.addSubview(sectionImageView)
+      if order == "保管場所順"{
+          view.textLabel?.text = label
+      }else{
+          view.textLabel?.text = order
+      }
       
-    
+      return view
+    }
      
       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReUseCell", for: indexPath) as! SearchTableViewCell
@@ -318,7 +323,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         if order == "保管場所順"{
             cell.controlCell(book: twoDimArray[indexPath.section][indexPath.row], order: order)
         }else{
-            cell.controlCell(book: books[indexPath.row], order: order)
+            cell.controlCell(book: book_list[indexPath.row], order: order)
         }
         cell.textLabel!.font = UIFont(name: "Arial", size: 25)//cellのfont,size
         return cell
@@ -330,8 +335,8 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             selectedClass = bookshelfs[indexPath.section].name
             selectedBook = twoDimArray[indexPath.section][indexPath.row]
         }else{
-            selectedClass = books[indexPath.row].place
-            selectedBook = books[indexPath.row]
+            selectedClass = book_list[indexPath.row].place
+            selectedBook = book_list[indexPath.row]
         }
         
         performSegue(withIdentifier: "toDetail",sender: nil)
@@ -341,7 +346,6 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         let detailVC: DetailViewController = (segue.destination as? DetailViewController)!
 //        detailVC.bookData = selectedBook
         detailVC.bookDataId = selectedBook.id
-        print(selectedBook.id)
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -428,6 +432,41 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {60}//cellの高さ
     
+    // MARK: - Search Bar Delegate Methods
+        // テキストが変更される毎に呼ばれる
+        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            //検索する
+            searchItems(searchText: searchText, searchCategory: searchCategory)
+        }
+        // キャンセルボタンが押されると呼ばれる
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.text = ""
+            view.endEditing(true)
+            book_list = books
+            tableView.tableHeaderView = nil
+            //tableViewを再読み込みする
+            tableView.reloadData()
+        }
+        // Searchボタンが押されると呼ばれる
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            view.endEditing(true)
+            //検索する
+            searchItems(searchText: searchBar.text! as String, searchCategory: searchCategory)
+        }
+            
+        func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+            if selectedScope == 0{
+                searchCategory = scopeList[0]
+                order = "50音順"
+            }else if selectedScope == 1{
+                searchCategory = scopeList[1]
+                order = "著者順"
+            }
+    //        searchResult.removeAll()
+            sort(order: order)
+            tableView.reloadData()
+            searchItems(searchText: searchBar.text!, searchCategory: searchCategory)
+        }
     
     override func didReceiveMemoryWarning() {
           super.didReceiveMemoryWarning()
