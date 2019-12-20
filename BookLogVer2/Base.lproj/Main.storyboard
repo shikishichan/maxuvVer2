@@ -317,10 +317,13 @@
                         <viewLayoutGuide key="safeArea" id="0iE-5S-jUj"/>
                     </view>
                     <navigationItem key="navigationItem" id="8Mv-8L-2gF"/>
+                    <connections>
+                        <segue destination="NCq-P5-bSB" kind="show" identifier="toEnter" id="dHu-ky-orS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E80-Mh-jFn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2176" y="0.0"/>
+            <point key="canvasLocation" x="2175.78125" y="0.0"/>
         </scene>
         <!--検索-->
         <scene sceneID="OLo-Cn-3S2">
@@ -440,7 +443,7 @@
         <!--Enter View Controller-->
         <scene sceneID="4OT-Ba-6sl">
             <objects>
-                <viewController id="NCq-P5-bSB" customClass="EnterViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="enter" id="NCq-P5-bSB" customClass="EnterViewController" customModule="BookLogVer2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uy9-bd-NGF">
                         <rect key="frame" x="0.0" y="0.0" width="712" height="984"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -595,4 +598,7 @@
         <image name="magnifyingglass" catalog="system" width="64" height="56"/>
         <image name="square.and.pencil" catalog="system" width="64" height="58"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="dHu-ky-orS"/>
+    </inferredMetricsTieBreakers>
 </document>

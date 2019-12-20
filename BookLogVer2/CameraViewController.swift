@@ -123,18 +123,22 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
             text += "ISBN:\t\(isbn)"
             let get_api = GetGoogleApi()
             get_api.searchBook(completion: {returnData in
-                let tab = self.presentingViewController as! UITabBarController
-                //let AC = tab.viewControllers![1] as! AddController
-                let AC = tab.viewControllers![1] as!  EnterViewController
-                AC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+//                let tab = self.presentingViewController as! UITabBarController
+//                //let AC = tab.viewControllers![1] as! AddController
+//                let AC = tab.viewControllers![1] as!  EnterViewController
+                let EVC: EnterViewController = EnterViewController()
+                EVC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
                 var authors = String()
                 //あとでもっと丁寧に書きたい
                 for i in (returnData.items?[0].volumeInfo?.authors!)!{
                     authors = authors + i.description
                 }
-                AC.AuthorTextField.text = authors
+                EVC.AuthorTextField.text = authors
                 
-                self.dismiss(animated: true, completion: nil)
+//                self.dismiss(animated: true, completion: nil)
+                let next = self.storyboard!.instantiateViewController(withIdentifier: "enter")
+                self.present(next,animated: true, completion: nil)
+
             }, keyword : isbn)
                         
         }
