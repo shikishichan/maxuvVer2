@@ -188,6 +188,10 @@ class AddController: UIViewController{
     
     
     @IBAction func camera(_ sender: Any) {
+        /*
+         保管場所を選択させる
+         alertのactionseetで選択後、値渡して遷移
+         */
         let CameraViewController = self.storyboard?.instantiateViewController(withIdentifier: "camera2") as! CameraViewController
         self.present(CameraViewController, animated: true, completion: nil)
     }

@@ -126,8 +126,11 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
 //                let tab = self.presentingViewController as! UITabBarController
 //                //let AC = tab.viewControllers![1] as! AddController
 //                let AC = tab.viewControllers![1] as!  EnterViewController
-                let EVC: EnterViewController = EnterViewController()
+                
+                let myStoryboard: UIStoryboard = self.storyboard!
+                let EVC = myStoryboard.instantiateViewController(withIdentifier: "enter") as! EnterViewController
                 EVC.TitleTextField.text = String((returnData.items?[0].volumeInfo?.title!)!)
+                
                 var authors = String()
                 //あとでもっと丁寧に書きたい
                 for i in (returnData.items?[0].volumeInfo?.authors!)!{
@@ -135,9 +138,14 @@ class CameraViewController: UIViewController , AVCaptureMetadataOutputObjectsDel
                 }
                 EVC.AuthorTextField.text = authors
                 
+                /*
+                 直接登録させたい
+                 登録完了のalertを出してdismiss
+                 */
+                
 //                self.dismiss(animated: true, completion: nil)
-                let next = self.storyboard!.instantiateViewController(withIdentifier: "enter")
-                self.present(next,animated: true, completion: nil)
+                
+                self.present(EVC,animated: true, completion: nil)
 
             }, keyword : isbn)
                         
