@@ -18,6 +18,7 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     
+    @IBOutlet weak var place: UILabel!
     @IBOutlet weak var titleEdit: UITextField!
     @IBOutlet weak var authorEdit: UITextField!
 //    @IBOutlet weak var placeEdit: UITextField!
@@ -35,14 +36,12 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     let BookKeyVer2 = "bookkeyver2"
     let BookShelfKeyVer2 = "shelfkeyver2"
     
-    @IBOutlet weak var sectionPicker: UIPickerView!
+
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sectionPicker.delegate = self
-        sectionPicker.dataSource = self
         
         load()
         
@@ -52,6 +51,11 @@ class EditViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
 //        placeEdit.text = recieveData.place
         selectedSection = recieveData.place
         authorEdit.text = recieveData.author
+        place.text = recieveData.place
+        place.font = UIFont(name: "Menlo", size: 50)
+        place.textAlignment = .center
+        place.numberOfLines = 1
+        place.adjustsFontSizeToFitWidth = true
         // pickerの初期値を設定したかった
 //        sectionPicker.selectRow(<#T##row: Int##Int#>, inComponent: <#T##Int#>, animated: <#T##Bool#>)
     }

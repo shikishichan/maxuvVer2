@@ -249,6 +249,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
     }
     
     func load(){
+        
         if let encodedBookData = UserDefaults.standard.array(forKey: BookKeyVer2) as? [Data] {
             books = encodedBookData.map { try! JSONDecoder().decode(Book.self, from: $0) }
         }else{
@@ -502,7 +503,7 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
             twoDimArray[sourceIndexPath.section].swapAt(sourceIndexPath.row, destinationIndexPath.row)
         }else{
             twoDimArray[sourceIndexPath.section][sourceIndexPath.row].place = bookshelfs[destinationIndexPath.section].name
-            twoDimArray[destinationIndexPath.section].insert(twoDimArray[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
+        twoDimArray[destinationIndexPath.section].insert(twoDimArray[sourceIndexPath.section][sourceIndexPath.row], at: destinationIndexPath.row)
                 twoDimArray[sourceIndexPath.section].remove(at: sourceIndexPath.row)
             bookshelfs[sourceIndexPath.section].numofbook -= 1
             bookshelfs[destinationIndexPath.section].numofbook += 1
