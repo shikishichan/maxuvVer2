@@ -459,7 +459,9 @@ class FirstViewController:  UIViewController, UITableViewDataSource, UITableView
         //override前の処理を継続してさせる
         super.setEditing(editing, animated: animated)
         //tableViewの編集モードを切り替える
-        tableView.isEditing = editing //editingはBool型でeditButtonに依存する変数
+        if(order == "保管場所順"){
+            tableView.isEditing = editing //editingはBool型でeditButtonに依存する変数
+        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
